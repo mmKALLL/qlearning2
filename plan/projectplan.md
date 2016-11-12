@@ -24,8 +24,9 @@ Esa Koskinen, Simo Muraja, Olli Kauppinen, Jussi Hirvonen
 
 (coding practices and appropriate git usage)
 (I would vouch for having a release candidate devbranch before pushing things into master, and then individual working branches from that)
-(I would be willing to try TDD or similar as an excercise in semi-professional development thinking too, if there is an appropriate and easy to learn framework available for doing that in C++)
+(I would be willing to try serious TDD, CI, or similar things as an excercise in semi-professional development thinking too, if there is an appropriate and easy to learn framework available for doing that in C++)
 (Maybe something like unified TODO and commit message practices as well? I think the thing we did with Jussi in WSD would work here)
+(At the very least, please don't merge broken code, and please please do something to avoid messy merge conflicts where possible?)
 (communication channels)
 (weekly meetings?)
 

@@ -1,13 +1,13 @@
 # C++ Course Project Plan
 
-__"Project plan
+*"Project plan
 Project plan is a PDF document describing the scope of the project, major architectural decisions, preliminary schedule, design rationale and so on.The document should be roughly five pages long, with a couple of diagrams illustrating the program design (for example, the planned class relationships).
 
 Project plan must be put in the Git repository in the plan/ directory. You don't need to tag the revision, it is enough that the plan is found in the plan directory.
 
 The project plan deadline is on Monday, November 14. You will receive feedback about your project plan from your group's advisor.
 
-Do not overplan the project. Have an idea of the high level structure (e.g. high-level class hierarchy) and of potential algorithms to use for problematic parts, but do not go into details at this phase. It is not uncommon that plans change during implementation of the project for various reasons (improved understanding of the problem, possible changes in group composition, etc.), and this is fine."__
+Do not overplan the project. Have an idea of the high level structure (e.g. high-level class hierarchy) and of potential algorithms to use for problematic parts, but do not go into details at this phase. It is not uncommon that plans change during implementation of the project for various reasons (improved understanding of the problem, possible changes in group composition, etc.), and this is fine."*
 
 
 ### Authors:

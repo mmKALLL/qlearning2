@@ -14,3 +14,13 @@ Thumbs.db
 # Others
 .cache
 /bin/
+
+# VS
+.project
+.sln
+.csproj
+.cpproj
+.vcxproj
+.vs
+/Properties/
+

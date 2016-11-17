@@ -16,6 +16,7 @@ Thumbs.db
 /bin/
 
 # VS
+/Skele Aihe/
 .project
 .sln
 .csproj

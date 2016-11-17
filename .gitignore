@@ -22,5 +22,6 @@ Thumbs.db
 .cpproj
 .vcxproj
 .vs
+.gitattributes
 /Properties/
 

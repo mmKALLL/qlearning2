@@ -1,5 +1,10 @@
 #include <string>
 #include <vector>
+#include <tuple>
+#include <iostream>
+#include <sstream>
+using std::tuple;
+
 
 class Node {
 public:
@@ -7,16 +12,23 @@ public:
 
 	const double getValue() const;
 	const double calcValue();
-	const std::vector<Node> GetConnectionsIn() const;
-	const std::vector<Node> GetConnectionsOut() const;
+	const double calcValueCascade();
+	const std::vector<tuple<Node, double>> getConnectionsIn() const;
+	const std::vector<Node> getConnectionsOut() const;
 
-	void connectTo(Node& const another);
+	void addInput(const Node& another, const double& weight = 1);
+	void addOutput(const Node& another);
 
 
-	const std::string toString() const;
+	std::stringstream toString() const;
 private:
-	std::vector<Node> connectionsIn;
+	bool isUpdated;
+	std::vector<tuple<Node, double>> connectionsIn;
 	std::vector<Node> connectionsOut;
 	//int id;
 	double value;
 };
+/*
+std::ostream& operator<< (std::ostream& stream, const Node& obj) {
+	return stream << obj.toString();
+}*/

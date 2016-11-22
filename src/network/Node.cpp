@@ -8,11 +8,19 @@ Node::Node(std::vector<Node>& inputs) {
 	}
 	connectionsIn = connections;
 	value = 0;
-	isUpdated = false;
+	//isUpdated = false;
 }
 
 const double Node::getValue() const {
 	return value;
+}
+
+const std::vector<tuple<Node, double>> Node::getConnectionsIn() const {
+	return connectionsIn;
+}
+
+const std::vector<Node> Node::getConnectionsOut() const {
+	return connectionsOut;
 }
 
 /*
@@ -24,34 +32,69 @@ const double Node::calcValue() {
 	for (auto it = connectionsIn.begin(); it != connectionsIn.end(); it++) {
 		val += std::get<0>(*it).getValue() * std::get<1>(*it);
 	}
+	//isUpdated = true;
 	return val;
 }
 
 //Recursively calculate the value of this node by calculating previous nodes
 const double Node::calcValueCascade() {
-	return 0;
-}
-
-
-const std::vector<tuple<Node, double>> Node::getConnectionsIn() const {
-	return connectionsIn;
-}
-
-const std::vector<Node> Node::getConnectionsOut() const {
-	return connectionsOut;
+	double val = 0;
+	for (auto it = connectionsIn.begin(); it != connectionsIn.end(); it++) {
+		val += std::get<0>(*it).calcValueCascade() * std::get<1>(*it);
+	}
+	//isUpdated = true;
+	return val;
 }
 
 void Node::addInput(const Node& another, const double& weight) {
 	connectionsIn.push_back(std::make_tuple(another, weight));
+	//isUpdated = false;
 }
 
 void Node::addOutput(const Node& another) {
 	connectionsOut.push_back(another);
+	//isUpdated = false;
 }
 
 
+
+//---------------Input Node------------------
+
+void InputNode::setValue(double& const val) {
+	value = val;
+}
+
+const double InputNode::calcValue() {
+	return value;
+}
+const double InputNode::calcValueCascade() {
+	return value;
+}
+
+
+
+
+//------------toStrings--------------
 std::stringstream Node::toString() const {
 	std::stringstream ss;
 	ss << "Node: " << getValue();
+	return ss;
+}
+
+std::stringstream InputNode::toString() const {
+	std::stringstream ss;
+	ss << "InputNode: " << getValue();
+	return ss;
+}
+
+std::stringstream HiddenNode::toString() const {
+	std::stringstream ss;
+	ss << "Hidden layer Node: " << getValue();
+	return ss;
+}
+
+std::stringstream OutputNode::toString() const {
+	std::stringstream ss;
+	ss << "OutputNode: " << getValue();
 	return ss;
 }

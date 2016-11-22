@@ -11,6 +11,6 @@ public:
 protected:
 
 private:
-    vector<int> size;
+    vector<int> sizes; //size of each Node-vector(?)
 
 };

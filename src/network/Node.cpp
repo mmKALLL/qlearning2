@@ -1,6 +1,6 @@
 #include "Node.hpp"
 #include <vector>
-Node::Node(std::vector<Node>& inputs) {
+Node::Node(std::vector<Node>& inputs, int t) {
 	std::vector<tuple<Node, double>> connections;
 	for (auto it = inputs.begin(); it != inputs.end(); it++) {
 		//auto tmp = std::make_tuple(it, 1);
@@ -8,6 +8,7 @@ Node::Node(std::vector<Node>& inputs) {
 	}
 	connectionsIn = connections;
 	value = 0;
+	type = t;
 	//isUpdated = false;
 }
 
@@ -56,21 +57,19 @@ void Node::addOutput(const Node& another) {
 	//isUpdated = false;
 }
 
-
-
-//---------------Input Node------------------
-
-void InputNode::setValue(double& const val) {
+void Node::setValue(double& const val) {
 	value = val;
 }
 
+//---------------Input Node------------------
+/*
 const double InputNode::calcValue() {
 	return value;
 }
 const double InputNode::calcValueCascade() {
 	return value;
 }
-
+*/
 
 
 

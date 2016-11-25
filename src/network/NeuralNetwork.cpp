@@ -47,7 +47,7 @@ void NeuralNetwork::addNode(std::vector<Node>& const nodevector, int& const type
 
 //Connect all nodes to each node in upper and lower layer
 void NeuralNetwork::connectAll() {
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) { // TODO: replace this and the 4 below with len(nodes)? Does that work?
 		for (auto it = nodes[i].begin(); it != nodes[i].end(); it++) {
 			Node current = *it;
 			if (i != 0) { //not input node, has inputs

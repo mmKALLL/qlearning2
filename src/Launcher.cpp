@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
     } else {
         for (int i = 1; i < argc; i++) {
             if (argv[i] == "-t" || argv[i] == "--test") {
-                Tests::runTests();
+                return Tests::runTests();
             }
             if (argv[i] == "-h" || argv[i] == "--help") {
                 std::cout << "This is the help string." << std::endl
@@ -17,6 +17,6 @@ int main(int argc, char* argv[]) {
     
     // Do things if user runs the program normally, like...
     // Controller mainController();
-        
+    
     return 0;
 }

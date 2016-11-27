@@ -1,8 +1,9 @@
 #include "NeuralNetwork.hpp"
 
 NeuralNetwork::NeuralNetwork() {
+	//init sizes as 0
 	sizes = std::vector<int> {0, 0, 0, 0};
-	//std::vector<std::vector<Node>> nodes;
+	std::vector<std::vector<Node>> nodes;
 }
 
 const int NeuralNetwork::getInputSize() const {
@@ -10,11 +11,21 @@ const int NeuralNetwork::getInputSize() const {
 }
 
 const int NeuralNetwork::getOutputSize() const {
-	return sizes[3];
+	return sizes[ nodes.size()-1 ];
 }
 
 const int NeuralNetwork::getLayerSize(int& const layer) const {
 	return sizes[layer];
+}
+
+//Returns vector of the values of output layer nodes
+const std::vector<double>& NeuralNetwork::getOutputs() const {
+	std::vector<double> values;
+	int hli = nodes.size() - 1; //hidden layer index
+	for (auto it = nodes[hli].begin(); it != nodes[hli].end(); it++) {
+		values.push_back(it->getValue());
+	}
+	return values;
 }
 
 //Set input for a certain node
@@ -29,7 +40,6 @@ void NeuralNetwork::setInput(std::vector<double>& const values) {
 	for (int i = 0; i < size; i++) {
 		if (i >= values.size()) { break; } //avoid out of bounds
 		nodes[0][i].setValue(values[i]);
-		i++;
 	}
 }
 
@@ -47,7 +57,7 @@ void NeuralNetwork::addNode(std::vector<Node>& const nodevector, int& const type
 
 //Connect all nodes to each node in upper and lower layer
 void NeuralNetwork::connectAll() {
-	for (int i = 0; i < 4; i++) { // TODO: replace this and the 4 below with len(nodes)? Does that work?
+	for (int i = 0; i < nodes.size(); i++) { // TODO: replace this and the 4 below with len(nodes)? Does that work?
 		for (auto it = nodes[i].begin(); it != nodes[i].end(); it++) {
 			Node current = *it;
 			if (i != 0) { //not input node, has inputs
@@ -55,7 +65,7 @@ void NeuralNetwork::connectAll() {
 					current.addInput(*iti);
 				}
 			}
-			if (i != 3) { //not input node, has inputs
+			if (i != nodes.size() - 1) { //not input node, has inputs
 				for (auto ito = nodes[i + 1].begin(); ito != nodes[i + 1].end(); ito++) {
 					current.addOutput(*ito);
 				}
@@ -66,7 +76,7 @@ void NeuralNetwork::connectAll() {
 
 //Calculate the value of each node, starting from hidden layer 1
 void NeuralNetwork::calcAll() {
-	for (int i = 1; i < 4; i++) { //inputs don't need the value calculated
+	for (int i = 1; i < nodes.size(); i++) { //inputs don't need the value calculated, i=1
 		for (auto it = nodes[i].begin(); it != nodes[i].end(); it++) {
 			it->calcValue();
 		}

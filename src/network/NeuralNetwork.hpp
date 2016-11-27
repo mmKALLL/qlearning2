@@ -1,5 +1,4 @@
 
-
 #include <vector>
 #include "Node.hpp"
 #include <tuple>
@@ -10,6 +9,7 @@ public:
 	const int getInputSize() const;
 	const int getOutputSize() const;
 	const int getLayerSize(int& const layer) const;
+	const std::vector<double>& getOutputs() const;
 
 	void setInput(int& const index, double& const value);
 	void setInput(std::vector<double>& const values);
@@ -18,7 +18,6 @@ public:
 
 	void connectAll();
 	void calcAll();
-	std::vector<double&> getOutputs();
 
 private:
     std::vector<int> sizes; //size of each Node-vector(?)

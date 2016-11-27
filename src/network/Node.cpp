@@ -61,6 +61,13 @@ void Node::setValue(double& const val) {
 	value = val;
 }
 
+//Set weight of connection at index to weight
+void Node::setWeight(const int& index, const int& weight) {
+	if (index < connectionsIn.size()) {
+		std::get<1>(connectionsIn[index]) = weight;
+	}
+}
+
 //---------------Input Node------------------
 /*
 const double InputNode::calcValue() {

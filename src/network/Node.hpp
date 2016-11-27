@@ -19,7 +19,10 @@ public:
 
 	void addInput(const Node& another, const double& weight = 1);
 	void addOutput(const Node& another);
+	
 	void setValue(double& const value);
+	void setWeight(const int& index, const int& weight);
+	
 
 	std::stringstream toString() const;
 	double value;

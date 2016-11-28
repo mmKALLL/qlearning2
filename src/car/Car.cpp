@@ -16,7 +16,7 @@ Car::Car(b2World * world, const b2Vec2& position, const b2Vec2& dimensions)
 
 	b2PolygonShape carShape;
 	// Car is 4 meters long and 1.5 meter wide
-	carShape.SetAsBox(4, 1.5);
+	carShape.SetAsBox(4.0f, 1.5f);
 
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
@@ -45,7 +45,7 @@ void Car::accelerate(int direction)
 	b2Vec2 currentForwardNormal = getForwardVelocity();
 	force = 0;
 
-	// Set desired speed in relation to if we are reversing or going forwards
+	// Set desired speed in relation to if we are reversing or going forward
 	if (direction > 0) {
 		desiredSpeed = maxSpeed;
 	}
@@ -83,21 +83,38 @@ void Car::accelerate(int direction)
 void Car::turn(int direction)
 {
 	if (direction > 0) {
-		carBody->ApplyTorque(250, true);
+		carBody->ApplyTorque(MaxTurningForce, true);
 	}
 	else {
-		carBody->ApplyTorque(-250, true);
+		carBody->ApplyTorque(-MaxTurningForce, true);
 	}
 }
 
 b2Vec2 Car::getForwardVelocity() {
+	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
+	return b2Dot(currentForwardNormal, carBody->GetLinearVelocity()) * currentForwardNormal;
+}
+
+b2Vec2 Car::getLateralVelocity() {
 	b2Vec2 currentRightNormal = carBody->GetWorldVector(b2Vec2(0, 1));
 	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
 }
 
-b2Vec2 Car::getLateralVelocity() {
-	b2Vec2 currentRightNormal = carBody->GetWorldVector(b2Vec2(1, 0));
-	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
+void Car::updateFriction() {
+	//Remove the lateral velocity by applying impulse thats the opposite for the lateral velocity
+	b2Vec2 impulse = carBody->GetMass() * -getLateralVelocity();
+	if (impulse.Length() > maxLateralImpulse)
+		impulse *= maxLateralImpulse / impulse.Length();
+	carBody->ApplyLinearImpulse(impulse, carBody->GetWorldCenter(), true);
+
+	//Stop the car from rotating infinitely
+	carBody->ApplyAngularImpulse(0.1f * carBody->GetInertia() * -carBody->GetAngularVelocity(), true);
+
+	//Add drag, so the car will stop after a while
+	b2Vec2 currentForwardNormal = getForwardVelocity();
+	float currentForwardSpeed = currentForwardNormal.Normalize();
+	float dragForceMagnitude = -2 * currentForwardSpeed;
+	carBody->ApplyForce(dragForceMagnitude * currentForwardNormal, carBody->GetWorldCenter(), true);
 }
 
 

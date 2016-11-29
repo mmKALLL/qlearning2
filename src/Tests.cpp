@@ -1,6 +1,6 @@
 #include "Tests.hpp"
 
-int runTests() {
+int Tests::runTests() {
     int testsPassed = 0;
     
     if (runNetworkTest() != 0) {
@@ -23,11 +23,11 @@ int runTests() {
     return 0;
 }
 
-int runNetworkTest() {
+int Tests::runNetworkTest() {
     Node testNode();
     return 0;
 }
 
-int runPhysicsTest() {
+int Tests::runPhysicsTest() {
     return 0;
 }

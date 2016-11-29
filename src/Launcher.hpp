@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include "Controller.hpp"
-#include "Tests.cpp"
+#include "Tests.hpp"
 
 int main(int argc, char* argv[]);
 

@@ -1,7 +1,4 @@
-#include <string>
-#include <iostream>
-#include "Controller.hpp"
-#include "Tests.cpp"
+#include "Launcher.hpp"
 
 int main(int argc, char* argv[]) {
     try {
@@ -19,7 +16,7 @@ int main(int argc, char* argv[]) {
                 }
                 if (argList[i] == "-h" || argList[i] == "--help") {
                     std::cout << "This is the help string." << std::endl
-                    << "Execute with -t or --test to run the tests. Execute without parameters to start up the GUI. Execute with -h or --help to view this text."
+                    << "Execute with -t or --test to run the tests. Execute without parameters to start up the GUI. Execute with -h or --help to view this text.";
                 }
             }
         }

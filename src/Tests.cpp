@@ -23,7 +23,6 @@ int runTests() {
     return 0;
 }
 
-
 int runNetworkTest() {
     Node testNode();
     return 0;

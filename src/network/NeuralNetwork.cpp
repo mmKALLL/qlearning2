@@ -14,8 +14,11 @@ const int NeuralNetwork::getOutputSize() const {
 	return sizes[ nodes.size()-1 ];
 }
 
+//Layer of hidden ie 0 or 1
 const int NeuralNetwork::getLayerSize(int& const layer) const {
-	return sizes[layer];
+	if (layer == 0) return sizes[1];
+	else if (layer == 1) return sizes[2];
+	else throw "Invalid hidden layer index, use 0 or 1";
 }
 
 //Returns vector of the values of output layer nodes

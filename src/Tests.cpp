@@ -1,7 +1,4 @@
-#ifndef QLEARNING_TESTS
-#define QLEARNING_TESTS
-#include <iostream>
-#include "network/Node.hpp"
+#include "Tests.hpp"
 
 int runTests() {
     int testsPassed = 0;
@@ -35,5 +32,3 @@ int runNetworkTest() {
 int runPhysicsTest() {
     return 0;
 }
-
-#endif

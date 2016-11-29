@@ -1,3 +1,5 @@
+#ifndef QLEARNING_CONTROLLER_H
+#define QLEARNING_CONTROLLER_H
 #include <vector>
 #include <tuple>
 #include "network/NeuralNetwork.hpp"
@@ -29,3 +31,5 @@ private:
     Car currentCar;
     Track currentTrack;
 };
+
+#endif

@@ -1,3 +1,5 @@
+#ifndef QLEARNING_LEARNING_H
+#define QLEARNING_LEARNING_H
 #include "NeuralNetwork.hpp"
 #include "Node.hpp"
 #include <vector>
@@ -9,3 +11,5 @@ class Learning { //???
 public:
 	void adjustConnection(int layer, int index, NeuralNetwork& nn);
 };
+
+#endif

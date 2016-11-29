@@ -1,23 +1,24 @@
+#ifndef QLEARNING_NODE_H
+#define QLEARNING_NODE_H
 #include <string>
 #include <vector>
 #include <tuple>
 #include <iostream>
 #include <sstream>
-using std::tuple;
 
 
 class Node {
 public:
 	Node(std::vector<Node> inputs = std::vector<Node>(), int type = -1);
 
-	const double getValue() const;
-	const int getType() const;
-	const std::vector<tuple<Node, double>> getConnectionsIn() const;
+	double getValue() const;
+	int getType() const;
+	const std::vector<std::tuple<Node, double>> getConnectionsIn() const;
 	const std::vector<Node> getConnectionsOut() const;
-	const tuple<Node, double>& getConnection(int index);
+	const std::tuple<Node, double>& getConnection(int index);
 
-	const double calcValue();
-	const double calcValueCascade();
+	double calcValue();
+	double calcValueCascade();
 
 	void addInput(const Node& another, const double& weight = 1);
 	void addOutput(const Node& another);
@@ -30,7 +31,7 @@ public:
 	double value;
 
 protected:
-	std::vector<tuple<Node, double>> connectionsIn;
+	std::vector<std::tuple<Node, double>> connectionsIn;
 	std::vector<Node> connectionsOut;
 
 private:
@@ -91,3 +92,5 @@ std::ostream& operator<< (std::ostream& stream, const Node& obj) {
 //};
 //
 ////Laivap�ivitys :D//
+
+#endif

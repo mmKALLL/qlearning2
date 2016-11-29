@@ -52,8 +52,8 @@ void NeuralNetwork::setInput(int& const index, double& const value) {
 //Set the contents of the vector as the values of input nodes. Should stop to avoid out of bounds
 void NeuralNetwork::setInput(std::vector<double>& const values) {
 	int size = nodes[0].size();
+	if (values.size >= size) { throw "NN input vector larger than amount of input nodes"; }
 	for (int i = 0; i < size; i++) {
-		if (i >= values.size()) { break; } //avoid out of bounds
 		nodes[0][i].setValue(values[i]);
 	}
 }

@@ -1,3 +1,5 @@
+#ifndef QLEARNING_NEURALNETWORK_H
+#define QLEARNING_NEURALNETWORK_H
 #include <vector>
 #include "Node.hpp"
 #include <tuple>
@@ -6,9 +8,9 @@ class NeuralNetwork {
 	friend class Learning;
 public:
 	NeuralNetwork();
-	const int getInputSize() const;
-	const int getOutputSize() const;
-	const int getLayerSize(int& layer) const;
+	int getInputSize() const;
+	int getOutputSize() const;
+	int getLayerSize(int& layer) const;
 	const std::vector<double>& getOutputValues() const;
 	const std::vector<double>& getOutputValuesFromInputs(const std::vector<double> values);
 
@@ -25,4 +27,7 @@ protected:
 	std::vector<int> sizes; //size of each Node-vector
 
 private:
+	
 };
+
+#endif

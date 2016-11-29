@@ -1,25 +1,29 @@
 #include <string>
 #include <iostream>
 #include "Controller.hpp"
+#include "Tests.cpp"
 
 int main(int argc, char* argv[]) {
     try {
         if (argc < 1) { // First argument always program call
-            std::cerr << "Error in Launcher; wrong amount of args." << std::endl;
+            throw "Error in Launcher; illegal number of args.";
+        } else if (argc == 1) {
+            // Do things if user runs the program normally, like...
+            Controller mainController();
         } else {
+            // Otherwise parse possible flags.
+            std::vector<std::string> argList(argv, argv + argc);
             for (int i = 1; i < argc; i++) {
-                if (argv[i] == "-t" || argv[i] == "--test") {
+                if (argList[i] == "-t" || argList[i] == "--test") {
                     return Tests::runTests();
                 }
-                if (argv[i] == "-h" || argv[i] == "--help") {
+                if (argList[i] == "-h" || argList[i] == "--help") {
                     std::cout << "This is the help string." << std::endl
-                    << "Execute with -t or --test to run the tests. Execute without parameters to start up the GUI."
+                    << "Execute with -t or --test to run the tests. Execute without parameters to start up the GUI. Execute with -h or --help to view this text."
                 }
             }
         }
         
-        // Do things if user runs the program normally, like...
-        Controller mainController();
 
     } catch (const char* msg) {
         std::cerr << "UNCAUGHT RUNTIME ERROR: " << msg << std::endl;

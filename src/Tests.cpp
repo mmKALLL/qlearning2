@@ -1,3 +1,8 @@
+#ifndef QLEARNING_TESTS
+#define QLEARNING_TESTS
+#include <iostream>
+#include "network/Node.hpp"
+
 int runTests() {
     int testsPassed = 0;
     
@@ -17,16 +22,18 @@ int runTests() {
         std::cout << "Physics test passed." << std::endl;
     }
     
-    std::cout << std::endl << "All tests were OK." << std::endl << testsPassed << " tests were passed." std::endl;
+    std::cout << std::endl << "All tests were OK." << std::endl << testsPassed << " tests were passed." << std::endl;
     return 0;
 }
 
 
 int runNetworkTest() {
-    Node testNode ();
+    Node testNode();
     return 0;
 }
 
 int runPhysicsTest() {
     return 0;
 }
+
+#endif

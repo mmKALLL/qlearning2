@@ -1,9 +1,9 @@
 
 #include <vector>
-#include "network\NeuralNetwork.hpp"
 #include <tuple>
-#include "car\Car.hpp"
-#include "car\Track.hpp"
+#include "network/NeuralNetwork.hpp"
+#include "car/Car.hpp"
+#include "car/Track.hpp"
 
 class Controller {
 public:

@@ -8,7 +8,7 @@ using std::tuple;
 
 class Node {
 public:
-	Node(std::vector<Node>& inputs = std::vector<Node>(), int type = -1);
+	Node(std::vector<Node> inputs = std::vector<Node>(), int type = -1);
 
 	const double getValue() const;
 	const std::vector<tuple<Node, double>> getConnectionsIn() const;
@@ -20,8 +20,8 @@ public:
 	void addInput(const Node& another, const double& weight = 1);
 	void addOutput(const Node& another);
 	
-	void setValue(double& const value);
-	void setWeight(const int& index, const int& weight);
+	void setValue(const double value);
+	void setWeight(const int index, const int weight);
 	
 
 	std::stringstream toString() const;
@@ -44,48 +44,48 @@ std::ostream& operator<< (std::ostream& stream, const Node& obj) {
 
 
 //-------ALL BELOW IS CURRENTLY DEAD CODE--------
-
-/*
-	Input layer nodes
-*/
-class InputNode : public Node {
-public:
-	InputNode() : Node() {}
-
-	//void setValue(double& const value);
-	//const double calcValue();
-	//const double calcValueCascade();
-
-	std::stringstream toString() const;
-
-private:
-};
-/*
-	Hidden layer nodes
-*/
-class HiddenNode : public Node {
-public:
-	HiddenNode(std::vector<Node>& inputs = std::vector<Node>())
-		: Node(inputs) {}
-
-	std::stringstream toString() const;
-
-private:
-	
-};
-
-/*
-	Output layer nodes
-*/
-class OutputNode : public Node {
-public:
-	OutputNode(std::vector<Node>& inputs = std::vector<Node>())
-		: Node(inputs) {}
-
-	std::stringstream toString() const;
-
-private:
-	
-};
-
-//Laivapäivitys :D
+//
+///*
+//	Input layer nodes
+//*/
+//class InputNode : public Node {
+//public:
+//	InputNode() : Node() {}
+//
+//	//void setValue(double& const value);
+//	//const double calcValue();
+//	//const double calcValueCascade();
+//
+//	std::stringstream toString() const;
+//
+//private:
+//};
+///*
+//	Hidden layer nodes
+//*/
+//class HiddenNode : public Node {
+//public:
+//	HiddenNode(std::vector<Node>& inputs = std::vector<Node>())
+//		: Node(inputs) {}
+//
+//	std::stringstream toString() const;
+//
+//private:
+//
+//};
+//
+///*
+//	Output layer nodes
+//*/
+//class OutputNode : public Node {
+//public:
+//	OutputNode(std::vector<Node>& inputs = std::vector<Node>())
+//		: Node(inputs) {}
+//
+//	std::stringstream toString() const;
+//
+//private:
+//
+//};
+//
+////Laivapï¿½ivitys :D//

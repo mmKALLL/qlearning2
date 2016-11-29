@@ -7,15 +7,14 @@ public:
 	NeuralNetwork();
 	const int getInputSize() const;
 	const int getOutputSize() const;
-	const int getLayerSize(int& const layer) const;
-	const std::vector<double>& getOutputs() const;
-	const std::vector<double>& getOutputsFromInputs(std::vector<double>& const values);
+	const int getLayerSize(int& layer) const;
+	const std::vector<double>& getOutputValues() const;
+	const std::vector<double>& getOutputValuesFromInputs(const std::vector<double> values);
 
-
-	void setInput(int& const index, double& const value);
-	void setInput(std::vector<double>& const values);
-	void addNode(Node& const node, int& const type);
-	void addNode(std::vector<Node>& const nodes, int& const type);
+	void setInput(const int index, const double value);
+	void setInput(const std::vector<double> values);
+	void addNode(Node& node, const int type);
+	void addNodes(std::vector<Node> nodes, const int type);
 
 	void connectAll();
 	void calcAll();

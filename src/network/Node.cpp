@@ -16,12 +16,20 @@ const double Node::getValue() const {
 	return value;
 }
 
+const int Node::getType() const {
+	return type;
+}
+
 const std::vector<tuple<Node, double>> Node::getConnectionsIn() const {
 	return connectionsIn;
 }
 
 const std::vector<Node> Node::getConnectionsOut() const {
 	return connectionsOut;
+}
+
+const tuple<Node, double>& Node::getConnection(int index) {
+	return connectionsIn[index];
 }
 
 /*

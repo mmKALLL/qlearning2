@@ -1,4 +1,3 @@
-
 #include <vector>
 #include "network\NeuralNetwork.hpp"
 #include <tuple>
@@ -17,6 +16,10 @@ public:
 	const float getCarDistanceFromMiddle() const;
 	const float getCarSpeed() const;
 	const std::vector<float> getCarPosition() const;
+
+	const double getFitness(double x, double y, double time) const;
+	const double getFitness(Car& car, double time) const;
+	const std::vector<float> Controller::simulateStepForward(Car& car, float steer, float accelerate) const;
 
     void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
     

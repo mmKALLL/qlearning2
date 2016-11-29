@@ -5,5 +5,7 @@
 
 //SPOOKY SCARY SKELETON FOR A REAL CLASS
 class Learning { //???
-
+	friend class NeuralNetwork;
+public:
+	void adjustConnection(int layer, int index, NeuralNetwork& nn);
 };

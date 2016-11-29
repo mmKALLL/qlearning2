@@ -11,8 +11,10 @@ public:
 	Node(std::vector<Node>& inputs = std::vector<Node>(), int type = -1);
 
 	const double getValue() const;
+	const int getType() const;
 	const std::vector<tuple<Node, double>> getConnectionsIn() const;
 	const std::vector<Node> getConnectionsOut() const;
+	const tuple<Node, double>& getConnection(int index);
 
 	const double calcValue();
 	const double calcValueCascade();

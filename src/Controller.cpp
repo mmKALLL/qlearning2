@@ -32,3 +32,20 @@ void Controller::stepForward() {
 	// TODO: Esa: implement the main logic
 }
 
+//Ask physics where the car would end up with actions in param
+const std::vector<float> Controller::simulateStepForward(Car& car, float steer, float accelerate) const {
+	// TODO: Return vector such that:
+		// vector[0] vector[1] are the x,y coordinates
+		// vector[2] is the velocity
+		// vector[3] is the angle at which the car is facing maybe (???)
+}
+
+const double getFitness(double x, double y, double time) const {
+	// TODO: Jussi/Esa/Simo get car's fitness based on xy and time
+	// TODO Jussi: Do you need more parameters to determine 
+				// the distance a car has traveled on the track?
+	// double dist = track.getDistanceTraveled( params );
+}
+const double getFitness(Car& car, double time) const {
+	// TODO Jussi/Esa/Simo
+}

@@ -3,6 +3,7 @@
 #include <tuple>
 
 class NeuralNetwork {
+	friend class Learning;
 public:
 	NeuralNetwork();
 	const int getInputSize() const;
@@ -20,7 +21,9 @@ public:
 	void connectAll();
 	void calcAll();
 
-private:
-    std::vector<int> sizes; //size of each Node-vector
+protected:
 	std::vector<std::vector<Node>> nodes;
+	std::vector<int> sizes; //size of each Node-vector
+
+private:
 };

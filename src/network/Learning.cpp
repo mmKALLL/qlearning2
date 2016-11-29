@@ -11,3 +11,9 @@ void evolve(NeuralNetwork& nn) { //???
 void adjustWeights() {
 
 }
+
+//FIXME:
+void Learning::adjustConnection(int layer, int index, NeuralNetwork& nn) {
+	auto node = nn.nodes[layer][index];
+
+}

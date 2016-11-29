@@ -5,6 +5,13 @@ Controller::Controller() {
 	// TODO: Esa: Implement constructor
 }
 
+const Track getTrack() const {
+	return this.currentTrack;
+}
+const Car getCar() const {
+	return this.currentCar;
+}
+
 const std::vector<float> getSightVector(int size, int degrees) const {
 	// TODO: Olli/Jussi: Distances to walls in various directions, spanning a vision width of specified degrees.
 }
@@ -17,7 +24,7 @@ const float getCarSpeed() const {
 	// TODO: Olli/Jussi: Return the car's current speed.
 }
 
-const vector<float> getCarPosition() const {
+const std::vector<float> getCarPosition() const {
 	// TODO: Olli/Jussi: Return the car's current x/y position as two-element vector.
 }
 

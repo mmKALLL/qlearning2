@@ -28,6 +28,18 @@ const std::vector<double>& NeuralNetwork::getOutputs() const {
 	return values;
 }
 
+//Set new inputs, re-calculate and return outputs
+const std::vector<double>& NeuralNetwork::getOutputsFromInputs
+								(std::vector<double>& const values) {
+	if (values.size() != nodes[0].size())
+		throw "Function input size needs to match number of input nodes";
+	setInput(values);
+	calcAll();
+	return getOutputs();
+}
+
+
+
 //Set input for a certain node
 void NeuralNetwork::setInput(int& const index, double& const value) {
 	Node n = nodes[0][index];

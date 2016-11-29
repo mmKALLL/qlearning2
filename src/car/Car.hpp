@@ -1,4 +1,5 @@
 #include "include\Box2D\Box2D.h"
+#include <vector>
 
 class Car
 {
@@ -14,6 +15,9 @@ public:
 	b2Vec2 getForwardVelocity();
 	b2Vec2 getLateralVelocity();
 	void Car::updateFriction();
+	std::vector<float> updateRays();
+	std::vector<float> getDistances();
+
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;
@@ -31,6 +35,8 @@ private:
 	float maxReverseForce = 250;
 	float MaxTurningForce = 500;
 	float maxLateralImpulse = 7.5;
+	b2World* world = nullptr;
+	std::vector<float> distances;
 
 };
 

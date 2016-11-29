@@ -20,6 +20,6 @@ public:
 	void calcAll();
 
 private:
-    std::vector<int> sizes; //size of each Node-vector(?)
+    std::vector<int> sizes; //size of each Node-vector
 	std::vector<std::vector<Node>> nodes;
 };

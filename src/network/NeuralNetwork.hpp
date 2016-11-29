@@ -9,6 +9,8 @@ public:
 	const int getOutputSize() const;
 	const int getLayerSize(int& const layer) const;
 	const std::vector<double>& getOutputs() const;
+	const std::vector<double>& getOutputsFromInputs(std::vector<double>& const values);
+
 
 	void setInput(int& const index, double& const value);
 	void setInput(std::vector<double>& const values);

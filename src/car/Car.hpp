@@ -17,7 +17,8 @@ public:
 	void Car::updateFriction();
 	std::vector<float> updateRays();
 	std::vector<float> getDistances();
-
+	
+	
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;

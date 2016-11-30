@@ -3,6 +3,7 @@
 
 Controller::Controller() {
 	// TODO: Esa: Implement constructor
+	// TODO: Initialize GUI
 }
 
 const Track getTrack() const {

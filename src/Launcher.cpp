@@ -13,10 +13,11 @@ int main(int argc, char* argv[]) {
             for (int i = 1; i < argc; i++) {
                 if (argList[i] == "-t" || argList[i] == "--test") {
                     // return Tests::runTests(); FIXME: Launcher.cpp:15:28: error: ‘Tests’ has not been declared
+                    throw "No tests to be run; see code comments.";
                 }
                 if (argList[i] == "-h" || argList[i] == "--help") {
                     std::cout << "This is the help string." << std::endl
-                    << "Execute with -t or --test to run the tests. Execute without parameters to start up the GUI. Execute with -h or --help to view this text.";
+                    << "Execute with -t or --test to run the tests. Execute without parameters to start up the GUI. Execute with -h or --help to view this text." << std::endl;
                 }
             }
         }

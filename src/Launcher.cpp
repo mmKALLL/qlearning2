@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
             throw "Error in Launcher; illegal number of args.";
         } else if (argc == 1) {
             // Do things if user runs the program normally, like...
-            Controller mainController();
+            Controller controller; // Never create more than one controller!
         } else {
             // Otherwise parse possible flags.
             std::vector<std::string> argList(argv, argv + argc);

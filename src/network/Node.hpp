@@ -15,7 +15,7 @@ public:
 	int getType() const;
 	const std::vector<std::tuple<Node, double>> getConnectionsIn() const;
 	const std::vector<Node> getConnectionsOut() const;
-	const std::tuple<Node, double>& getConnection(int index);
+	const std::tuple<Node, double>& getConnection(int index) const;
 
 	double calcValue();
 	double calcValueCascade();
@@ -43,54 +43,5 @@ private:
 std::ostream& operator<< (std::ostream& stream, const Node& obj) {
 	return stream << obj.toString();
 }*/
-
-
-
-//-------ALL BELOW IS CURRENTLY DEAD CODE--------
-//
-///*
-//	Input layer nodes
-//*/
-//class InputNode : public Node {
-//public:
-//	InputNode() : Node() {}
-//
-//	//void setValue(double& const value);
-//	//const double calcValue();
-//	//const double calcValueCascade();
-//
-//	std::stringstream toString() const;
-//
-//private:
-//};
-///*
-//	Hidden layer nodes
-//*/
-//class HiddenNode : public Node {
-//public:
-//	HiddenNode(std::vector<Node>& inputs = std::vector<Node>())
-//		: Node(inputs) {}
-//
-//	std::stringstream toString() const;
-//
-//private:
-//
-//};
-//
-///*
-//	Output layer nodes
-//*/
-//class OutputNode : public Node {
-//public:
-//	OutputNode(std::vector<Node>& inputs = std::vector<Node>())
-//		: Node(inputs) {}
-//
-//	std::stringstream toString() const;
-//
-//private:
-//
-//};
-//
-////Laivap�ivitys :D//
 
 #endif

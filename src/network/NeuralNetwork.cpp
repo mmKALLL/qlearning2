@@ -6,23 +6,23 @@ NeuralNetwork::NeuralNetwork() {
 	std::vector<std::vector<Node>> nodes;
 }
 
-const int NeuralNetwork::getInputSize() const {
+int NeuralNetwork::getInputSize() const {
 	return sizes[0];
 }
 
-const int NeuralNetwork::getOutputSize() const {
+int NeuralNetwork::getOutputSize() const {
 	return sizes[ nodes.size()-1 ];
 }
 
 //Layer of hidden ie 0 or 1
-const int NeuralNetwork::getLayerSize(int& const layer) const {
+int NeuralNetwork::getLayerSize(int& const layer) const {
 	if (layer == 0) return sizes[1];
 	else if (layer == 1) return sizes[2];
 	else throw "Invalid hidden layer index, use 0 or 1";
 }
 
 //Returns vector of the values of output layer nodes
-const std::vector<double>& NeuralNetwork::getOutputs() const {
+std::vector<double>& NeuralNetwork::getOutputValues() const {
 	std::vector<double> values;
 	int hli = nodes.size() - 1; //hidden layer index
 	for (auto it = nodes[hli].begin(); it != nodes[hli].end(); it++) {
@@ -32,25 +32,25 @@ const std::vector<double>& NeuralNetwork::getOutputs() const {
 }
 
 //Set new inputs, re-calculate and return outputs
-const std::vector<double>& NeuralNetwork::getOutputsFromInputs
-								(std::vector<double>& const values) {
+std::vector<double>& NeuralNetwork::getOutputValuesFromInputs
+								(std::vector<double> values) {
 	if (values.size() != nodes[0].size())
 		throw "Function input size needs to match number of input nodes";
-	setInput(values);
+	setInputs(values);
 	calcAll();
-	return getOutputs();
+	return getOutputValues();
 }
 
 
 
 //Set input for a certain node
-void NeuralNetwork::setInput(int& const index, double& const value) {
+void NeuralNetwork::setInput(const int index, const double value) {
 	Node n = nodes[0][index];
 	n.setValue(value);
 }
 
 //Set the contents of the vector as the values of input nodes. Should stop to avoid out of bounds
-void NeuralNetwork::setInput(std::vector<double>& const values) {
+void NeuralNetwork::setInputs(std::vector<double>& values) {
 	int size = nodes[0].size();
 	if (values.size >= size) { throw "NN input vector larger than amount of input nodes"; }
 	for (int i = 0; i < size; i++) {
@@ -59,13 +59,13 @@ void NeuralNetwork::setInput(std::vector<double>& const values) {
 }
 
 //Add a node to the NN
-void NeuralNetwork::addNode(Node& const node, int& const type) {
+void NeuralNetwork::addNode(const Node& node, const int type) {
 	nodes[type].push_back(node);
 	sizes[type] = nodes[type].size(); //update size
 }
 
 //Add a vector of nodes to the NN
-void NeuralNetwork::addNode(std::vector<Node>& const nodevector, int& const type) {
+void NeuralNetwork::addNodes(std::vector<Node>& nodevector, const int type) {
 	nodes[type] = nodevector;
 	sizes[type] = nodes[type].size(); //update size
 }

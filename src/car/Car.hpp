@@ -1,13 +1,15 @@
-#include "include/Box2D/Box2D.h"
+#ifndef QLEARNING_CAR_H
+#define QLEARNING_CAR_H
+#include <Box2D/Box2D.h>
+#include "Physics.hpp"
 #include <vector>
-#include "../network/NeuralNetwork.hpp"
+#include "../network/NeuralNetwork.hpp" // TODO: Shouldn't this go through the Controller?
 
 class Car
 {
-
 public:
 	// Constructors
-	Car(b2World * world, const b2Vec2& position, const b2Vec2& dimensions);
+	Car();
 	~Car();
 
 	// Function definitions
@@ -15,11 +17,9 @@ public:
 	void turn(int direction);
 	b2Vec2 getForwardVelocity();
 	b2Vec2 getLateralVelocity();
-	void Car::updateFriction();
+	void updateFriction();
 	std::vector<float> updateRays();
 	std::vector<float> getDistances();
-	
-	
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;
@@ -50,3 +50,4 @@ public:
 	~Tire();
 };
 
+#endif

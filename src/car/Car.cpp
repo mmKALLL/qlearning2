@@ -22,7 +22,8 @@ public:
 
 Car::Car()
 {
-	this->world = new Physics();
+	//physics = new Physics(); TODO: CHECK THIS
+	world = physics.getWorld();
 	//Create definition for car body
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;

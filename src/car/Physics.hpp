@@ -1,18 +1,17 @@
 #ifndef QLEARNING_PHYSICS_H
 #define QLEARNING_PHYSICS_H
-#include "include/Box2D/Box2D.h"
+#include <Box2D/Box2D.h>
 #include <vector>
-#include "Car.hpp"
 
 class Physics
 {
 
 public:
 	Physics();
-	~Physics();
-
+	b2World* getWorld() const;
+	
 private:
-	std::unique_ptr<b2World> world;
+	b2World* world;
 
 	// Simulation runs at 60 fps
 	float32 timeStep = 1 / 60.0;

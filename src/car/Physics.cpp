@@ -4,11 +4,10 @@ Physics::Physics()
 {
 	// No need for gravity in top down physics
 	b2Vec2 gravity(0.0f, 0.0f);
-	world = std::make_unique<b2World>(gravity);
+	world = new b2World(gravity);
 }
 
-
-Physics::~Physics()
+b2World* Physics::getWorld() const
 {
-	delete &world;
+	return world;
 }

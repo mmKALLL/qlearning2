@@ -37,8 +37,10 @@ private:
 	float maxReverseForce = 250;
 	float MaxTurningForce = 500;
 	float maxLateralImpulse = 7.5;
-	b2World* world = nullptr;
 	std::vector<float> distances;
+	
+	b2World* world;
+	Physics physics;
 
 	NeuralNetwork network;
 };

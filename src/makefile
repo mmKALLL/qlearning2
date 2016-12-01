@@ -17,4 +17,4 @@ Track.o: car/Track.hpp car/Track.cpp
 
 .PHONY: clean
 clean:
-	rm *.o *~ learn
+	rm -f *.o *~ learn

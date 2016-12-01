@@ -8,8 +8,8 @@ ehthumbs.db
 Thumbs.db
 
 # Maybe C++ builds?
-#.o
-#.exe
+.o
+.exe
 
 # Others
 .cache

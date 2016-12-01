@@ -11,8 +11,8 @@ public:
 	int getInputSize() const;
 	int getOutputSize() const;
 	int getLayerSize(int layer) const;
-	std::vector<float>& getOutputValues() const;
-	std::vector<float>& getOutputValuesFromInputs(std::vector<float> values);
+	std::vector<float> getOutputValues() const;
+	std::vector<float> getOutputValuesFromInputs(std::vector<float> values);
 
 	void setInput(const int index, const float value);
 	void setInputs(std::vector<float>& values);
@@ -24,7 +24,7 @@ public:
 
 protected:
 	std::vector<std::vector<Node>> nodes;
-	std::vector<int> sizes; //size of each Node-vector
+	std::vector<unsigned int> sizes; //size of each Node-vector
 
 private:
 	

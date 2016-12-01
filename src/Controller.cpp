@@ -53,9 +53,10 @@ float Controller::getFitness(Car& car, double time) const {
 //Ask physics where the car would end up with actions in param
 std::vector<float> Controller::simulateStepForward(Car& car, float steer, float accelerate) const {
 	// TODO: Return vector such that:
-	// vector[0] vector[1] are the x,y coordinates
-	// vector[2] is the velocity
-	// vector[3] is the angle at which the car is facing maybe (???)
+	// vector[0] is 1 if the car has hit a wall, 0 otherwise
+	// vector[1] vector[2] are the x,y coordinates ???
+	// vector[3] is the velocity
+	// vector[4] is the angle at which the car is facing maybe (???)
 }
 
 void Controller::stepForward() {

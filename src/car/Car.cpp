@@ -20,22 +20,23 @@ public:
 };
 
 
-Car::Car(b2World * world, const b2Vec2& position, const b2Vec2& dimensions)
+Car::Car()
 {
-	this->world = world;
+	//physics = new Physics(); TODO: CHECK THIS
+	world = physics.getWorld();
 	//Create definition for car body
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;
 
 	//Set the initial position and angle and then create the body
-	carBodyDef.position.Set(position.x, position.y);
+	carBodyDef.position.Set(0, 0);
 	carBodyDef.angle = 0; //set the starting angle
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->SetAngularDamping(3);
 
 	b2PolygonShape carShape;
-	// Car is 4 meters long and 1.5 meter wide
-	carShape.SetAsBox(2.0f, 0.75f);
+	// Car is somewhat long and a bit wide
+	carShape.SetAsBox(2.5f, 1.5f);
 
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
@@ -58,7 +59,7 @@ Car::~Car()
 
 void Car::accelerate(int direction)
 {
-	// Get current forward speed and set force 
+	// Get current forward speed and set force
 	b2Vec2 currentForwardNormal = getForwardVelocity();
 	force = 0;
 
@@ -82,8 +83,8 @@ void Car::accelerate(int direction)
 	else if (desiredSpeed < currentSpeed) {
 		force = -maxReverseForce;
 	}
-	else { 
-		return; 
+	else {
+		return;
 	}
 
 	// Apply the force

@@ -1,7 +1,6 @@
 #include "CarType.hpp"
 
 
-
 CarType::CarType()
 {
 }

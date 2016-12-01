@@ -1,3 +1,7 @@
-class CarType {
-    
+class CarType
+{
+public:
+	CarType();
+	~CarType();
 };
+

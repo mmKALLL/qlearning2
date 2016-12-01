@@ -7,6 +7,9 @@
 #include "car/Car.hpp"
 #include "car/Track.hpp"
 
+const int numberOfVisionLines = 5;
+const int fieldOfView = 90; // TODO: FoV slider
+
 class Controller {
 public:
 	Controller();
@@ -17,7 +20,7 @@ public:
 
 	const std::vector<float> getSightVector(int size, int degrees) const;
 	float getCarDistanceFromMiddle() const;
-	float getCarSpeed() const;
+	float getCarVelocity() const;
 	const std::vector<float> getCarPosition() const;
 
 	const std::vector<double> getCarAction();

@@ -1,5 +1,7 @@
-<<<<<<< HEAD
-#include "include/Box2D/Box2D.h"
+#ifndef QLEARNING_CAR_H
+#define QLEARNING_CAR_H
+#include <Box2D/Box2D.h>
+#include "Physics.hpp"
 #include <vector>
 
 class Car
@@ -7,7 +9,7 @@ class Car
 
 public:
 	// Constructors
-	Car(b2World * world, const b2Vec2& position, const b2Vec2& dimensions);
+	Car();
 	~Car();
 
 	// Function definitions
@@ -15,19 +17,15 @@ public:
 	void turn(int direction);
 	b2Vec2 getForwardVelocity();
 	b2Vec2 getLateralVelocity();
-	void Car::updateFriction();
+	void updateFriction();
 	std::vector<float> updateRays();
 	std::vector<float> getDistances();
-	
-	
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;
 	float currentSpeed = 0;
 	float force = 0;
 	
-	
-
 private:
 	// Variables for the body amd maximum speeds
 	b2Body* carBody = nullptr;
@@ -49,3 +47,4 @@ public:
 	~Tire();
 };
 
+#endif

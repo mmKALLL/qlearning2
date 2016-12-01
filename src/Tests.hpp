@@ -4,9 +4,7 @@
 #include "network/Node.hpp"
 
 int runTests();
-
 int runNetworkTest();
-
 int runPhysicsTest();
 
 #endif

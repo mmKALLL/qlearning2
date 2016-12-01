@@ -34,18 +34,18 @@ float Controller::getCarDistanceTraveled(Car& car) const {
 }
 
 // Ask neural network to provide a set of actions.
-std::vector<double> Controller::getCarAction(Car& car, NeuralNetwork& nn) {
+std::vector<float> Controller::getCarAction(Car& car, NeuralNetwork& nn) {
 	std::vector<float> params = getSightVector(car, numberOfVisionLines, fieldOfView); // TODO: Use some external constants?
 	params.push_back(getCarVelocity(car));
 	return currentCar.getNetwork().getOutputValuesFromInputs(params);
 }
 
-double Controller::getFitness(Car& car) const {
+float Controller::getFitness(Car& car) const {
 	// TODO Jussi/Esa/Simo
 	return getCarVelocity(car);
 }
 
-double Controller::getFitness(Car& car, double time) const {
+float Controller::getFitness(Car& car, double time) const {
 	// TODO Jussi/Esa/Simo
 	return getCarDistanceTraveled(car) / time;
 }

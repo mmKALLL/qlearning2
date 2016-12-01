@@ -30,9 +30,9 @@ public:
 	float getCarDistanceTraveled(Car& car) const;
 
 	//---Car actions and NN interraction
-	std::vector<double> getCarAction(Car& car, NeuralNetwork& nn);
-	double getFitness(Car& car) const;
-	double getFitness(Car& car, double time) const;
+	std::vector<float> getCarAction(Car& car, NeuralNetwork& nn);
+	float getFitness(Car& car) const;
+	float getFitness(Car& car, double time) const;
 
 	//---Controller actions
 	std::vector<float> simulateStepForward(Car& car, float steer, float accelerate) const;

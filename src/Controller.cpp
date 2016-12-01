@@ -5,54 +5,58 @@ Controller::Controller() {
 	// TODO: Esa: Does the constructor need any functionality?
 }
 
-const Track& Controller::getTrack() const {
-	return currentTrack;
+const Track Controller::getTrack() const {
+	return currentTrack; //this.currentTrack must have a class type
 }
-const Car& Controller::getCar() const {
-	return currentCar;
+const Car Controller::getCar() const {
+	return currentCar; //this.currentCar must have a class type
 }
 
-const std::vector<float> getSightVector(int amount, int degrees) {
+const std::vector<float> Controller::getSightVector(Car& car, int amount, int degrees) const {
 	// TODO: Olli/Jussi: Distances to walls in various directions, spanning a vision width of specified degrees.
 }
 
-const float getCarDistanceFromMiddle() {
-	// TODO: Jussi: Implement function to get car middle point's distance from center of track
-}
-
-const float getCarSpeed() {
-	// TODO: Olli/Jussi: Return the car's current speed.
-}
-
-const std::vector<float> getCarPosition() {
+const std::vector<float> Controller::getCarPosition() const {
 	// TODO: Olli/Jussi: Return the car's current x/y position as two-element vector.
 }
 
+float Controller::getCarDistanceFromMiddle(Car& car) const {
+	// TODO: Jussi: Implement function to get car middle point's distance from center of track
+}
+
+float Controller::getCarVelocity(Car& car) const {
+	// TODO: Olli/Jussi: Return the car's current speed.
+}
+
+float Controller::getCarDistanceTraveled(Car& car) const {
+	// TODO Olli/Jussi Return how far the car has gone on the track
+	//				   ie how many checkpoints it has reached
+}
+
 // Ask neural network to provide a set of actions.
-const std::vector<double> getCarAction() {
-	std::vector<double> params;
-	//params.push_back(getSightVector(5, 90)); // TODO: Use some external constants?
-	params.push_back(getCarSpeed());
-	//return currentCar.network.getOutputsFromInputs(params); // TODO: currentCar does not exist yet
-	return std::vector<double>();
+std::vector<float> Controller::getCarAction(Car& car, NeuralNetwork& nn) {
+	std::vector<float> params = getSightVector(car, numberOfVisionLines, fieldOfView); // TODO: Use some external constants?
+	params.push_back(getCarVelocity(car));
+	return currentCar.getNetwork().getOutputValuesFromInputs(params);
+}
+
+float Controller::getFitness(Car& car) const {
+	// TODO Jussi/Esa/Simo
+	return getCarVelocity(car);
+}
+
+float Controller::getFitness(Car& car, double time) const {
+	// TODO Jussi/Esa/Simo
+	return getCarDistanceTraveled(car) / time;
 }
 
 //Ask physics where the car would end up with actions in param
-const std::vector<float> Controller::simulateStepForward(Car& car, float steer, float accelerate) const {
+std::vector<float> Controller::simulateStepForward(Car& car, float steer, float accelerate) const {
 	// TODO: Return vector such that:
-		// vector[0] vector[1] are the x,y coordinates
-		// vector[2] is the velocity
-		// vector[3] is the angle at which the car is facing maybe (???)
-}
-
-const double getFitness(double x, double y, double time) {
-	// TODO: Jussi/Esa/Simo get car's fitness based on xy and time
-	// TODO Jussi: Do you need more parameters to determine
-				// the distance a car has traveled on the track?
-	// double dist = track.getDistanceTraveled( params );
-}
-const double getFitness(Car& car, double time) {
-	// TODO Jussi/Esa/Simo
+	// vector[0] is 1 if the car has hit a wall, 0 otherwise
+	// vector[1] vector[2] are the x,y coordinates ???
+	// vector[3] is the velocity
+	// vector[4] is the angle at which the car is facing maybe (???)
 }
 
 void Controller::stepForward() {

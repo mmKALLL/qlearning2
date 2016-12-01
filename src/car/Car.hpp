@@ -3,10 +3,10 @@
 #include <Box2D/Box2D.h>
 #include "Physics.hpp"
 #include <vector>
+#include "../network/NeuralNetwork.hpp" // TODO: Shouldn't this go through the Controller?
 
 class Car
 {
-
 public:
 	// Constructors
 	Car();
@@ -26,6 +26,8 @@ public:
 	float currentSpeed = 0;
 	float force = 0;
 	
+	NeuralNetwork& getNetwork() { return network; }
+
 private:
 	// Variables for the body amd maximum speeds
 	b2Body* carBody = nullptr;
@@ -38,6 +40,7 @@ private:
 	b2World* world = nullptr;
 	std::vector<float> distances;
 
+	NeuralNetwork network;
 };
 
 class Tire

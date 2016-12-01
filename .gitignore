@@ -7,14 +7,14 @@
 ehthumbs.db
 Thumbs.db
 
-# Maybe C++ builds?
-#.o
-#.exe
+# C++ objects
+.o
 
 # Others
 .cache
 /bin/
 /Skele Aihe/
+.cproject
 
 # VS
 /Skele Aihe/
@@ -26,4 +26,3 @@ Thumbs.db
 .vs
 .gitattributes
 /Properties/
-

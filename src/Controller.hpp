@@ -13,8 +13,8 @@ const int fieldOfView = 90; // TODO: FoV slider
 class Controller {
 public:
 	Controller();
-    const Track getTrack() const;
-    const Car getCar() const;
+    const Track& getTrack() const;
+    const Car& getCar() const;
 
 	std::vector<double>& getActionForCar(Car& car, NeuralNetwork& nn) const;
 

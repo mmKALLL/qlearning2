@@ -2,8 +2,7 @@
 #include <vector>
 
 Controller::Controller() {
-	// TODO: Esa: Implement constructor
-	// TODO: Initialize GUI
+	// TODO: Esa: Does the constructor need any functionality?
 }
 
 const Track Controller::getTrack() const {
@@ -43,6 +42,7 @@ double Controller::getFitness(double x, double y, double time) const {
 				// the distance a car has traveled on the track?
 	// double dist = track.getDistanceTraveled( params );
 }
+
 double Controller::getFitness(Car& car, double time) const {
 	// TODO Jussi/Esa/Simo
 }

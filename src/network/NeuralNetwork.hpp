@@ -10,7 +10,7 @@ public:
 	NeuralNetwork();
 	int getInputSize() const;
 	int getOutputSize() const;
-	int getLayerSize(int& layer) const;
+	int getLayerSize(int layer) const;
 	std::vector<float>& getOutputValues() const;
 	std::vector<float>& getOutputValuesFromInputs(std::vector<float> values);
 

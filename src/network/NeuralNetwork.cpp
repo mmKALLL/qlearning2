@@ -15,7 +15,7 @@ int NeuralNetwork::getOutputSize() const {
 }
 
 //Layer of hidden ie 0 or 1
-int NeuralNetwork::getLayerSize(int& const layer) const {
+int NeuralNetwork::getLayerSize(int layer) const {
 	if (layer == 0) return sizes[1];
 	else if (layer == 1) return sizes[2];
 	else throw "Invalid hidden layer index, use 0 or 1";
@@ -52,7 +52,7 @@ void NeuralNetwork::setInput(const int index, const float value) {
 //Set the contents of the vector as the values of input nodes. Should stop to avoid out of bounds
 void NeuralNetwork::setInputs(std::vector<float>& values) {
 	int size = nodes[0].size();
-	if (values.size >= size) { throw "NN input vector larger than amount of input nodes"; }
+	if (values.size() >= size) { throw "NN input vector larger than amount of input nodes"; }
 	for (int i = 0; i < size; i++) {
 		nodes[0][i].setValue(values[i]);
 	}

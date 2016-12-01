@@ -11,27 +11,27 @@ class Node {
 public:
 	Node(std::vector<Node> inputs = std::vector<Node>(), int type = -1);
 
-	double getValue() const;
+	float getValue() const;
 	int getType() const;
-	const std::vector<std::tuple<Node, double>> getConnectionsIn() const;
+	const std::vector<std::tuple<Node, float>> getConnectionsIn() const;
 	const std::vector<Node> getConnectionsOut() const;
-	const std::tuple<Node, double>& getConnection(int index) const;
+	const std::tuple<Node, float>& getConnection(int index) const;
 
-	double calcValue();
-	double calcValueCascade();
+	float calcValue();
+	float calcValueCascade();
 
-	void addInput(const Node& another, const double& weight = 1);
+	void addInput(const Node& another, const float& weight = 1);
 	void addOutput(const Node& another);
 	
-	void setValue(const double value);
+	void setValue(const float value);
 	void setWeight(const int index, const int weight);
 	
 
 	std::stringstream toString() const;
-	double value;
+	float value;
 
 protected:
-	std::vector<std::tuple<Node, double>> connectionsIn;
+	std::vector<std::tuple<Node, float>> connectionsIn;
 	std::vector<Node> connectionsOut;
 
 private:

@@ -22,8 +22,8 @@ int NeuralNetwork::getLayerSize(int& const layer) const {
 }
 
 //Returns vector of the values of output layer nodes
-std::vector<double>& NeuralNetwork::getOutputValues() const {
-	std::vector<double> values;
+std::vector<float>& NeuralNetwork::getOutputValues() const {
+	std::vector<float> values;
 	int hli = nodes.size() - 1; //hidden layer index
 	for (auto it = nodes[hli].begin(); it != nodes[hli].end(); it++) {
 		values.push_back(it->getValue());
@@ -32,8 +32,8 @@ std::vector<double>& NeuralNetwork::getOutputValues() const {
 }
 
 //Set new inputs, re-calculate and return outputs
-std::vector<double>& NeuralNetwork::getOutputValuesFromInputs
-								(std::vector<double> values) {
+std::vector<float>& NeuralNetwork::getOutputValuesFromInputs
+								(std::vector<float> values) {
 	if (values.size() != nodes[0].size())
 		throw "Function input size needs to match number of input nodes";
 	setInputs(values);
@@ -44,13 +44,13 @@ std::vector<double>& NeuralNetwork::getOutputValuesFromInputs
 
 
 //Set input for a certain node
-void NeuralNetwork::setInput(const int index, const double value) {
+void NeuralNetwork::setInput(const int index, const float value) {
 	Node n = nodes[0][index];
 	n.setValue(value);
 }
 
 //Set the contents of the vector as the values of input nodes. Should stop to avoid out of bounds
-void NeuralNetwork::setInputs(std::vector<double>& values) {
+void NeuralNetwork::setInputs(std::vector<float>& values) {
 	int size = nodes[0].size();
 	if (values.size >= size) { throw "NN input vector larger than amount of input nodes"; }
 	for (int i = 0; i < size; i++) {

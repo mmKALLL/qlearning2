@@ -1,6 +1,6 @@
-<<<<<<< HEAD
 #include "include/Box2D/Box2D.h"
 #include <vector>
+#include "../network/NeuralNetwork.hpp"
 
 class Car
 {
@@ -26,7 +26,7 @@ public:
 	float currentSpeed = 0;
 	float force = 0;
 	
-	
+	NeuralNetwork& getNetwork() { return network; }
 
 private:
 	// Variables for the body amd maximum speeds
@@ -40,6 +40,7 @@ private:
 	b2World* world = nullptr;
 	std::vector<float> distances;
 
+	NeuralNetwork network;
 };
 
 class Tire

@@ -11,11 +11,11 @@ public:
 	int getInputSize() const;
 	int getOutputSize() const;
 	int getLayerSize(int& layer) const;
-	std::vector<double>& getOutputValues() const;
-	std::vector<double>& getOutputValuesFromInputs(std::vector<double> values);
+	std::vector<float>& getOutputValues() const;
+	std::vector<float>& getOutputValuesFromInputs(std::vector<float> values);
 
-	void setInput(const int index, const double value);
-	void setInputs(std::vector<double>& values);
+	void setInput(const int index, const float value);
+	void setInputs(std::vector<float>& values);
 	void addNode(const Node& node, const int type);
 	void addNodes(std::vector<Node>& nodes, const int type);
 

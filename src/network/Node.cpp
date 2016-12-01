@@ -2,7 +2,7 @@
 #include <vector>
 
 Node::Node(std::vector<Node> inputs, int t) {
-	std::vector<std::tuple<Node, double>> connections;
+	std::vector<std::tuple<Node, float>> connections;
 	for (auto it = inputs.begin(); it != inputs.end(); it++) {
 		//auto tmp = std::make_tuple(it, 1);
 		connections.push_back(std::make_tuple(*it, 1.0));
@@ -13,7 +13,7 @@ Node::Node(std::vector<Node> inputs, int t) {
 	//isUpdated = false;
 }
 
-double Node::getValue() const {
+float Node::getValue() const {
 	return value;
 }
 
@@ -21,7 +21,7 @@ int Node::getType() const {
 	return type;
 }
 
-const std::vector<std::tuple<Node, double>> Node::getConnectionsIn() const {
+const std::vector<std::tuple<Node, float>> Node::getConnectionsIn() const {
 	return connectionsIn;
 }
 
@@ -29,7 +29,7 @@ const std::vector<Node> Node::getConnectionsOut() const {
 	return connectionsOut;
 }
 
-const std::tuple<Node, double>& Node::getConnection(int index) const {
+const std::tuple<Node, float>& Node::getConnection(int index) const {
 	return connectionsIn[index];
 }
 
@@ -37,8 +37,8 @@ const std::tuple<Node, double>& Node::getConnection(int index) const {
 	Non-recursively calculate the value of this node 
 	without caring if inputs are old.
 */
-double Node::calcValue() {
-	double val = 0;
+float Node::calcValue() {
+	float val = 0;
 	for (auto it = connectionsIn.begin(); it != connectionsIn.end(); it++) {
 		val += std::get<0>(*it).getValue() * std::get<1>(*it);
 	}
@@ -47,8 +47,8 @@ double Node::calcValue() {
 }
 
 //Recursively calculate the value of this node by calculating previous nodes
-double Node::calcValueCascade() {
-	double val = 0;
+float Node::calcValueCascade() {
+	float val = 0;
 	for (auto it = connectionsIn.begin(); it != connectionsIn.end(); it++) {
 		val += std::get<0>(*it).calcValueCascade() * std::get<1>(*it);
 	}
@@ -56,7 +56,7 @@ double Node::calcValueCascade() {
 	return val;
 }
 
-void Node::addInput(const Node& another, const double& weight) {
+void Node::addInput(const Node& another, const float& weight) {
 	connectionsIn.push_back(std::make_tuple(another, weight));
 	//isUpdated = false;
 }
@@ -66,7 +66,7 @@ void Node::addOutput(const Node& another) {
 	//isUpdated = false;
 }
 
-void Node::setValue(const double val) {
+void Node::setValue(const float val) {
 	value = val;
 }
 

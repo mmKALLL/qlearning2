@@ -20,7 +20,7 @@ public:
 	b2Body* getCarBody() const;
 	b2Vec2 getForwardVelocity() const;
 	b2Vec2 getLateralVelocity() const;
-	
+	void updateDistances();
 	std::vector<float> updateRays();
 	std::vector<float> getDistances() const;
 	

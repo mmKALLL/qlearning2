@@ -3,12 +3,14 @@
 #include <Box2D/Box2D.h>
 #include <vector>
 
+
 class Physics
 {
 
 public:
 	Physics();
 	b2World* getWorld() const;
+	std::vector<float> Physics::updateRays(b2Body& carBody);
 
 private:
 	b2World* world;

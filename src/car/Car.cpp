@@ -197,3 +197,8 @@ std::vector<float> Car::getPosition() const
 	position.push_back(pos.y);
 	return position;
 }
+
+float Car::getVelocity() const
+{
+	return getForwardVelocity().Length();
+}

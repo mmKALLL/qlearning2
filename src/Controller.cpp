@@ -17,6 +17,7 @@ const std::vector<float> Controller::getSightVector(Car& car, int amount, int de
 }
 
 const std::vector<float> Controller::getCarPosition() const {
+	// x and y-coordinates in that order
 	return currentCar.getPosition();
 }
 
@@ -26,6 +27,7 @@ float Controller::getCarDistanceFromMiddle(Car& car) const {
 
 float Controller::getCarVelocity(Car& car) const {
 	// TODO: Olli/Jussi: Return the car's current speed.
+	return currentCar.getVelocity();
 }
 
 float Controller::getCarDistanceTraveled(Car& car) const {

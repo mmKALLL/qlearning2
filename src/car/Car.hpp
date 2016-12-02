@@ -18,6 +18,7 @@ public:
 	b2Vec2 getForwardVelocity() const;
 	b2Vec2 getLateralVelocity() const;
 	std::vector<float> getPosition() const;
+	float getVelocity() const;
 	void updateFriction();
 	std::vector<float> updateRays();
 	std::vector<float> getDistances();

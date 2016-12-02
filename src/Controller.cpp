@@ -12,8 +12,9 @@ const Car Controller::getCar() const {
 	return currentCar; //this.currentCar must have a class type
 }
 
-const std::vector<float> Controller::getSightVector(Car& car, int amount, int degrees) const {
+const std::vector<float> Controller::getSightVector(int amount, int degrees) const {
 	// TODO: Olli/Jussi: Distances to walls in various directions, spanning a vision width of specified degrees.
+	return currentCar.getDistances();
 }
 
 const std::vector<float> Controller::getCarPosition() const {
@@ -21,35 +22,37 @@ const std::vector<float> Controller::getCarPosition() const {
 	return currentCar.getPosition();
 }
 
-float Controller::getCarDistanceFromMiddle(Car& car) const {
+float Controller::getCarDistanceFromMiddle() const {
 	// TODO: Jussi: Implement function to get car middle point's distance from center of track
+	return 0.0f;
 }
 
-float Controller::getCarVelocity(Car& car) const {
+float Controller::getCarVelocity() const {
 	// TODO: Olli/Jussi: Return the car's current speed.
 	return currentCar.getVelocity();
 }
 
-float Controller::getCarDistanceTraveled(Car& car) const {
+float Controller::getCarDistanceTraveled() const {
 	// TODO Olli/Jussi Return how far the car has gone on the track
 	//				   ie how many checkpoints it has reached
+	return 0.0f;
 }
 
 // Ask neural network to provide a set of actions.
-std::vector<float> Controller::getCarAction(Car& car, NeuralNetwork& nn) {
-	std::vector<float> params = getSightVector(car, numberOfVisionLines, fieldOfView); // TODO: Use some external constants?
-	params.push_back(getCarVelocity(car));
+std::vector<float> Controller::getCarAction(NeuralNetwork& nn) {
+	std::vector<float> params = getSightVector(numberOfVisionLines, fieldOfView); // TODO: Use some external constants?
+	params.push_back(getCarVelocity());
 	return currentCar.getNetwork().getOutputValuesFromInputs(params);
 }
 
-float Controller::getFitness(Car& car) const {
+float Controller::getFitness() const {
 	// TODO Jussi/Esa/Simo
-	return getCarVelocity(car);
+	return getCarVelocity();
 }
 
-float Controller::getFitness(Car& car, double time) const {
+float Controller::getFitness(double time) const {
 	// TODO Jussi/Esa/Simo
-	return getCarDistanceTraveled(car) / time;
+	return getCarDistanceTraveled() / time;
 }
 
 //Ask physics where the car would end up with actions in param
@@ -59,6 +62,8 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 	// vector[1] vector[2] are the x,y coordinates ???
 	// vector[3] is the velocity
 	// vector[4] is the angle at which the car is facing maybe (???)
+	std::vector<float> asd;
+	return asd;
 }
 
 void Controller::stepForward() {

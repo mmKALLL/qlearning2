@@ -9,8 +9,7 @@ class Physics
 public:
 	Physics();
 	b2World* getWorld() const;
-	
-	
+
 private:
 	b2World* world;
 

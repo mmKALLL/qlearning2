@@ -57,6 +57,18 @@ Car::~Car()
 	
 }
 
+b2Vec2 Car::getForwardVelocity() const {
+	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
+	return b2Dot(currentForwardNormal, carBody->GetLinearVelocity()) * currentForwardNormal;
+}
+
+b2Vec2 Car::getLateralVelocity() const {
+	b2Vec2 currentRightNormal = carBody->GetWorldVector(b2Vec2(0, 1));
+	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
+}
+
+
+
 void Car::accelerate(int direction)
 {
 	// Get current forward speed and set force
@@ -108,34 +120,6 @@ void Car::turn(int direction)
 	}
 }
 
-b2Vec2 Car::getForwardVelocity() const {
-	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
-	return b2Dot(currentForwardNormal, carBody->GetLinearVelocity()) * currentForwardNormal;
-}
-
-b2Vec2 Car::getLateralVelocity() const {
-	b2Vec2 currentRightNormal = carBody->GetWorldVector(b2Vec2(0, 1));
-	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
-}
-
-
-
-void Car::updateFriction() {
-	//Remove the lateral velocity by applying impulse thats the opposite for the lateral velocity
-	b2Vec2 impulse = carBody->GetMass() * -getLateralVelocity();
-	if (impulse.Length() > maxLateralImpulse)
-		impulse *= maxLateralImpulse / impulse.Length();
-	carBody->ApplyLinearImpulse(impulse, carBody->GetWorldCenter(), true);
-
-	//Stop the car from rotating infinitely
-	carBody->ApplyAngularImpulse(0.1f * carBody->GetInertia() * -carBody->GetAngularVelocity(), true);
-
-	//Add drag, so the car will stop after a while
-	b2Vec2 currentForwardNormal = getForwardVelocity();
-	float currentForwardSpeed = currentForwardNormal.Normalize();
-	float dragForceMagnitude = -2 * currentForwardSpeed;
-	carBody->ApplyForce(dragForceMagnitude * currentForwardNormal, carBody->GetWorldCenter(), true);
-}
 
 std::vector<float> Car::updateRays() {
 
@@ -186,8 +170,12 @@ std::vector<float> Car::updateRays() {
 }
 
 // function for returning just the distances to walls
-std::vector<float> Car::getDistances() {
+std::vector<float> Car::getDistances() const {
 	return distances;
+}
+NeuralNetwork & Car::getNetwork()
+{
+	return network;
 }
 std::vector<float> Car::getPosition() const
 {
@@ -201,4 +189,9 @@ std::vector<float> Car::getPosition() const
 float Car::getVelocity() const
 {
 	return getForwardVelocity().Length();
+}
+
+b2Body * Car::getCarBody() const
+{
+	return carBody;
 }

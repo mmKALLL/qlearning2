@@ -23,16 +23,16 @@ public:
 	//std::vector<double>& getActionForCar(Car& car, NeuralNetwork& nn) const;
 
 	//---Getters for car
-	const std::vector<float> getSightVector(Car& car, int size, int degrees) const;
+	const std::vector<float> getSightVector(int size, int degrees) const;
 	const std::vector<float> getCarPosition() const;
-	float getCarDistanceFromMiddle(Car& car) const;
-	float getCarVelocity(Car& car) const;
-	float getCarDistanceTraveled(Car& car) const;
+	float getCarDistanceFromMiddle() const;
+	float getCarVelocity() const;
+	float getCarDistanceTraveled() const;
 
 	//---Car actions and NN interraction
-	std::vector<float> getCarAction(Car& car, NeuralNetwork& nn);
-	float getFitness(Car& car) const;
-	float getFitness(Car& car, double time) const;
+	std::vector<float> getCarAction(NeuralNetwork& nn);
+	float getFitness() const;
+	float getFitness(double time) const;
 
 	//---Controller actions
 	std::vector<float> simulateStepForward(Car& car, float steer, float accelerate) const;

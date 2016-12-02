@@ -15,20 +15,21 @@ public:
 	// Function definitions
 	void accelerate(int direction);
 	void turn(int direction);
-	b2Vec2 getForwardVelocity() const;
-	b2Vec2 getLateralVelocity() const;
 	std::vector<float> getPosition() const;
 	float getVelocity() const;
-	void updateFriction();
+	b2Body* getCarBody() const;
+	b2Vec2 getForwardVelocity() const;
+	b2Vec2 getLateralVelocity() const;
+	
 	std::vector<float> updateRays();
-	std::vector<float> getDistances();
+	std::vector<float> getDistances() const;
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;
 	float currentSpeed = 0;
 	float force = 0;
 	
-	NeuralNetwork& getNetwork() { return network; }
+	NeuralNetwork& getNetwork();
 
 private:
 	// Variables for the body amd maximum speeds

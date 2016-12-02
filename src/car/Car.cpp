@@ -40,15 +40,7 @@ Car::~Car()
 	
 }
 
-b2Vec2 Car::getForwardVelocity() const {
-	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
-	return b2Dot(currentForwardNormal, carBody->GetLinearVelocity()) * currentForwardNormal;
-}
 
-b2Vec2 Car::getLateralVelocity() const {
-	b2Vec2 currentRightNormal = carBody->GetWorldVector(b2Vec2(0, 1));
-	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
-}
 
 void Car::updateDistances()
 {
@@ -56,13 +48,10 @@ void Car::updateDistances()
 }
 
 
-
-
-
 void Car::accelerate(int direction)
 {
 	// Get current forward speed and set force
-	b2Vec2 currentForwardNormal = getForwardVelocity();
+	b2Vec2 currentForwardNormal = physics.getForwardVelocity(carBody);
 	force = 0;
 
 	// Set desired speed in relation to if we are reversing or going forward
@@ -76,7 +65,7 @@ void Car::accelerate(int direction)
 
 	currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
 
-	currentSpeed = b2Dot(getForwardVelocity(), currentForwardNormal);
+	currentSpeed = b2Dot(physics.getForwardVelocity(carBody), currentForwardNormal);
 
 	//Depending on current speed the amount of force is determined
 	if (desiredSpeed > currentSpeed) {
@@ -111,16 +100,16 @@ void Car::turn(int direction)
 }
 
 
-
-
 // function for returning just the distances to walls
 std::vector<float> Car::getDistances() const {
 	return distances;
 }
+
 NeuralNetwork & Car::getNetwork()
 {
 	return network;
 }
+
 std::vector<float> Car::getPosition() const
 {
 	b2Vec2 pos = carBody->GetPosition();
@@ -132,7 +121,7 @@ std::vector<float> Car::getPosition() const
 
 float Car::getVelocity() const
 {
-	return getForwardVelocity().Length();
+	return physics.getForwardVelocity(carBody).Length();
 }
 
 b2Body * Car::getCarBody() const

@@ -82,3 +82,30 @@ std::vector<float> Physics::updateRays(b2Body& carBody) {
 
 	return distances;
 }
+
+void Physics::updateFriction(b2Body* carBody) {
+	//lateral linear velocity
+	b2Vec2 impulse = carBody->GetMass() * -getLateralVelocity(carBody);
+	if (impulse.Length() > maxLateralImpulse)
+		impulse *= maxLateralImpulse / impulse.Length();
+	carBody->ApplyLinearImpulse(impulse, carBody->GetWorldCenter(), true);
+
+	//angular velocity
+	carBody->ApplyAngularImpulse(0.1f * carBody->GetInertia() * -carBody->GetAngularVelocity(), true);
+
+	//forward linear velocity
+	b2Vec2 currentForwardNormal = getForwardVelocity(carBody);
+	float currentForwardSpeed = getForwardVelocity(carBody).Normalize();
+	float dragForceMagnitude = -2 * currentForwardSpeed;
+	carBody->ApplyForce(dragForceMagnitude * currentForwardNormal, carBody->GetWorldCenter(), true);
+}
+
+b2Vec2 Physics::getForwardVelocity(b2Body* carBody) const {
+	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
+	return b2Dot(currentForwardNormal, carBody->GetLinearVelocity()) * currentForwardNormal;
+}
+
+b2Vec2 Physics::getLateralVelocity(b2Body* carBody) const {
+	b2Vec2 currentRightNormal = carBody->GetWorldVector(b2Vec2(0, 1));
+	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
+}

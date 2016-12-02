@@ -18,10 +18,7 @@ public:
 	std::vector<float> getPosition() const;
 	float getVelocity() const;
 	b2Body* getCarBody() const;
-	b2Vec2 getForwardVelocity() const;
-	b2Vec2 getLateralVelocity() const;
 	void updateDistances();
-	std::vector<float> updateRays();
 	std::vector<float> getDistances() const;
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
@@ -39,7 +36,6 @@ private:
 	float maxDriveForce = 500;
 	float maxReverseForce = 250;
 	float MaxTurningForce = 500;
-	float maxLateralImpulse = 7.5;
 	std::vector<float> distances;
 	
 	b2World* world;

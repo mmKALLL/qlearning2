@@ -108,15 +108,17 @@ void Car::turn(int direction)
 	}
 }
 
-b2Vec2 Car::getForwardVelocity() {
+b2Vec2 Car::getForwardVelocity() const {
 	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
 	return b2Dot(currentForwardNormal, carBody->GetLinearVelocity()) * currentForwardNormal;
 }
 
-b2Vec2 Car::getLateralVelocity() {
+b2Vec2 Car::getLateralVelocity() const {
 	b2Vec2 currentRightNormal = carBody->GetWorldVector(b2Vec2(0, 1));
 	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
 }
+
+
 
 void Car::updateFriction() {
 	//Remove the lateral velocity by applying impulse thats the opposite for the lateral velocity
@@ -186,4 +188,12 @@ std::vector<float> Car::updateRays() {
 // function for returning just the distances to walls
 std::vector<float> Car::getDistances() {
 	return distances;
+}
+std::vector<float> Car::getPosition() const
+{
+	b2Vec2 pos = carBody->GetPosition();
+	std::vector<float> position;
+	position.push_back(pos.x);
+	position.push_back(pos.y);
+	return position;
 }

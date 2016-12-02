@@ -15,8 +15,9 @@ public:
 	// Function definitions
 	void accelerate(int direction);
 	void turn(int direction);
-	b2Vec2 getForwardVelocity();
-	b2Vec2 getLateralVelocity();
+	b2Vec2 getForwardVelocity() const;
+	b2Vec2 getLateralVelocity() const;
+	std::vector<float> getPosition() const;
 	void updateFriction();
 	std::vector<float> updateRays();
 	std::vector<float> getDistances();
@@ -45,11 +46,6 @@ private:
 	NeuralNetwork network;
 };
 
-class Tire
-{
-public:
-	Tire();
-	~Tire();
-};
+
 
 #endif

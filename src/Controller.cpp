@@ -6,10 +6,10 @@ Controller::Controller() {
 }
 
 const Track Controller::getTrack() const {
-	return currentTrack; //this.currentTrack must have a class type
+	return currentTrack;
 }
 const Car Controller::getCar() const {
-	return currentCar; //this.currentCar must have a class type
+	return currentCar;
 }
 
 const std::vector<float> Controller::getSightVector(Car& car, int amount, int degrees) const {

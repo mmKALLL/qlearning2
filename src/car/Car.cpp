@@ -17,7 +17,7 @@ Car::Car()
 
 	b2PolygonShape carShape;
 	// Car is somewhat long and a bit wide
-	carShape.SetAsBox(2.5f, 1.5f);
+	carShape.SetAsBox(2.0f, 1.5f);
 
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;

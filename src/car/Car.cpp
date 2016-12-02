@@ -1,8 +1,6 @@
 #include "Car.hpp"
 
 
-
-
 Car::Car()
 {
 	//physics = new Physics(); TODO: CHECK THIS
@@ -39,14 +37,6 @@ Car::~Car()
 	carBody->GetWorld()->DestroyBody(carBody);
 	
 }
-
-
-
-void Car::updateDistances()
-{
-	distances = physics.updateRays(*carBody);
-}
-
 
 void Car::accelerate(int direction)
 {
@@ -101,7 +91,8 @@ void Car::turn(int direction)
 
 
 // function for returning just the distances to walls
-std::vector<float> Car::getDistances() const {
+std::vector<float> Car::getDistances() {
+	distances = physics.updateRays(*carBody);
 	return distances;
 }
 

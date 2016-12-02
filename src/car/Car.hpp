@@ -18,8 +18,7 @@ public:
 	std::vector<float> getPosition() const;
 	float getVelocity() const;
 	b2Body* getCarBody() const;
-	void updateDistances();
-	std::vector<float> getDistances() const;
+	std::vector<float> getDistances();
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;

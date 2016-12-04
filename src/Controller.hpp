@@ -10,12 +10,14 @@
 const int numberOfVisionLines = 5;
 const int fieldOfView = 90; // TODO: FoV slider
 const float timeToFitnessMultiplier = 1.2;
+const float gammaValue = 0.001; // learning rate
 
 
 class Controller {
 public:
 	Controller();
-
+	void initializeRun(/*TODO: params*/); // Application launched or previous car's run completely over, so start new run
+	
 	//---Generic getters
     const Track getTrack() const;
     const Car getCar() const;

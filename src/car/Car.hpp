@@ -27,6 +27,7 @@ public:
 	float force = 0;
 	
 	NeuralNetwork& getNetwork() { return network; }
+	void setNetwork(NeuralNetwork newNetwork);
 
 private:
 	// Variables for the body amd maximum speeds

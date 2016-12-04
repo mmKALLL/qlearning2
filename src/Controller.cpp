@@ -5,6 +5,10 @@ Controller::Controller() {
 	// TODO: Esa: Does the constructor need any functionality?
 }
 
+void Controller::initializeRun(/*TODO: params*/) {
+	
+}
+
 const Track Controller::getTrack() const {
 	return currentTrack; //this.currentTrack must have a class type
 }
@@ -60,5 +64,7 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 }
 
 void Controller::stepForward() {
-	// TODO: Esa: implement the main logic
+	currentCar.executeAction(
+		getCarAction(currentCar, currentCar.getNetwork())
+	);
 }

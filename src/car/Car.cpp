@@ -49,6 +49,12 @@ Car::Car(b2World * world, const b2Vec2& position, const b2Vec2& dimensions)
 	carBody->CreateFixture(&carFixtureDef);
 }
 
+Car::Car(b2World * world, const b2Vec2& position, const b2Vec2& dimensions, NeuralNetwork createdNetwork)
+{
+	Car result = Car(b2World * world, const b2Vec2& position, const b2Vec2& dimensions);
+	
+}
+
 
 Car::~Car()
 {
@@ -58,7 +64,7 @@ Car::~Car()
 
 void Car::accelerate(int direction)
 {
-	// Get current forward speed and set force 
+	// Get current forward speed and set force
 	b2Vec2 currentForwardNormal = getForwardVelocity();
 	force = 0;
 
@@ -82,8 +88,8 @@ void Car::accelerate(int direction)
 	else if (desiredSpeed < currentSpeed) {
 		force = -maxReverseForce;
 	}
-	else { 
-		return; 
+	else {
+		return;
 	}
 
 	// Apply the force
@@ -185,4 +191,8 @@ std::vector<float> Car::updateRays() {
 // function for returning just the distances to walls
 std::vector<float> Car::getDistances() {
 	return distances;
+}
+
+void setNetwork(NeuralNetwork newNetwork) {
+	this.network = newNetwork;
 }

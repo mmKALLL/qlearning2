@@ -65,7 +65,7 @@ void Car::accelerate(int direction)
 		force = -maxReverseForce;
 	}
 	else {
-		return;
+		force = 0;
 	}
 
 	// Apply the force

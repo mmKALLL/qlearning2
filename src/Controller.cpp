@@ -74,4 +74,7 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 
 void Controller::stepForward() {
 	// TODO: Esa: implement the main logic
+
+	//Advances the physics simulation by one step
+	world->Step(timeStep, velocityIterations, positionIterations);
 }

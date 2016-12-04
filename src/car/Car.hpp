@@ -12,22 +12,24 @@ public:
 	Car(b2World* world);
 	~Car();
 
-	// Function definitions
-	void accelerate(int direction);
-	void turn(int direction);
-	std::vector<float> getPosition() const;
+	// Getters
 	float getVelocity() const;
-	std::vector<float> getDistances();
 	int getCheckpoints() const;
+	NeuralNetwork& getNetwork();
+	std::vector<float> getPosition() const;
+	std::vector<float> getDistances();
+	
 
 	void update(); //Call this function to have car update its location speed etc
+	void accelerate(int direction);
+	void turn(int direction);
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;
 	float currentSpeed = 0;
 	float force = 0;
 	
-	NeuralNetwork& getNetwork();
+	
 
 private:
 	// Variables for the body amd maximum speeds
@@ -39,6 +41,7 @@ private:
 	float MaxTurningForce = 500;
 	std::vector<float> distances;
 	int checkpoints = 0;
+	bool collision = false;
 	
 	b2World* world;
 	Physics physics = Physics(world);

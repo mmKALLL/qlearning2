@@ -1,5 +1,6 @@
 #ifndef QLEARNING_PHYSICS_H
 #define QLEARNING_PHYSICS_H
+#define DEGTORAD 0.0174532925199432957f
 #include <Box2D/Box2D.h>
 #include <vector>
 
@@ -10,7 +11,7 @@ class Physics
 public:
 	Physics(b2World* world);
 
-	std::vector<float> Physics::updateRays(b2Body& carBody);
+	std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees);
 	void Physics::updateFriction(b2Body* carBody);
 	int collisionCheck(b2Body * carBody);
 

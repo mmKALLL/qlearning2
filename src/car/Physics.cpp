@@ -1,5 +1,6 @@
 #include "Physics.hpp"
 
+
 class CarRayCallback : public b2RayCastCallback
 {
 public:
@@ -28,48 +29,32 @@ Physics::Physics(b2World* world)
 }
 
 
-std::vector<float> Physics::updateRays(b2Body& carBody) {
+std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 
 	std::vector<float> distances;
 	// Rays for checking the distance
 	// Initialized with starting and ending points
-	b2Vec2 forwardRayStart = carBody.GetWorldPoint(b2Vec2(2, 0));
-	b2Vec2 forwardRayEnd = carBody.GetWorldPoint(b2Vec2(10, 0));
+	
+	float rayLenght = 10;
 
-	b2Vec2 leftRayStart = carBody.GetWorldPoint(b2Vec2(2, 0.75));
-	b2Vec2 leftRayEnd = carBody.GetWorldPoint(b2Vec2(6, 6));
+	for (int i = -(size - 1) / 2; i <= (size - 1) / 2; i++) {
+		CarRayCallback callback;
+		b2Vec2 rayStart = carBody.GetWorldPoint(b2Vec2(0, 0));
+		float y = rayLenght*cos((90 + i*degrees / (size - 1))*DEGTORAD);
+		float x = rayLenght*sin((90 + i*degrees / (size - 1))*DEGTORAD);
+		b2Vec2 rayEnd = carBody.GetWorldPoint(b2Vec2(x, y));
 
-	b2Vec2 rightRayStart = carBody.GetWorldPoint(b2Vec2(2, -0.75));
-	b2Vec2 rightRayEnd = carBody.GetWorldPoint(b2Vec2(6, -6));
 
-	// Callbacks for checking if ray collides with something
-	CarRayCallback callback;
-	CarRayCallback callback1;
-	CarRayCallback callback2;
+		world->RayCast(&callback, rayStart, rayEnd);
+		if (callback.m_hit) {
+			distances.push_back((rayStart - callback.m_point).Length());
 
-	// Add rays to the world and if collision happens check for distance
-	world->RayCast(&callback, forwardRayStart, forwardRayEnd);
-	if (callback.m_hit) {
-		distances.push_back((forwardRayStart - callback.m_point).Length());
-	}
-	else {
-		distances.push_back(10);
-	}
+		}
+		else {
+			distances.push_back(10);
+		}
 
-	world->RayCast(&callback1, leftRayStart, leftRayEnd);
-	if (callback1.m_hit) {
-		distances.push_back((leftRayStart - callback1.m_point).Length());
-	}
-	else {
-		distances.push_back(10);
-	}
 
-	world->RayCast(&callback2, rightRayStart, rightRayEnd);
-	if (callback2.m_hit) {
-		distances.push_back((rightRayStart - callback2.m_point).Length());
-	}
-	else {
-		distances.push_back(10);
 	}
 
 

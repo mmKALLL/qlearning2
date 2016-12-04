@@ -17,6 +17,7 @@ const Car Controller::getCar() const {
 
 const std::vector<float> Controller::getSightVector(int amount, int degrees) {
 	// TODO: Olli/Jussi: Distances to walls in various directions, spanning a vision width of specified degrees.
+	// As of 4.12 only works for uneven amount of rays and minimum amount is 3
 	//Done'd
 	return currentCar.getDistances();
 }

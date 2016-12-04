@@ -93,9 +93,13 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 		window.draw(car);
 		window.draw(sprite);
 		window.display();
+		
 	}
 }
 
+
+// It creates a new track part for physics and takes width, height, angle and middle point as parameters. (middlepoint is initialized as b2Vec2(x,y))
+// The trackpart is stored to a vector.
 void Track::newPhysicsCircuitPart(float width, float height, float angle, b2Vec2 middlepoint) {
 
 	b2Body* trackPart;

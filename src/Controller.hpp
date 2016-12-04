@@ -40,7 +40,12 @@ public:
     void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
     
 private:
-    
+
+	// Simulation runs at 60 fps
+	float32 timeStep = 1 / 60.0;
+	int32 velocityIterations = 8;   //how strongly to correct velocity
+	int32 positionIterations = 3;   //how strongly to correct position
+
 	b2World* world;
 	Track currentTrack = Track(world);
 	Car currentCar = Car(world);

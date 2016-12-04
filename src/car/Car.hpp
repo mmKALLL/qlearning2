@@ -17,7 +17,6 @@ public:
 	void turn(int direction);
 	std::vector<float> getPosition() const;
 	float getVelocity() const;
-	b2Body* getCarBody() const;
 	std::vector<float> getDistances();
 	int getCheckpoints() const;
 

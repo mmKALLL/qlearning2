@@ -17,6 +17,7 @@ const Car Controller::getCar() const {
 
 const std::vector<float> Controller::getSightVector(int amount, int degrees) {
 	// TODO: Olli/Jussi: Distances to walls in various directions, spanning a vision width of specified degrees.
+	//Done'd
 	return currentCar.getDistances();
 }
 
@@ -32,12 +33,14 @@ float Controller::getCarDistanceFromMiddle() const {
 
 float Controller::getCarVelocity() const {
 	// TODO: Olli/Jussi: Return the car's current speed.
+	//Done'd
 	return currentCar.getVelocity();
 }
 
 float Controller::getCarDistanceTraveled() const {
 	// TODO Olli/Jussi Return how far the car has gone on the track
 	//				   ie how many checkpoints it has reached
+	//Done'd, though it returns the amount of checkpoints passed
 	return currentCar.getCheckpoints();
 }
 

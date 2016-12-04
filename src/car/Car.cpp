@@ -120,7 +120,3 @@ float Car::getVelocity() const
 	return physics.getForwardVelocity(carBody).Length();
 }
 
-b2Body * Car::getCarBody() const
-{
-	return carBody;
-}

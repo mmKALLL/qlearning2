@@ -22,16 +22,9 @@ public:
 
 
 
-Physics::Physics()
+Physics::Physics(b2World* world)
 {
-	// No need for gravity in top down physics
-	b2Vec2 gravity(0.0f, 0.0f);
-	world = new b2World(gravity);
-}
-
-b2World* Physics::getWorld() const
-{
-	return world;
+	this->world = world;
 }
 
 
@@ -108,4 +101,26 @@ b2Vec2 Physics::getForwardVelocity(b2Body* carBody) const {
 b2Vec2 Physics::getLateralVelocity(b2Body* carBody) const {
 	b2Vec2 currentRightNormal = carBody->GetWorldVector(b2Vec2(0, 1));
 	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
+}
+
+int Physics::collisionCheck(b2Body* carBody) {
+	for (b2ContactEdge* edge = carBody->GetContactList(); edge; edge = edge->next) {
+		if (edge->contact->IsTouching() && ((bool)carBody->GetUserData() == false)) {
+			b2Fixture* a = edge->contact->GetFixtureA();
+			if (a->IsSensor()) {
+				bool data = true;
+				carBody->SetUserData((void*)data);
+				return 1;
+				
+			}
+			else {
+				return -1;
+			}
+		}
+		else if ((edge->contact->IsTouching() == false) && (carBody->GetUserData() == (void*)true)) {
+			bool data = false;
+			carBody->SetUserData((void*)data);
+		}
+	}
+
 }

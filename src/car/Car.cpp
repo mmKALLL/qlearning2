@@ -1,10 +1,10 @@
 #include "Car.hpp"
 
 
-Car::Car()
+Car::Car(b2World* world)
 {
-	//physics = new Physics(); TODO: CHECK THIS
-	world = physics.getWorld();
+	
+	this->world = world;
 	//Create definition for car body
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;
@@ -94,6 +94,11 @@ void Car::turn(int direction)
 std::vector<float> Car::getDistances() {
 	distances = physics.updateRays(*carBody);
 	return distances;
+}
+
+int Car::getCheckpoints() const
+{
+	return checkpoints;
 }
 
 NeuralNetwork & Car::getNetwork()

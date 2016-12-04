@@ -1,5 +1,6 @@
 #ifndef QLEARNING_CONTROLLER_H
 #define QLEARNING_CONTROLLER_H
+#include <Box2D/Box2D.h>
 #include <vector>
 #include <tuple>
 #include "network/NeuralNetwork.hpp"
@@ -23,7 +24,7 @@ public:
 	//std::vector<double>& getActionForCar(Car& car, NeuralNetwork& nn) const;
 
 	//---Getters for car
-	const std::vector<float> getSightVector(int size, int degrees) const;
+	const std::vector<float> getSightVector(int size, int degrees);
 	const std::vector<float> getCarPosition() const;
 	float getCarDistanceFromMiddle() const;
 	float getCarVelocity() const;
@@ -39,8 +40,10 @@ public:
     void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
     
 private:
-    Car currentCar;
-    Track currentTrack;
+    
+	b2World* world;
+	Track currentTrack = Track(world);
+	Car currentCar = Car(world);
 };
 
 #endif

@@ -9,7 +9,7 @@ class Car
 {
 public:
 	// Constructors
-	Car();
+	Car(b2World* world);
 	~Car();
 
 	// Function definitions
@@ -19,6 +19,9 @@ public:
 	float getVelocity() const;
 	b2Body* getCarBody() const;
 	std::vector<float> getDistances();
+	int getCheckpoints() const;
+
+	void update(); //Call this function to have car update its location speed etc
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;
@@ -36,9 +39,10 @@ private:
 	float maxReverseForce = 250;
 	float MaxTurningForce = 500;
 	std::vector<float> distances;
+	int checkpoints = 0;
 	
 	b2World* world;
-	Physics physics;
+	Physics physics = Physics(world);
 
 	NeuralNetwork network;
 };

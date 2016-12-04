@@ -3,6 +3,9 @@
 
 Controller::Controller() {
 	// TODO: Esa: Does the constructor need any functionality?
+	// No need for gravity in top down physics
+	b2Vec2 gravity(0.0f, 0.0f);
+	world = new b2World(gravity);
 }
 
 const Track Controller::getTrack() const {
@@ -12,7 +15,7 @@ const Car Controller::getCar() const {
 	return currentCar;
 }
 
-const std::vector<float> Controller::getSightVector(int amount, int degrees) const {
+const std::vector<float> Controller::getSightVector(int amount, int degrees) {
 	// TODO: Olli/Jussi: Distances to walls in various directions, spanning a vision width of specified degrees.
 	return currentCar.getDistances();
 }
@@ -35,7 +38,7 @@ float Controller::getCarVelocity() const {
 float Controller::getCarDistanceTraveled() const {
 	// TODO Olli/Jussi Return how far the car has gone on the track
 	//				   ie how many checkpoints it has reached
-	return 0.0f;
+	return currentCar.getCheckpoints();
 }
 
 // Ask neural network to provide a set of actions.

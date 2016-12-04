@@ -8,13 +8,16 @@ class Physics
 {
 
 public:
-	Physics();
-	b2World* getWorld() const;
+	Physics(b2World* world);
+
 	std::vector<float> Physics::updateRays(b2Body& carBody);
 	void Physics::updateFriction(b2Body* carBody);
+	int collisionCheck(b2Body * carBody);
 
 	b2Vec2 Physics::getForwardVelocity(b2Body* carBody) const;
 	b2Vec2 Physics::getLateralVelocity(b2Body* carBody) const;
+
+	
 
 private:
 	b2World* world;

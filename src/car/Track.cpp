@@ -1,6 +1,8 @@
 #include "Track.hpp"
 
-Track::Track() {
+Track::Track(b2World* world) {
+	this->world = world;
+
 	std::vector<sf::VertexArray> sectors;
 	sectors.push_back(createSector(0, 0));
 	sectors.push_back(createSector(50, 0));
@@ -92,4 +94,47 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 		window.draw(sprite);
 		window.display();
 	}
+}
+
+void Track::newPhysicsCircuitPart(float width, float height, float angle, b2Vec2 middlepoint) {
+
+	b2Body* trackPart;
+	b2BodyDef bd;
+
+	double tangent = tan(angle*DEGTORAD);
+
+	// middlepoint
+	bd.position.Set(middlepoint.x, middlepoint.y);
+
+	trackPart = world->CreateBody(&bd);
+
+	b2EdgeShape shape;
+
+	b2FixtureDef checkpoints;
+	checkpoints.shape = &shape;
+	checkpoints.isSensor = true;
+
+
+	// Left vertical
+	shape.Set(b2Vec2(-width, -height*(1 - tangent / 2)), b2Vec2(-width, height*(1 + tangent / 2)));
+	trackPart->CreateFixture(&checkpoints);
+
+	// Right vertical
+	shape.Set(b2Vec2(width, -height*(1 + tangent / 2)), b2Vec2(width, height*(1 - tangent / 2)));
+	trackPart->CreateFixture(&checkpoints);
+
+	b2FixtureDef walls;
+	walls.shape = &shape;
+
+	walls.isSensor = false;
+
+	// Top horizontal
+	shape.Set(b2Vec2(-width, height*(1 + tangent / 2)), b2Vec2(width, height*(1 - tangent / 2)));
+	trackPart->CreateFixture(&walls);
+
+	// Bottom horizontal
+	shape.Set(b2Vec2(-width, -height*(1 - tangent / 2)), b2Vec2(width, -height*(1 + tangent / 2)));
+
+	trackPart->CreateFixture(&walls);
+	circuit_physics.push_back(trackPart);
 }

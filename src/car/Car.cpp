@@ -90,6 +90,15 @@ void Car::turn(float angle)
 	carBody->ApplyTorque(angle*MaxTurningForce, true);
 }
 
+void Car::setParams(std::vector<float> position, float angle, float speed)
+{
+	b2Vec2 pos(position[0], position[1]);
+	// sin and cos might be otherway around
+	b2Vec2 vel(speed*sin(angle*DEGTORAD), speed*cos(angle*DEGTORAD));
+	carBody->SetLinearVelocity(vel);
+	carBody->SetTransform(pos, angle*DEGTORAD);
+}
+
 
 // function for returning just the distances to walls
 std::vector<float> Car::getDistances(int amount, int degrees) {

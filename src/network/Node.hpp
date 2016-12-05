@@ -24,7 +24,7 @@ public:
 	void addOutput(const Node& another);
 	
 	void setValue(const float value);
-	void setWeight(const int index, const int weight);
+	void setWeight(const unsigned int index, const float weight);
 	
 
 	std::stringstream toString() const;

@@ -42,7 +42,6 @@ std::vector<float> NeuralNetwork::getOutputValuesFromInputs
 }
 
 
-
 //Set input for a certain node
 void NeuralNetwork::setInput(const int index, const float value) {
 	Node n = nodes[0][index];

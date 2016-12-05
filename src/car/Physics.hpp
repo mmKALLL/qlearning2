@@ -5,25 +5,21 @@
 #include <Box2D/Box2D.h>
 #include <vector>
 
-
 class Physics
 {
-
 public:
 	Physics(b2World* world);
 
-	std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees);
-	void Physics::updateFriction(b2Body* carBody);
+	std::vector<float> updateRays(b2Body& carBody, int size, int degrees);
+	void updateFriction(b2Body* carBody);
 	int collisionCheck(b2Body * carBody);
 
-	b2Vec2 Physics::getForwardVelocity(b2Body* carBody) const;
-	b2Vec2 Physics::getLateralVelocity(b2Body* carBody) const;
-
-	
+	b2Vec2 getForwardVelocity(b2Body* carBody) const;
+	b2Vec2 getLateralVelocity(b2Body* carBody) const;
 
 private:
 	b2World* world;
-	float maxLateralImpulse = 7.5; 
+	float maxLateralImpulse = 7.5;
 };
 
 //myWorld->Step( timeStep, velocityIterations, positionIterations);

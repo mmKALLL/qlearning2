@@ -4,8 +4,7 @@
 Controller::Controller() {
 	// TODO: Esa: Does the constructor need any functionality?
 	// No need for gravity in top down physics
-	b2Vec2 gravity(0.0f, 0.0f);
-	world = new b2World(gravity);
+	
 }
 
 const Track Controller::getTrack() const {

@@ -95,12 +95,11 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 // The trackpart is stored to a vector.
 sf::VertexArray Track::newSector(float width, float height, float angle, b2Vec2 middlePoint) {
 	b2BodyDef bd;
-	double tangent = tan(angle*DEGTORAD);
-	
+		
 	// middlepoint
 	bd.position.Set(middlePoint.x, middlePoint.y);
 	std::cout << "Hype 4" << std::endl;
-	b2Body* trackPart(this->world->CreateBody(&bd));
+	b2Body* trackPart = world->CreateBody(&bd);
 	std::cout << "Hype 5" << std::endl;
 	b2EdgeShape shape;
 
@@ -130,7 +129,7 @@ sf::VertexArray Track::newSector(float width, float height, float angle, b2Vec2 
 	shape.Set(b2Vec2(-width, -height), b2Vec2(width, -height));
 
 	trackPart->CreateFixture(&walls);
-	trackPart->SetTransform(middlepoint, angle * DEGTORAD);
+	trackPart->SetTransform(middlePoint, angle * DEGTORAD);
 	circuit.push_back(trackPart);
 	
 	float offsetX = width / 2;

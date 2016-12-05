@@ -51,7 +51,7 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 
 		}
 		else {
-			distances.push_back(10);
+			distances.push_back(rayLenght);
 		}
 
 
@@ -107,5 +107,5 @@ int Physics::collisionCheck(b2Body* carBody) {
 			carBody->SetUserData((void*)data);
 		}
 	}
-
+	return 0;
 }

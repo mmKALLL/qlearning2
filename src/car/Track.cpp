@@ -105,8 +105,6 @@ void Track::newPhysicsCircuitPart(float width, float height, float angle, b2Vec2
 	b2Body* trackPart;
 	b2BodyDef bd;
 
-	double tangent = tan(angle*DEGTORAD);
-
 	// middlepoint
 	bd.position.Set(middlepoint.x, middlepoint.y);
 
@@ -120,11 +118,11 @@ void Track::newPhysicsCircuitPart(float width, float height, float angle, b2Vec2
 
 
 	// Left vertical
-	shape.Set(b2Vec2(-width, -height*(1 - tangent / 2)), b2Vec2(-width, height*(1 + tangent / 2)));
+	shape.Set(b2Vec2(-width, -height), b2Vec2(-width, height));
 	trackPart->CreateFixture(&checkpoints);
 
 	// Right vertical
-	shape.Set(b2Vec2(width, -height*(1 + tangent / 2)), b2Vec2(width, height*(1 - tangent / 2)));
+	shape.Set(b2Vec2(width, -height), b2Vec2(width, height));
 	trackPart->CreateFixture(&checkpoints);
 
 	b2FixtureDef walls;
@@ -133,12 +131,13 @@ void Track::newPhysicsCircuitPart(float width, float height, float angle, b2Vec2
 	walls.isSensor = false;
 
 	// Top horizontal
-	shape.Set(b2Vec2(-width, height*(1 + tangent / 2)), b2Vec2(width, height*(1 - tangent / 2)));
+	shape.Set(b2Vec2(-width, height), b2Vec2(width, height));
 	trackPart->CreateFixture(&walls);
 
 	// Bottom horizontal
-	shape.Set(b2Vec2(-width, -height*(1 - tangent / 2)), b2Vec2(width, -height*(1 + tangent / 2)));
+	shape.Set(b2Vec2(-width, -height), b2Vec2(width, -height));
 
 	trackPart->CreateFixture(&walls);
+	trackPart->SetTransform(middlepoint, angle * DEGTORAD);
 	circuit_physics.push_back(trackPart);
 }

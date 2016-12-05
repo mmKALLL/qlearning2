@@ -38,22 +38,18 @@ Car::~Car()
 	
 }
 
-void Car::accelerate(int direction)
+
+
+void Car::accelerate(float speed)
 {
 	// Get current forward speed and set force
-	b2Vec2 currentForwardNormal = physics.getForwardVelocity(carBody);
-	force = 0;
+	float force = 0;
 
 	// Set desired speed in relation to if we are reversing or going forward
-	if (direction > 0) {
-		desiredSpeed = maxSpeed;
-	}
-	else {
-		desiredSpeed = maxReverse;
-	}
+	desiredSpeed = speed*maxSpeed;
 
 
-	currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
+	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
 
 	currentSpeed = b2Dot(physics.getForwardVelocity(carBody), currentForwardNormal);
 
@@ -62,26 +58,25 @@ void Car::accelerate(int direction)
 		force = maxDriveForce;
 	}
 	else if (desiredSpeed < currentSpeed) {
-		force = -maxReverseForce;
+		force = -maxDriveForce;
 	}
 	else {
 		force = 0;
 	}
 
 	// Apply the force
-	if (direction > 0) {
-		carBody->ApplyForce(force * currentForwardNormal, carBody->GetWorldCenter(), false);
-	}
-	else {
-		carBody->ApplyForce(-force * currentForwardNormal, carBody->GetWorldCenter(), false);
-	}
-
+	carBody->ApplyForce(force * currentForwardNormal, carBody->GetWorldCenter(), false);
+	
 }
 
 
-void Car::turn(int direction)
+void Car::turn(float angle)
 {
-	if (direction > 0) {
+	float currentAngle = carBody->GetAngle();
+	float desiredAngle = currentAngle + angle * 90 * DEGTORAD;
+	float lastAngle = angle;
+	
+	if (currentAngle < desiredAngle) {
 		carBody->ApplyTorque(MaxTurningForce, true);
 	}
 	else {
@@ -91,8 +86,8 @@ void Car::turn(int direction)
 
 
 // function for returning just the distances to walls
-std::vector<float> Car::getDistances() {
-	distances = physics.updateRays(*carBody);
+std::vector<float> Car::getDistances(int amount, int degrees) {
+	distances = physics.updateRays(*carBody, amount, degrees);
 	return distances;
 }
 
@@ -117,6 +112,6 @@ std::vector<float> Car::getPosition() const
 
 float Car::getVelocity() const
 {
-	return physics.getForwardVelocity(carBody).Length();
+	return b2Dot(physics.getForwardVelocity(carBody), carBody->GetWorldVector(b2Vec2(1, 0)));
 }
 

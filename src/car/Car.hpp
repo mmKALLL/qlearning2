@@ -13,14 +13,16 @@ public:
 	~Car();
 
 	// Getters
+	float getAngle() const;
 	float getVelocity() const;
 	int getCheckpoints() const;
+	bool getCollisionStatus() const;
 	NeuralNetwork& getNetwork();
 	std::vector<float> getPosition() const;
 	std::vector<float> getDistances(int amount, int degrees);
 	
 
-	void update(); //Call this function to have car update its location speed etc
+	void update(float speed, float angle, int amount, int degrees); //Call this function to have car update its location speed etc
 	void accelerate(float speed);
 	void turn(float angle);
 	
@@ -34,7 +36,7 @@ private:
 	b2Body* carBody = nullptr;
 	float maxSpeed = 30;
 	float maxDriveForce = 3000;
-	float MaxTurningForce = 500;
+	float MaxTurningForce = 1000;
 	std::vector<float> distances;
 	int checkpoints = 0;
 	bool collisionStatus = false;

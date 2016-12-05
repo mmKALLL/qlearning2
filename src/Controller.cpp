@@ -65,12 +65,19 @@ float Controller::getFitness(double time) const {
 //Ask physics where the car would end up with actions in param
 std::vector<float> Controller::simulateStepForward(Car& car, float steer, float accelerate) const {
 	// TODO: Return vector such that:
-	// vector[0] is 1 if the car has hit a wall, 0 otherwise
-	// vector[1] vector[2] are the x,y coordinates ???
-	// vector[3] is the velocity
-	// vector[4] is the angle at which the car is facing maybe (???)
-	std::vector<float> asd;
-	return asd;
+	// vector[0] true if hit by a wall, otherwise false
+	// vector[1] x coordinate
+	// vector[2] x coordinate
+	// vector[3] velocity
+	// vector[4] angle in degrees
+
+	std::vector<float> result;
+	result.push_back(currentCar.getCollisionStatus());
+	result.insert(result.end(), currentCar.getPosition().begin(), currentCar.getPosition().end());
+	result.push_back(currentCar.getVelocity());
+	result.push_back(currentCar.getAngle());
+
+	return result;
 }
 
 void Controller::stepForward() {
@@ -78,4 +85,8 @@ void Controller::stepForward() {
 
 	//Advances the physics simulation by one step
 	world->Step(timeStep, velocityIterations, positionIterations);
+	//According to the manual forces should be cleared after taking a step
+	world->ClearForces();
+	// Call this to have car update its collision status and do all steering related stuff
+	//currentCar.update(float speed, float angle, int amount, int degrees);
 }

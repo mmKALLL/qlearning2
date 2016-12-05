@@ -40,6 +40,23 @@ Car::~Car()
 
 
 
+void Car::update(float speed, float angle, int amount, int degrees)
+{
+	physics.collisionCheck(carBody);
+	physics.updateFriction(carBody);
+	getDistances(amount, degrees);
+
+	if (physics.collisionCheck(carBody) == 1) {
+		checkpoints++;
+	}
+	else {
+		collisionStatus = true;
+	}
+	accelerate(speed);
+	turn(angle);
+	
+}
+
 void Car::accelerate(float speed)
 {
 	// Get current forward speed and set force
@@ -72,16 +89,7 @@ void Car::accelerate(float speed)
 
 void Car::turn(float angle)
 {
-	float currentAngle = carBody->GetAngle();
-	float desiredAngle = currentAngle + angle * 90 * DEGTORAD;
-	float lastAngle = angle;
-	
-	if (currentAngle < desiredAngle) {
-		carBody->ApplyTorque(MaxTurningForce, true);
-	}
-	else {
-		carBody->ApplyTorque(-MaxTurningForce, true);
-	}
+	carBody->ApplyTorque(angle*MaxTurningForce, true);
 }
 
 
@@ -96,6 +104,11 @@ int Car::getCheckpoints() const
 	return checkpoints;
 }
 
+bool Car::getCollisionStatus() const
+{
+	return collisionStatus;
+}
+
 NeuralNetwork & Car::getNetwork()
 {
 	return network;
@@ -108,6 +121,11 @@ std::vector<float> Car::getPosition() const
 	position.push_back(pos.x);
 	position.push_back(pos.y);
 	return position;
+}
+
+float Car::getAngle() const
+{
+	return carBody->GetAngle()*RADTODEG;
 }
 
 float Car::getVelocity() const

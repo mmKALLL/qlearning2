@@ -93,7 +93,8 @@ void Car::turn(float angle)
 void Car::setParams(std::vector<float> position, float angle, float speed)
 {
 	b2Vec2 pos(position[0], position[1]);
-	b2Vec2 vel(speed*cos(angle*DEGTORAD), speed*sin(angle*DEGTORAD));
+	// sin and cos might be otherway around
+	b2Vec2 vel(speed*sin(angle*DEGTORAD), speed*cos(angle*DEGTORAD));
 	carBody->SetLinearVelocity(vel);
 	carBody->SetTransform(pos, angle*DEGTORAD);
 }

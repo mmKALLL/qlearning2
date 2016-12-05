@@ -42,16 +42,14 @@ Car::~Car()
 
 void Car::update(float speed, float angle, int amount, int degrees)
 {
-	physics.collisionCheck(carBody);
-	physics.updateFriction(carBody);
-	getDistances(amount, degrees);
-
 	if (physics.collisionCheck(carBody) == 1) {
 		checkpoints++;
 	}
 	else {
 		collisionStatus = true;
 	}
+	physics.updateFriction(carBody);
+	getDistances(amount, degrees);
 	accelerate(speed);
 	turn(angle);
 	

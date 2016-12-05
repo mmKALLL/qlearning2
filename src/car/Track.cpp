@@ -95,7 +95,6 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 // The trackpart is stored to a vector.
 sf::VertexArray Track::newSector(float width, float height, float angle, b2Vec2 middlePoint) {
 	b2BodyDef bd;
-	
 	double tangent = tan(angle*DEGTORAD);
 	
 	// middlepoint
@@ -111,11 +110,11 @@ sf::VertexArray Track::newSector(float width, float height, float angle, b2Vec2 
 
 
 	// Left vertical
-	shape.Set(b2Vec2(-width, -height*(1 - tangent / 2)), b2Vec2(-width, height*(1 + tangent / 2)));
+	shape.Set(b2Vec2(-width, -height), b2Vec2(-width, height));
 	trackPart->CreateFixture(&checkpoints);
 
 	// Right vertical
-	shape.Set(b2Vec2(width, -height*(1 + tangent / 2)), b2Vec2(width, height*(1 - tangent / 2)));
+	shape.Set(b2Vec2(width, -height), b2Vec2(width, height));
 	trackPart->CreateFixture(&checkpoints);
 
 	b2FixtureDef walls;
@@ -124,13 +123,14 @@ sf::VertexArray Track::newSector(float width, float height, float angle, b2Vec2 
 	walls.isSensor = false;
 
 	// Top horizontal
-	shape.Set(b2Vec2(-width, height*(1 + tangent / 2)), b2Vec2(width, height*(1 - tangent / 2)));
+	shape.Set(b2Vec2(-width, height), b2Vec2(width, height));
 	trackPart->CreateFixture(&walls);
 
 	// Bottom horizontal
-	shape.Set(b2Vec2(-width, -height*(1 - tangent / 2)), b2Vec2(width, -height*(1 + tangent / 2)));
+	shape.Set(b2Vec2(-width, -height), b2Vec2(width, -height));
 
 	trackPart->CreateFixture(&walls);
+	trackPart->SetTransform(middlepoint, angle * DEGTORAD);
 	circuit.push_back(trackPart);
 	
 	float offsetX = width / 2;

@@ -5,12 +5,12 @@ Track::Track(b2World* world) {
 
 	// TODO: Possibly read track composition from a file?
 	std::vector<std::tuple<float, b2Vec2>> track = {
-		std::make_tuple(0, b2Vec2(50, 0)), std::make_tuple(0, b2Vec2(100, 0)),
-		std::make_tuple(0, b2Vec2(150, 0)), std::make_tuple(0, b2Vec2(200, 0)),
-		std::make_tuple(0, b2Vec2(250, 0)), std::make_tuple(0, b2Vec2(300, 0)),
-		std::make_tuple(0, b2Vec2(350, 0)), std::make_tuple(0, b2Vec2(400, 0)),
-		std::make_tuple(0, b2Vec2(450, 0)), std::make_tuple(0, b2Vec2(500, 0)),
-		std::make_tuple(12.5, b2Vec2(525, -25)), std::make_tuple(25, b2Vec2(550, -50))
+		std::make_tuple(0.f, b2Vec2(50, 0)), std::make_tuple(0.f, b2Vec2(100, 0)),
+		std::make_tuple(0.f, b2Vec2(150, 0)), std::make_tuple(0.f, b2Vec2(200, 0)),
+		std::make_tuple(0.f, b2Vec2(250, 0)), std::make_tuple(0.f, b2Vec2(300, 0)),
+		std::make_tuple(0.f, b2Vec2(350, 0)), std::make_tuple(0.f, b2Vec2(400, 0)),
+		std::make_tuple(0.f, b2Vec2(450, 0)), std::make_tuple(0.f, b2Vec2(500, 0)),
+		std::make_tuple(12.5f, b2Vec2(525, -25)), std::make_tuple(25.0f, b2Vec2(550, -50))
 	};
 	
 	
@@ -18,7 +18,6 @@ Track::Track(b2World* world) {
 	for (auto & element : track) {
 		sectors.push_back(newSector(50, 200, std::get<0>(element), std::get<1>(element)));
 	}
-	std::cout << "Entering GUI" << std::endl;
 	GUI(sectors); // Return?
 }
 
@@ -91,18 +90,15 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 	}
 }
 
-// It creates a new track part for physics and takes width, height, angle and middle point as parameters. (middlepoint is initialized as b2Vec2(x,y))
-// The trackpart is stored to a vector.
+// This method creates a track part that the physics engine can utilize. The method takes the width, height, angle and middle point of the track part as parameters.
 sf::VertexArray Track::newSector(float width, float height, float angle, b2Vec2 middlePoint) {
+	
 	b2BodyDef bd;
-		
-	// middlepoint
 	bd.position.Set(middlePoint.x, middlePoint.y);
-	std::cout << "Hype 4" << std::endl;
+	
 	b2Body* trackPart = world->CreateBody(&bd);
-	std::cout << "Hype 5" << std::endl;
-	b2EdgeShape shape;
 
+	b2EdgeShape shape;
 	b2FixtureDef checkpoints;
 	checkpoints.shape = &shape;
 	checkpoints.isSensor = true;
@@ -132,19 +128,27 @@ sf::VertexArray Track::newSector(float width, float height, float angle, b2Vec2 
 	trackPart->SetTransform(middlePoint, angle * DEGTORAD);
 	circuit.push_back(trackPart);
 	
-	float offsetX = width / 2;
-	float offsetY = height / 2;
+	float length = sqrt(((width / 2) * (width / 2)) + ((height / 2) * (height / 2)));
+	float xAxisAngle = acos((width / 2) / length);
+	float yAxisAngle = acos((height / 2) / length);
+	std::cout << "xAxisAngle: " << xAxisAngle * 57.2957795f << std::endl;
+	std::cout << "yAxisAngle: " << yAxisAngle * 57.2957795f << std::endl;
+	float offsetX = cos(angle * DEGTORAD - yAxisAngle) * length;
+	float offsetY = cos(angle * DEGTORAD - xAxisAngle) * length;
+	std::cout << "offsetX: " << offsetX << std::endl;
+	std::cout << "offsetY: " << offsetY << std::endl << std::endl;
 	
 	sf::VertexArray sector(sf::LinesStrip, 5);
-	sector[0].position = sf::Vector2f(middlePoint.x - offsetX, middlePoint.y - offsetY);
-	sector[1].position = sf::Vector2f(middlePoint.x + offsetX, middlePoint.y - offsetY);
+	sector[0].position = sf::Vector2f(middlePoint.x + offsetX, middlePoint.y + offsetY);
+	sector[1].position = sf::Vector2f(middlePoint.x + offsetX, middlePoint.y + offsetY);
 	sector[2].position = sf::Vector2f(middlePoint.x + offsetX, middlePoint.y + offsetY);
-	sector[3].position = sf::Vector2f(middlePoint.x - offsetX, middlePoint.y + offsetY);
-	sector[4].position = sf::Vector2f(middlePoint.x - offsetX, middlePoint.y - offsetY);
+	sector[3].position = sf::Vector2f(middlePoint.x + offsetX, middlePoint.y + offsetY);
+	sector[4].position = sf::Vector2f(middlePoint.x + offsetX, middlePoint.y + offsetY);
 	sector[0].color = sf::Color::Blue;
 	sector[1].color = sf::Color::Blue;
 	sector[2].color = sf::Color::Blue;
 	sector[3].color = sf::Color::Blue;
 	sector[4].color = sf::Color::Blue;
+	
 	return sector;
 }

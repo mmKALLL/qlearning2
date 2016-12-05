@@ -15,6 +15,9 @@ Thumbs.db
 /bin/
 /Skele Aihe/
 .cproject
+Debug/
+SFML/
+
 
 # VS
 /Skele Aihe/
@@ -26,3 +29,5 @@ Thumbs.db
 .vs
 .gitattributes
 /Properties/
+Skele Aihe.*
+x64/

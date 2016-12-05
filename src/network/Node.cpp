@@ -71,7 +71,7 @@ void Node::setValue(const float val) {
 }
 
 //Set weight of connection at index to weight
-void Node::setWeight(const int index, const int weight) {
+void Node::setWeight(const unsigned int index, const float weight) {
 	if (index < connectionsIn.size()) {
 		std::get<1>(connectionsIn[index]) = weight;
 	}

@@ -25,6 +25,7 @@ public:
 	void update(float speed, float angle, int amount, int degrees); //Call this function to have car update its location speed etc
 	void accelerate(float speed);
 	void turn(float angle);
+	void setParams(std::vector<float> position, float angle, float speed);
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;

@@ -8,12 +8,12 @@
 class Learning {
 	friend class NeuralNetwork;
 
-	Learning(float stepSize = 0.01);
+	Learning(float defStepSize = 0.01);
 
 public:
 	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
 	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn) {
-		adjustConnection(layer, index, targetValue, nn, Controller::defaultStepSize); //call with default value
+		adjustConnection(layer, index, targetValue, nn, defaultStepSize); //call with default value
 	}
 	
 	
@@ -35,7 +35,7 @@ public:
 	*/
 
 private:
-
+	float defaultStepSize;
 };
 
 #endif

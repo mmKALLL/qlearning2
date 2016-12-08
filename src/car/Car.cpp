@@ -31,13 +31,6 @@ Car::Car(b2World* world)
 	carBody->CreateFixture(&carFixtureDef);
 }
 
-Car::Car(b2World * world, const b2Vec2& position, const b2Vec2& dimensions, NeuralNetwork createdNetwork)
-{
-	Car result = Car(b2World * world, const b2Vec2& position, const b2Vec2& dimensions);
-	
-}
-
-
 Car::~Car()
 {
 	carBody->GetWorld()->DestroyBody(carBody);
@@ -144,6 +137,6 @@ float Car::getVelocity() const
 	return b2Dot(physics.getForwardVelocity(carBody), carBody->GetWorldVector(b2Vec2(1, 0)));
 }
 
-void setNetwork(NeuralNetwork newNetwork) {
-	this.network = newNetwork;
+void Car::setNetwork(NeuralNetwork newNetwork) {
+	network = newNetwork;
 }

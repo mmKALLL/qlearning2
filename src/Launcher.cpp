@@ -1,4 +1,5 @@
 #include "Launcher.hpp"
+#include "Tests.hpp"
 
 int main(int argc, char* argv[]) {
     try {
@@ -12,7 +13,7 @@ int main(int argc, char* argv[]) {
             std::vector<std::string> argList(argv, argv + argc);
             for (int i = 1; i < argc; i++) {
                 if (argList[i] == "-t" || argList[i] == "--test") {
-                    return Tests::runTests(); // FIXME: Launcher.cpp:15:28: error: ‘Tests’ has not been declared; old error in linking
+                    return runTests(); // FIXME: Launcher.cpp:15:28: error: ‘Tests’ has not been declared; old error in linking
                     throw "No tests to be run; see code comments.";
                 }
                 if (argList[i] == "-h" || argList[i] == "--help") {

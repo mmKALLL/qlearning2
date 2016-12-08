@@ -31,7 +31,6 @@ public:
 	float desiredSpeed = 0;
 	float currentSpeed = 0;
 	
-	NeuralNetwork& getNetwork() { return network; }
 	void setNetwork(NeuralNetwork newNetwork);
 
 private:

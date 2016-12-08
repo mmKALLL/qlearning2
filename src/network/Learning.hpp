@@ -12,7 +12,10 @@ class Learning { //???
 	Learning(float stepSize = 0.01);
 
 public:
-	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize = defaultStepSize);
+	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
+	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn) {
+		adjustConnection(layer, index, targetValue, nn, defaultStepSize); //call with default value
+	}
 
 private:
 	float defaultStepSize; //How much connections will be adjusted at a time

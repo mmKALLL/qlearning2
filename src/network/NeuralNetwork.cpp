@@ -96,3 +96,16 @@ void NeuralNetwork::calcAll() {
 		}
 	}
 }
+
+//A way to initialize the network: Randomize all weights and calc values
+void NeuralNetwork::randomize(float low, float high) {
+	for (auto nodeVector : nodes) { // for each layer
+		for (Node node : nodeVector) { // for each node
+			for (unsigned int i = 0; i < node.getConnectionsIn().size(); i++) { // for each connection
+				float rnd = low + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (high - low)));
+				node.setWeight(i, rnd);
+			}
+		}
+	}
+	calcAll();
+}

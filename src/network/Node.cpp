@@ -43,6 +43,19 @@ float Node::calcValue() {
 		val += std::get<0>(*it).getValue() * std::get<1>(*it);
 	}
 	//isUpdated = true;
+	value = val; // Save it
+	return val;
+}
+
+// Calculate the value of this node, put it through a Sigmoid function and save it
+float Node::calcValueSig() {
+	float val = 0;
+	for (auto it = connectionsIn.begin(); it != connectionsIn.end(); it++) {
+		val += std::get<0>(*it).getValue() * std::get<1>(*it);
+	}
+	//isUpdated = true;
+	val = fastSigmoid(val);
+	value = val; // Save it
 	return val;
 }
 
@@ -53,6 +66,7 @@ float Node::calcValueCascade() {
 		val += std::get<0>(*it).calcValueCascade() * std::get<1>(*it);
 	}
 	//isUpdated = true;
+	value = val;
 	return val;
 }
 
@@ -82,4 +96,9 @@ std::stringstream Node::toString() const {
 	std::stringstream ss;
 	ss << "Node: " << getValue();
 	return ss;
+}
+
+
+float fastSigmoid(float input) {
+	return input / (1 + abs(input));
 }

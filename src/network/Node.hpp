@@ -18,6 +18,7 @@ public:
 	const std::tuple<Node, float>& getConnection(int index) const;
 
 	float calcValue();
+	float calcValueSig(); // Value also put through Sigmoid function
 	float calcValueCascade();
 
 	void addInput(const Node& another, const float& weight = 1);
@@ -39,6 +40,8 @@ private:
 	//bool isUpdated;
 	//int id;
 };
+
+float fastSigmoid(float input);
 /*
 std::ostream& operator<< (std::ostream& stream, const Node& obj) {
 	return stream << obj.toString();

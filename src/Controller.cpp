@@ -7,6 +7,10 @@ Controller::Controller() {
 	
 }
 
+void Controller::initializeRun(/*TODO: params*/) {
+	
+}
+
 const Track Controller::getTrack() const {
 	return currentTrack;
 }
@@ -79,12 +83,11 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 }
 
 void Controller::stepForward() {
-	// TODO: Esa: implement the main logic
-
 	//Advances the physics simulation by one step
 	world->Step(timeStep, velocityIterations, positionIterations);
 	//According to the manual forces should be cleared after taking a step
 	world->ClearForces();
 	// Call this to have car update its collision status and do all steering related stuff
 	//currentCar.update(float speed, float angle, int amount, int degrees);
+
 }

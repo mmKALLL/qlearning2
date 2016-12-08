@@ -31,6 +31,9 @@ public:
 	float desiredSpeed = 0;
 	float currentSpeed = 0;
 	
+	NeuralNetwork& getNetwork() { return network; }
+	void setNetwork(NeuralNetwork newNetwork);
+
 private:
 	// Variables for the body amd maximum speeds
 	// maxspeed is maximum speed and maxDriveForce is maximum acceleration

@@ -29,3 +29,21 @@ void Learning::adjustConnection(int layer, int index, float targetValue,
 
 
 }
+
+//Adjust connections to this node to get its value closer to target
+//Simple dummy algorithm to get somehow going
+void Learning::adjustConnectionSimple(int layer, int index, float targetValue,
+	NeuralNetwork& nn, float stepSize) {
+
+	auto node = nn.nodes[layer][index];
+	float oldValue = node.calcValue();
+	//float difference = targetValue - currentValue;
+	//float smallestDifference = difference;
+
+
+}
+
+void Learning::adjustNetwork(std::vector<float> optimalAction)
+{
+
+}

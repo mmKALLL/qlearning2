@@ -7,6 +7,9 @@
 #include <vector>
 #include <tuple>
 
+class Controller;
+#include "../Controller.hpp"
+
 class Track {
 public:
 	Track(b2World* world);
@@ -15,9 +18,12 @@ public:
 	void GUI(std::vector<sf::VertexArray>);
 	sf::VertexArray newSector(float width, float height, float angle, b2Vec2 middlePoint);
 
+	void setControllerReference(Controller* cntrl) { controller = cntrl; }
+
 private:
 	std::vector<b2Body*> circuit;
 	b2World* world;
+	Controller* controller;
 };
 
 #endif

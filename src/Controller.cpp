@@ -4,17 +4,18 @@
 Controller::Controller() {
 	// TODO: Esa: Does the constructor need any functionality?
 	// No need for gravity in top down physics
-	
+	//currentTrack.setControllerReference(*this);
+	currentTrack = &Track(world);
 }
 
 void Controller::initializeRun(/*TODO: params*/) {
 	
 }
 
-const Track Controller::getTrack() const {
-	return currentTrack;
+const Track& Controller::getTrack() const {
+	return *currentTrack;
 }
-const Car Controller::getCar() const {
+const Car& Controller::getCar() const {
 	return currentCar;
 }
 

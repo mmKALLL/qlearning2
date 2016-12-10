@@ -15,7 +15,7 @@ public:
 	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn) {
 		adjustConnection(layer, index, targetValue, nn, defaultStepSize); //call with default value
 	}
-	
+	void adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
 	
 	void adjustNetwork(std::vector<float> optimalAction); // Call adjustConnection on each node in network.
 	

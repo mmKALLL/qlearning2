@@ -6,8 +6,11 @@
 #include "network/NeuralNetwork.hpp"
 #include "network/Learning.hpp"
 #include "car/Car.hpp"
+
+class Track;
 #include "car/Track.hpp"
 
+const bool debugging = true;
 const int numberOfVisionLines = 5;
 const int fieldOfView = 90; // TODO: FoV slider
 const float timeToFitnessMultiplier = 1.2;
@@ -20,8 +23,8 @@ public:
 	void initializeRun(/*TODO: params*/); // Application launched or previous car's run completely over, so start new run
 	
 	//---Generic getters
-    const Track getTrack() const;
-    const Car getCar() const;
+    const Track& getTrack() const;
+    const Car& getCar() const;
 
 	//std::vector<double>& getActionForCar(Car& car, NeuralNetwork& nn) const;
 
@@ -51,7 +54,7 @@ private:
 	
 	
 	b2World* world = new b2World(b2Vec2(0,0));
-	Track currentTrack = Track(world);
+	Track* currentTrack;
 	Car currentCar = Car(world);
 };
 

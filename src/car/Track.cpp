@@ -66,6 +66,12 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 
 	while (window.isOpen()) {
 		sf::Event event;
+		//std::cout << "Drawing a frame" << std::endl;
+		// TEMPOARY BUBBLEGUM CODE, ERASE LATER *******
+
+
+
+		// BUBBLEGUM CODE ENDS ************************
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
 				window.close();

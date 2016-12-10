@@ -20,11 +20,12 @@ int runTests() {
     }
     
     std::cout << std::endl << "All tests were OK." << std::endl << testsPassed << " tests were passed." << std::endl;
-    return 0;
+	system("pause"); //waitkey
+	return 0;
 }
 
 int runNetworkTest() {
-    Node testNode();
+    //Node testNode();
     return 0;
 }
 

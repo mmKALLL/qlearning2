@@ -1,12 +1,12 @@
 #include "Node.hpp"
-#include <vector>
 
-Node::Node(std::vector<Node> inputs, int t) {
+Node::Node(int idd, std::vector<Node> inputs, int t) {
 	std::vector<std::tuple<Node, float>> connections;
 	for (auto it = inputs.begin(); it != inputs.end(); it++) {
 		//auto tmp = std::make_tuple(it, 1);
 		connections.push_back(std::make_tuple(*it, 1.0));
 	}
+	id = idd;
 	connectionsIn = connections;
 	value = 0;
 	type = t;
@@ -21,11 +21,15 @@ int Node::getType() const {
 	return type;
 }
 
-const std::vector<std::tuple<Node, float>> Node::getConnectionsIn() const {
+const int Node::getID() const {
+	return id;
+}
+
+const std::vector<std::tuple<Node, float>>& Node::getConnectionsIn() const {
 	return connectionsIn;
 }
 
-const std::vector<Node> Node::getConnectionsOut() const {
+const std::vector<Node>& Node::getConnectionsOut() const {
 	return connectionsOut;
 }
 
@@ -80,6 +84,10 @@ void Node::addOutput(const Node& another) {
 	//isUpdated = false;
 }
 
+void Node::setID(int newID) {
+	id = newID;
+}
+
 void Node::setValue(const float val) {
 	value = val;
 }
@@ -92,10 +100,9 @@ void Node::setWeight(const unsigned int index, const float weight) {
 }
 
 //------------toString--------------
-std::stringstream Node::toString() const {
-	std::stringstream ss;
-	ss << "Node: " << getValue();
-	return ss;
+std::string Node::toString() const {
+	std::string ss = "Node: ";
+	return ss + std::to_string(getValue());
 }
 
 

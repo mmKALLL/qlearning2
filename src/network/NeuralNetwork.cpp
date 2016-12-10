@@ -1,9 +1,13 @@
 #include "NeuralNetwork.hpp"
 
-NeuralNetwork::NeuralNetwork() {
+NeuralNetwork::NeuralNetwork(unsigned int layerCount) {
 	//init sizes as 0
 	sizes = std::vector<unsigned int> {0, 0, 0, 0};
-	std::vector<std::vector<Node>> nodes;
+	//std::vector<std::vector<Node>> nodes;// (layerCount, std::vector<Node>(0));
+	
+	for (unsigned int i = 0; i < layerCount; i++) {
+		nodes.push_back(std::vector<Node>{});
+	}
 }
 
 int NeuralNetwork::getInputSize() const {
@@ -25,6 +29,8 @@ int NeuralNetwork::getLayerSize(int layer) const {
 std::vector<float> NeuralNetwork::getOutputValues() const {
 	std::vector<float> values;
 	int hli = nodes.size() - 1; //hidden layer index
+	if (hli < 0) 
+		throw "NeuralNetwork::getOutputValues Neural Networks needs at least two layers";
 	for (auto it = nodes[hli].begin(); it != nodes[hli].end(); it++) {
 		values.push_back(it->getValue());
 	}
@@ -51,7 +57,7 @@ void NeuralNetwork::setInput(const int index, const float value) {
 //Set the contents of the vector as the values of input nodes. Should stop to avoid out of bounds
 void NeuralNetwork::setInputs(std::vector<float>& values) {
 	unsigned int size = nodes[0].size();
-	if (values.size() >= size) { throw "NN input vector larger than amount of input nodes"; }
+	if (values.size() > size) { throw "NeuralNetwork::setInputs input vector larger than amount of input nodes"; }
 	for (unsigned int i = 0; i < size; i++) {
 		nodes[0][i].setValue(values[i]);
 	}
@@ -67,6 +73,20 @@ void NeuralNetwork::addNode(const Node& node, const int type) {
 void NeuralNetwork::addNodes(std::vector<Node>& nodevector, const int type) {
 	nodes[type] = nodevector;
 	sizes[type] = nodes[type].size(); //update size
+}
+
+void NeuralNetwork::build(std::vector<unsigned int> layerSizes, bool rand, float low, float high) {
+	//if (layerSizes.size() != 4) throw "NeuralNetwork::build invalid layerSizes vector, should have lenght of 4";
+	int id = 0;
+	for (unsigned int i = 0; i < layerSizes.size(); i++) {
+		for (unsigned int j = 0; j < layerSizes[i]; j++) {
+			Node newNode = Node(id);//set "unique" id to each node
+			id++;
+			addNode(newNode, i);
+		}
+	}
+	connectAll();
+	if(rand) randomize(low, high);
 }
 
 //Connect all nodes to each node in upper and lower layer
@@ -93,6 +113,15 @@ void NeuralNetwork::calcAll() {
 	for (unsigned int i = 1; i < nodes.size(); i++) { //inputs don't need the value calculated, i=1
 		for (auto it = nodes[i].begin(); it != nodes[i].end(); it++) {
 			it->calcValue();
+		}
+	}
+}
+
+//Calculate the value of each node, starting from hidden layer 1, use Sigmoid function
+void NeuralNetwork::calcAllSig() {
+	for (unsigned int i = 1; i < nodes.size(); i++) { //inputs don't need the value calculated, i=1
+		for (auto it = nodes[i].begin(); it != nodes[i].end(); it++) {
+			it->calcValueSig();
 		}
 	}
 }

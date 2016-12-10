@@ -6,8 +6,9 @@
 
 class NeuralNetwork {
 	friend class Learning;
+	friend class tests;
 public:
-	NeuralNetwork();
+	NeuralNetwork(unsigned int layerCount = 4);
 	int getInputSize() const;
 	int getOutputSize() const;
 	int getLayerSize(int layer) const;
@@ -19,8 +20,10 @@ public:
 	void addNode(const Node& node, const int type);
 	void addNodes(std::vector<Node>& nodes, const int type);
 
+	void build(std::vector<unsigned int> layerSizes, bool randomize = true, float low = -0.1, float high = 0.1);
 	void connectAll();
 	void calcAll();
+	void calcAllSig();
 	void randomize(float low, float high);
 
 protected:

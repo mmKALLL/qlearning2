@@ -9,12 +9,13 @@
 
 class Node {
 public:
-	Node(std::vector<Node> inputs = std::vector<Node>(), int type = -1);
+	Node(int id = -1, std::vector<Node> inputs = std::vector<Node>(), int type = -1);
 
 	float getValue() const;
 	int getType() const;
-	const std::vector<std::tuple<Node, float>> getConnectionsIn() const;
-	const std::vector<Node> getConnectionsOut() const;
+	const int getID() const;
+	const std::vector<std::tuple<Node, float>>& getConnectionsIn() const;
+	const std::vector<Node>& getConnectionsOut() const;
 	const std::tuple<Node, float>& getConnection(int index) const;
 
 	float calcValue();
@@ -24,11 +25,12 @@ public:
 	void addInput(const Node& another, const float& weight = 1);
 	void addOutput(const Node& another);
 	
+	void setID(int id);
 	void setValue(const float value);
 	void setWeight(const unsigned int index, const float weight);
 	
 
-	std::stringstream toString() const;
+	std::string toString() const;
 	float value;
 
 protected:
@@ -37,6 +39,7 @@ protected:
 
 private:
 	int type; //0=input, 1=hidden1, 2=hidden2, 3=output, -1=undefined
+	int id;
 	//bool isUpdated;
 	//int id;
 };

@@ -40,6 +40,14 @@ bool assert(T value, T correct, string valDesc = "", string corrDesc = "") {
 		return false;
 	}
 }
+template<typename T>
+int testAssert(T value, T correct, string valDesc = "", string corrDesc = "") {
+	if (assert<T>(value, correct, valDesc, corrDesc)) {
+		return 0;
+	}
+	else return -1;
+}
+
 
 /* ------------------------------------------------------------
 						Network Tests
@@ -109,6 +117,12 @@ int setNodeWeight() {
 	}
 	return -1;
 }
+
+int readNodeValue() {
+	Node node = Node();
+	node.setValue(2);
+	return testAssert<float>(node.getValue(), 2);
+}
 int calculateNodeValue() {
 	Node input1 = Node();
 	Node input2 = Node();
@@ -148,6 +162,8 @@ int runTests() {
 	runTest(connectNodes, string("Connect nodes"), passed, failed);
 	runTest(calculateNodeValue, string("Calculate node value"), passed, failed);
 	runTest(setNodeWeight, string("Set connection weight"), passed, failed);
+	runTest(readNodeValue, string("Read value of a node"), passed, failed)
+
 
 	runTest(runNetworkTest, string("Network"), passed, failed);
 	runTest(simpleNetworkTest, string("Simple Network"), passed, failed);

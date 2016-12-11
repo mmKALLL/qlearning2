@@ -22,11 +22,11 @@ public:
 	float calcValueSig(); // Value also put through Sigmoid function
 	float calcValueCascade();
 
-	void addInput(const Node& another, const float& weight = 1);
-	void addOutput(const Node& another);
+	void addInput(Node& another, const float& weight = 1);
+	void addOutput(Node& another);
 	
 	void setID(int id);
-	void setValue(const float value);
+	void setValue(float value);
 	void setWeight(const unsigned int index, const float weight);
 	
 

@@ -3,7 +3,6 @@
 Node::Node(int idd, std::vector<Node> inputs, int t) {
 	std::vector<std::tuple<Node, float>> connections;
 	for (auto it = inputs.begin(); it != inputs.end(); it++) {
-		//auto tmp = std::make_tuple(it, 1);
 		connections.push_back(std::make_tuple(*it, 1.0));
 	}
 	id = idd;
@@ -44,7 +43,7 @@ const std::tuple<Node, float>& Node::getConnection(int index) const {
 float Node::calcValue() {
 	float val = 0;
 	for (auto it = connectionsIn.begin(); it != connectionsIn.end(); it++) {
-		val += std::get<0>(*it).getValue() * std::get<1>(*it);
+		val = val + std::get<0>(*it).getValue() * std::get<1>(*it);
 	}
 	//isUpdated = true;
 	value = val; // Save it
@@ -74,12 +73,12 @@ float Node::calcValueCascade() {
 	return val;
 }
 
-void Node::addInput(const Node& another, const float& weight) {
+void Node::addInput(Node& another, const float& weight) {
 	connectionsIn.push_back(std::make_tuple(another, weight));
 	//isUpdated = false;
 }
 
-void Node::addOutput(const Node& another) {
+void Node::addOutput(Node& another) {
 	connectionsOut.push_back(another);
 	//isUpdated = false;
 }
@@ -88,7 +87,7 @@ void Node::setID(int newID) {
 	id = newID;
 }
 
-void Node::setValue(const float val) {
+void Node::setValue(float val) {
 	value = val;
 }
 

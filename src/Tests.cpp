@@ -10,13 +10,17 @@ using std::string;
 typedef int(*FC)(); //FC for function call
 
 const string separator = string("");
+const int spacing = 35;
 
-//Easy way to create new tests, takes function call as parameter
+
+//Easy way to create new tests, takes function call and description as parameter
 void runTest(FC test, std::string& name, int& passed, int& failed) {
 	//cout << "========" << endl;
-	cout << "Running " << name << " test";
+	unsigned int additionalSpacing = spacing - name.size();
+	cout << "Running " << name;// << " test";
 	if (test() == 0) {
-		cout << "  .. passed!" << endl;
+		cout << string(additionalSpacing, ' ');
+		cout << " .. passed!" << endl;
 		passed++;
 	}
 	else {
@@ -33,7 +37,7 @@ bool assert(T value, T correct, string valDesc = "", string corrDesc = "") {
 	if (value == correct) {
 		return true;
 	}
-	else {
+	else { // If test fails, print info
 		cout << endl << separator <<endl;
 		cout << valDesc << "value is: " << value << endl;
 		cout << corrDesc << "should be: " << correct << endl;
@@ -50,7 +54,59 @@ int testAssert(T value, T correct, string valDesc = "", string corrDesc = "") {
 
 
 /* ------------------------------------------------------------
-						Network Tests
+						Node Tests
+-------------------------------------------------------------*/
+
+int connectNodes() {
+	Node input = Node(0);
+	Node output = Node(1);
+
+	output.addInput(input);
+	std::tuple<Node, float> tuple = output.getConnection(0);
+	int id1 = std::get<0>(tuple).getID();
+	int id2 = input.getID();
+
+	return testAssert<int>(id1, id2);
+}
+
+int setNodeWeight() {
+	Node input = Node();
+	Node output = Node();
+
+	output.addInput(input);
+	output.setWeight(0, 1);
+	auto connection = output.getConnection(0);
+	return testAssert<float>(std::get<1>(connection), 1);
+}
+
+int readNodeValue() {
+	Node node = Node();
+	node.setValue(2);
+	return testAssert<float>(node.getValue(), 2);
+}
+
+int calculateNodeValue() {
+	Node input1 = Node(1);
+	Node input2 = Node(2);
+	Node output = Node(3);
+
+	output.addInput(input1);
+	output.addInput(input2);
+	
+	output.setWeight(0, 1);
+	output.setWeight(1, -2);	
+
+	input1.setValue(1.0);
+	input2.setValue(2.0);
+
+	output.calcValue();
+
+	return testAssert<float>(output.getValue(), -3);
+}
+
+
+/* ------------------------------------------------------------
+Network Tests
 -------------------------------------------------------------*/
 
 int runNetworkTest() {
@@ -75,75 +131,17 @@ int runNetworkTest() {
 int simpleNetworkTest() {
 	NeuralNetwork network = NeuralNetwork(2);
 	network.build(std::vector<unsigned int> {2, 1}, false);
+
 	auto outputs = network.getOutputValuesFromInputs(std::vector<float> {1, 0.5});
 	std::cout << "Outputs are: ";
 	for (auto output : outputs) {
 		std::cout << output << " ";
 	}
 	cout << endl;
-	if (outputs[0] == 0) return 1;
+	if (outputs[0] == 0) return -1;
 	else return 0;
 }
 
-
-/* ------------------------------------------------------------
-						Node Tests
--------------------------------------------------------------*/
-
-int connectNodes() {
-	Node input = Node(0);
-	Node output = Node(1);
-
-	output.addInput(input);
-	std::tuple<Node, float> tuple = output.getConnection(0);
-	int id1 = std::get<0>(tuple).getID();
-	int id2 = input.getID();
-
-	if (assert<int>(id1, id2)) {
-		return 0;
-	}
-	return -1;
-}
-
-int setNodeWeight() {
-	Node input = Node();
-	Node output = Node();
-
-	output.addInput(input);
-	output.setWeight(0, 1);
-	auto connection = output.getConnection(0);
-	if (assert<float>(std::get<1>(connection), 1) ) {
-		return 0;
-	}
-	return -1;
-}
-
-int readNodeValue() {
-	Node node = Node();
-	node.setValue(2);
-	return testAssert<float>(node.getValue(), 2);
-}
-int calculateNodeValue() {
-	Node input1 = Node();
-	Node input2 = Node();
-	Node output = Node();
-
-	output.addInput(input1);
-	output.addInput(input1);
-	
-	output.setWeight(0, 1);
-	output.setWeight(1, -2);
-
-	input1.setValue(1);
-	input2.setValue(2);
-
-	output.calcValue();
-
-	if (assert<float>(output.getValue(), -3)) {
-		return 0;
-	}
-	return -1;
-}
 
 /* ------------------------------------------------------------
 						Physics Tests
@@ -159,17 +157,19 @@ int runTests() {
     int passed = 0;
 	int failed = 0;
 
+	cout << "===== Testing Node =====" << endl;
 	runTest(connectNodes, string("Connect nodes"), passed, failed);
-	runTest(calculateNodeValue, string("Calculate node value"), passed, failed);
 	runTest(setNodeWeight, string("Set connection weight"), passed, failed);
-	runTest(readNodeValue, string("Read value of a node"), passed, failed)
+	runTest(readNodeValue, string("Node value reading"), passed, failed);
+	runTest(calculateNodeValue, string("Calculate node value"), passed, failed);
 
+	cout << "===== Testing Neural Network =====" << endl;
+	runTest(simpleNetworkTest, string("Simple Network            "), passed, failed);
+	//runTest(runNetworkTest, string("Network                      "), passed, failed);
 
-	runTest(runNetworkTest, string("Network"), passed, failed);
-	runTest(simpleNetworkTest, string("Simple Network"), passed, failed);
-	runTest(runPhysicsTest, string("Physics"), passed, failed);
+	//runTest(runPhysicsTest, string("Physics                      "), passed, failed);
 
-	cout << "=====" << "Passed: " << passed << ", failed: " << failed << "=====" << endl;
+	cout << "===== " << "Passed: " << passed << ", failed: " << failed << " =====" << endl;
 	if (failed == 0) {
 		std::cout << std::endl << "All tests were OK." << std::endl;
 	}

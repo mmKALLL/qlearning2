@@ -23,7 +23,7 @@ void Learning::adjustConnection(int layer, int index, float targetValue,
 								NeuralNetwork& nn, float stepSize) {
 
 	auto node = nn.nodes[layer][index];
-	float oldValue = node.calcValue();
+	float oldValue = node->calcValue();
 	//float difference = targetValue - currentValue;
 	//float smallestDifference = difference;
 
@@ -36,7 +36,7 @@ void Learning::adjustConnectionSimple(int layer, int index, float targetValue,
 	NeuralNetwork& nn, float stepSize) {
 
 	auto node = nn.nodes[layer][index];
-	float oldValue = node.calcValue();
+	float oldValue = node->calcValue();
 	//float difference = targetValue - currentValue;
 	//float smallestDifference = difference;
 

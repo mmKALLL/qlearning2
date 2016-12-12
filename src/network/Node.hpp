@@ -9,14 +9,14 @@
 
 class Node {
 public:
-	Node(int id = -1, std::vector<Node> inputs = std::vector<Node>(), int type = -1);
+	Node(int id = -1,/* std::vector<Node> inputs = std::vector<Node>(),*/ int type = -1);
 
 	float getValue() const;
 	int getType() const;
 	const int getID() const;
-	const std::vector<std::tuple<Node, float>>& getConnectionsIn() const;
-	const std::vector<Node>& getConnectionsOut() const;
-	const std::tuple<Node, float>& getConnection(int index) const;
+	const std::vector<std::tuple<Node*, float>>& getConnectionsIn() const;
+	const std::vector<Node*>& getConnectionsOut() const;
+	const std::tuple<Node*, float>& getConnection(int index) const;
 
 	float calcValue();
 	float calcValueSig(); // Value also put through Sigmoid function
@@ -34,8 +34,8 @@ public:
 	float value;
 
 protected:
-	std::vector<std::tuple<Node, float>> connectionsIn;
-	std::vector<Node> connectionsOut;
+	std::vector<std::tuple<Node*, float>> connectionsIn;
+	std::vector<Node*> connectionsOut;
 
 private:
 	int type; //0=input, 1=hidden1, 2=hidden2, 3=output, -1=undefined

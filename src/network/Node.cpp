@@ -1,12 +1,13 @@
 #include "Node.hpp"
 
-Node::Node(int idd, std::vector<Node> inputs, int t) {
-	std::vector<std::tuple<Node, float>> connections;
+Node::Node(int idd/*, std::vector<Node> inputs*/, int t) {
+	//std::vector<std::tuple<Node*, float>> connections;
+	/*
 	for (auto it = inputs.begin(); it != inputs.end(); it++) {
-		connections.push_back(std::make_tuple(*it, 1.0));
-	}
+		connections.push_back(std::make_tuple(it, 1.0));
+	}*/
 	id = idd;
-	connectionsIn = connections;
+	//connectionsIn = connections;
 	value = 0;
 	type = t;
 	//isUpdated = false;
@@ -24,15 +25,15 @@ const int Node::getID() const {
 	return id;
 }
 
-const std::vector<std::tuple<Node, float>>& Node::getConnectionsIn() const {
+const std::vector<std::tuple<Node*, float>>& Node::getConnectionsIn() const {
 	return connectionsIn;
 }
 
-const std::vector<Node>& Node::getConnectionsOut() const {
+const std::vector<Node*>& Node::getConnectionsOut() const {
 	return connectionsOut;
 }
 
-const std::tuple<Node, float>& Node::getConnection(int index) const {
+const std::tuple<Node*, float>& Node::getConnection(int index) const {
 	return connectionsIn[index];
 }
 
@@ -43,7 +44,7 @@ const std::tuple<Node, float>& Node::getConnection(int index) const {
 float Node::calcValue() {
 	float val = 0;
 	for (auto it = connectionsIn.begin(); it != connectionsIn.end(); it++) {
-		val = val + std::get<0>(*it).getValue() * std::get<1>(*it);
+		val = val + std::get<0>(*it)->getValue() * std::get<1>(*it);
 	}
 	//isUpdated = true;
 	value = val; // Save it
@@ -54,7 +55,7 @@ float Node::calcValue() {
 float Node::calcValueSig() {
 	float val = 0;
 	for (auto it = connectionsIn.begin(); it != connectionsIn.end(); it++) {
-		val += std::get<0>(*it).getValue() * std::get<1>(*it);
+		val += std::get<0>(*it)->getValue() * std::get<1>(*it);
 	}
 	//isUpdated = true;
 	val = fastSigmoid(val);
@@ -66,7 +67,7 @@ float Node::calcValueSig() {
 float Node::calcValueCascade() {
 	float val = 0;
 	for (auto it = connectionsIn.begin(); it != connectionsIn.end(); it++) {
-		val += std::get<0>(*it).calcValueCascade() * std::get<1>(*it);
+		val += std::get<0>(*it)->calcValueCascade() * std::get<1>(*it);
 	}
 	//isUpdated = true;
 	value = val;
@@ -74,12 +75,12 @@ float Node::calcValueCascade() {
 }
 
 void Node::addInput(Node& another, const float& weight) {
-	connectionsIn.push_back(std::make_tuple(another, weight));
+	connectionsIn.push_back(std::make_tuple(&another, weight));
 	//isUpdated = false;
 }
 
 void Node::addOutput(Node& another) {
-	connectionsOut.push_back(another);
+	connectionsOut.push_back(&another);
 	//isUpdated = false;
 }
 

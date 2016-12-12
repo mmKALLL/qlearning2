@@ -17,8 +17,8 @@ public:
 
 	void setInput(const int index, const float value);
 	void setInputs(std::vector<float>& values);
-	void addNode(const Node& node, const int type);
-	void addNodes(std::vector<Node>& nodes, const int type);
+	void addNode(Node& const node, const int type);
+	void addNodes(std::vector<Node*>& nodes, const int type);
 
 	void build(std::vector<unsigned int> layerSizes, bool randomize = true, float low = -0.1, float high = 0.1);
 	void connectAll();
@@ -27,7 +27,7 @@ public:
 	void randomize(float low, float high);
 
 protected:
-	std::vector<std::vector<Node>> nodes;
+	std::vector<std::vector<Node*>> nodes;
 	std::vector<unsigned int> sizes; //size of each Node-vector
 
 private:

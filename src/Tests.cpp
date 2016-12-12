@@ -17,7 +17,7 @@ const int spacing = 35;
 void runTest(FC test, std::string& name, int& passed, int& failed) {
 	//cout << "========" << endl;
 	unsigned int additionalSpacing = spacing - name.size();
-	cout << "Running " << name;// << " test";
+	cout << "Running test " << name;// << " test";
 	if (test() == 0) {
 		cout << string(additionalSpacing, ' ');
 		cout << " .. passed!" << endl;
@@ -62,8 +62,8 @@ int connectNodes() {
 	Node output = Node(1);
 
 	output.addInput(input);
-	std::tuple<Node, float> tuple = output.getConnection(0);
-	int id1 = std::get<0>(tuple).getID();
+	std::tuple<Node*, float> tuple = output.getConnection(0);
+	int id1 = std::get<0>(tuple)->getID();
 	int id2 = input.getID();
 
 	return testAssert<int>(id1, id2);
@@ -106,8 +106,29 @@ int calculateNodeValue() {
 
 
 /* ------------------------------------------------------------
-Network Tests
+					Network Tests
 -------------------------------------------------------------*/
+
+int simpleNetwork() {
+	NeuralNetwork network = NeuralNetwork(2);
+	network.build(std::vector<unsigned int> {2, 1}, false);
+
+	auto outputs = network.getOutputValuesFromInputs(std::vector<float> {1, 0.5});
+
+	return testAssert<float>(outputs[0], 1.5);
+}
+
+int fourLayerNetwork() {
+	NeuralNetwork network = NeuralNetwork();
+	network.build(std::vector<unsigned int> {4, 5, 4, 3}, false);
+
+	auto outputs = network.getOutputValuesFromInputs(std::vector<float> {0.4f, -0.2f, 0.15f, -0.25});
+	if (assert<float>(outputs[0], 2.0)
+		&& assert<float>(outputs[1], 2.0)) {
+		return 0;
+	}
+	else return -1;
+}
 
 int runNetworkTest() {
 	//Node testNode();
@@ -127,21 +148,6 @@ int runNetworkTest() {
 	std::cout << std::endl;
 	return 0;
 }
-
-int simpleNetworkTest() {
-	NeuralNetwork network = NeuralNetwork(2);
-	network.build(std::vector<unsigned int> {2, 1}, false);
-
-	auto outputs = network.getOutputValuesFromInputs(std::vector<float> {1, 0.5});
-	std::cout << "Outputs are: ";
-	for (auto output : outputs) {
-		std::cout << output << " ";
-	}
-	cout << endl;
-	if (outputs[0] == 0) return -1;
-	else return 0;
-}
-
 
 /* ------------------------------------------------------------
 						Physics Tests
@@ -164,7 +170,10 @@ int runTests() {
 	runTest(calculateNodeValue, string("Calculate node value"), passed, failed);
 
 	cout << "===== Testing Neural Network =====" << endl;
-	runTest(simpleNetworkTest, string("Simple Network            "), passed, failed);
+	runTest(simpleNetwork, string("Simple Network"), passed, failed);
+	runTest(fourLayerNetwork, string("Four-layer Network"), passed, failed);
+
+
 	//runTest(runNetworkTest, string("Network                      "), passed, failed);
 
 	//runTest(runPhysicsTest, string("Physics                      "), passed, failed);

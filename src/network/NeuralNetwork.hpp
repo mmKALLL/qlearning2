@@ -17,7 +17,7 @@ public:
 
 	void setInput(const int index, const float value);
 	void setInputs(std::vector<float>& values);
-	void addNode(Node& const node, const int type);
+	void addNode(Node& node, const int type);
 	void addNodes(std::vector<Node*>& nodes, const int type);
 
 	void build(std::vector<unsigned int> layerSizes, bool randomize = true, float low = -0.1, float high = 0.1);

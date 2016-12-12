@@ -1,11 +1,11 @@
 #include "Controller.hpp"
-#include <vector>
 
 Controller::Controller() {
 	// TODO: Esa: Does the constructor need any functionality?
 	// No need for gravity in top down physics
 	//currentTrack.setControllerReference(*this);
-	currentTrack = &Track(world);
+	Track* track = new Track(world);
+	currentTrack = track;
 }
 
 void Controller::initializeRun(/*TODO: params*/) {

@@ -1,7 +1,4 @@
 #include "Tests.hpp"
-#include "network\NeuralNetwork.hpp"
-#include <vector>
-#include <tuple>
 
 using std::cout;
 using std::endl;
@@ -14,7 +11,7 @@ const int spacing = 35;
 
 
 //Easy way to create new tests, takes function call and description as parameter
-void runTest(FC test, std::string& name, int& passed, int& failed) {
+void runTest(FC test, std::string name, int& passed, int& failed) {
 	//cout << "========" << endl;
 	unsigned int additionalSpacing = spacing - name.size();
 	cout << "Running test " << name;// << " test";
@@ -94,7 +91,7 @@ int calculateNodeValue() {
 	output.addInput(input2);
 	
 	output.setWeight(0, 1);
-	output.setWeight(1, -2);	
+	output.setWeight(1, -2);
 
 	input1.setValue(1.0);
 	input2.setValue(2.0);
@@ -200,4 +197,3 @@ int runTests() {
 	
 	return 0;
 }
-

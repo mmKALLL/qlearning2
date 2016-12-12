@@ -16,7 +16,6 @@ const int fieldOfView = 90; // TODO: FoV slider
 const float timeToFitnessMultiplier = 1.2;
 const float defaultStepSize = 0.001; // learning rate
 
-
 class Controller {
 public:
 	Controller();
@@ -51,7 +50,6 @@ private:
 	int32 velocityIterations = 8;   //how strongly to correct velocity
 	int32 positionIterations = 3;   //how strongly to correct position
 
-	
 	
 	b2World* world = new b2World(b2Vec2(0,0));
 	Track* currentTrack;

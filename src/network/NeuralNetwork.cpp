@@ -64,7 +64,7 @@ void NeuralNetwork::setInputs(std::vector<float>& values) {
 }
 
 //Add a node to the NN
-void NeuralNetwork::addNode(Node& const node, const int type) {
+void NeuralNetwork::addNode(Node& node, const int type) {
 	nodes[type].push_back(&node);
 	sizes[type] = nodes[type].size(); //update size
 }
@@ -101,7 +101,7 @@ void NeuralNetwork::build(std::vector<unsigned int> layerSizes, bool rand, float
 /*
 	Connect all nodes in the Neural Network such that any given node
 	connects to every node in the layer above and below it.
-	Ie every hidden layer 1 node connects to every input node and 
+	Ie every hidden layer 1 node connects to every input node and
 	every hidden layer 2 node.
 */
 void NeuralNetwork::connectAll() {

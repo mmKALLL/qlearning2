@@ -23,7 +23,10 @@ public:
 	void adjustNetwork(/*std::vector<float> optimalAction*/NeuralNetwork& nn); // Call adjustConnection on each node in network.
 	
 	/**
-		Initial idea:
+		Basically we are going to implement this:
+		https://www.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf
+	
+		A scrapped initial idea:
 		targetValue is the value of node at [i][j] which leads to maximal fitness. That is, maximize speed as long as it doesn't
 		lead to a crash or similar. For output nodes, this typically means whether we want to accelerate or not, and turn or not.
 		

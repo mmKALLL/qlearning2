@@ -1,4 +1,7 @@
 #include "NeuralNetwork.hpp"
+std::random_device rd;     // only used once to initialise (seed) engine
+std::mt19937 mt(rd());    // random-number engine used (Mersenne-Twister in this case)
+std::uniform_real_distribution<double> rng(0.0, 1.0);
 
 NeuralNetwork::NeuralNetwork(unsigned int layerCount) {
 	//init sizes as 0
@@ -45,6 +48,51 @@ std::vector<float> NeuralNetwork::getOutputValuesFromInputs
 	setInputs(values);
 	if (useSig) calcAllSig(); else calcAll();
 	return getOutputValues();
+}
+
+// Get action based on state. Action depth tells how many action combinations to evaluate.
+// Use only odd numbers. Exploration coefficient weighs exploration; lower it to increase exploitation.
+std::vector<float> getAction(std::vector<float> state, unsigned int actionDepth, float explorationCoefficient) {
+	
+	std::vector<float> qvalues;
+	std::vector<float> result;
+	for (float& acc = -1; acc <= 1.00001; acc += (2.0f / (actionDepth - 1))) {
+		for (float& turn = -1; turn <= 1.00001; turn += (2.0f / (actionDepth - 1))) {
+			std::vector<float> input = state;
+			input.push_back(acc);
+			input.push_back(turn);
+			qvalues.push_back(this.getOutputValuesFromInputs(input, false));
+		}
+	}
+	
+	std::vector<float> actionProbabilities;
+	float quotient = 0.0f;
+	for (float& x : qvalues) {
+		quotient += exp(x / explorationCoefficient);
+	}
+	for (float& x : qvalues) {
+		actionProbabilities.push_back(
+			exp(x / explorationCoefficient) / quotient
+		);
+	}
+	
+	float probSum = 0.0f;
+	for (float& x : actionProbabilities) {
+		probSum += x;
+	}
+	
+	double probTarget = rng(mt) * probSum;
+	for (int& i = 0; i < actionProbabilities; i++) {
+		probTarget -= actionProbabilities[i];
+		if (probTarget <= 0.0f) {
+			result.push_back(-1.0f + (i / actionDepth) * (2.0f / (actionDepth - 1)));
+			result.push_back(-1.0f + (i % actionDepth) * (2.0f / (actionDepth - 1)));
+			return result;
+		}
+	}
+	
+	throw "Not enough actions tried! Issues with actionProbabilities in NeuralNetwork::getAction().";
+	
 }
 
 

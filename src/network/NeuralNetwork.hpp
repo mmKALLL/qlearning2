@@ -3,6 +3,7 @@
 #include <vector>
 #include "Node.hpp"
 #include <tuple>
+#include <random>
 
 class NeuralNetwork {
 	friend class Learning;
@@ -14,13 +15,14 @@ public:
 	int getLayerSize(int layer) const;
 	std::vector<float> getOutputValues() const;
 	std::vector<float> getOutputValuesFromInputs(std::vector<float> inputs, bool useSig = false);
+	std::vector<float> getAction(std::vector<float> state, unsigned int actionDepth = 5, float explorationCoefficient = 3);
 
 	void setInput(const int index, const float value);
 	void setInputs(std::vector<float>& values);
 	void addNode(Node& node, const int type);
 	void addNodes(std::vector<Node*>& nodes, const int type);
 
-	void build(std::vector<unsigned int> layerSizes, bool randomize = true, float low = -0.1, float high = 0.1);
+	void build(std::vector<unsigned int> layerSizes, bool randomize = true, float low = -0.4, float high = 0.4);
 	void connectAll();
 	void calcAll();
 	void calcAllSig();

@@ -1,14 +1,18 @@
 #include "Controller.hpp"
 
 Controller::Controller() {
-	// TODO: Esa: Does the constructor need any functionality?
-	// No need for gravity in top down physics
-	//currentTrack.setControllerReference(*this);
-	Track* track = new Track(world);
-	currentTrack = track;
+	initializeRun();
 }
 
-void Controller::initializeRun(/*TODO: params*/) {
+void Controller::initializeRun() {
+	// No need for gravity in top down physics
+	//currentTrack.setControllerReference(*this);
+	Track* track = new Track(this.world);
+	this.currentTrack = track;
+	this.currentCar = Car(this.world);
+	this.currentNetwork = NeuralNetwork(this.layerCount);
+	this.currentCar.setNetwork(this.currentNetwork);
+	this.stepCounter = 0;
 	
 }
 
@@ -85,7 +89,10 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 
 void Controller::stepForward() {
 	// Get action from network, then make it learn.
-	// FIXME: Get action from network.
+	
+	std::vector<float> action = this.currentNetwork.getCarAction(//FIXME: state);
+	this.currentCar.accelerate(action[0]);
+	this.currentCar.turn(action[1]);
 	this.teacher.adjustNetwork(this.currentCar.getNetwork());
 	
 	//Advances the physics simulation by one step

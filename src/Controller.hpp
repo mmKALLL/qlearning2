@@ -14,7 +14,7 @@ class Track;
 class Controller {
 public:
 	Controller();
-	void initializeRun(/*TODO: params*/); // Application launched or previous car's run completely over, so start new run
+	void initializeRun(/*params?*/); // Application launched or previous car's run completely over, so start new run
 	
 	//---Generic getters
     const Track& getTrack() const;
@@ -45,6 +45,7 @@ private:
 	const int fieldOfView = 90; // TODO: FoV slider
 	const float timeToFitnessMultiplier = 1.2;
 	const float defaultStepSize = 0.001; // learning rate
+	const unsigned int layerCount = 4;
 	const Learning teacher = Learning(defaultStepSize);
 	
 	// Simulation runs at 60 fps
@@ -55,7 +56,9 @@ private:
 	
 	b2World* world = new b2World(b2Vec2(0,0));
 	Track* currentTrack;
-	Car currentCar = Car(world);
+	Car currentCar;
+	NeuralNetwork currentNetwork;
+	int stepCounter;
 };
 
 #endif

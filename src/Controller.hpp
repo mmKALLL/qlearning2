@@ -10,16 +10,11 @@
 class Track;
 #include "car/Track.hpp"
 
-const bool debugging = true;
-const int numberOfVisionLines = 5;
-const int fieldOfView = 90; // TODO: FoV slider
-const float timeToFitnessMultiplier = 1.2;
-const float defaultStepSize = 0.001; // learning rate
 
 class Controller {
 public:
 	Controller();
-	void initializeRun(/*TODO: params*/); // Application launched or previous car's run completely over, so start new run
+	void initializeRun(/*params?*/); // Application launched or previous car's run completely over, so start new run
 	
 	//---Generic getters
     const Track& getTrack() const;
@@ -44,7 +39,17 @@ public:
     void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
     
 private:
-
+	
+	const bool debugging = true;
+	const int numberOfVisionLines = 5;
+	const int fieldOfView = 90; // TODO: FoV slider
+	const float timeToFitnessMultiplier = 1.2;
+	const float defaultStepSize = 0.001; // learning rate
+	const unsigned int layerCount = 4;
+	const float qvalue = 0.0f;
+	const float discountFactor = 0.1; // [0.0f, 1.0f)
+	const Learning teacher = Learning(defaultStepSize);
+	
 	// Simulation runs at 60 fps
 	float32 timeStep = 1 / 60.0;
 	int32 velocityIterations = 8;   //how strongly to correct velocity
@@ -52,8 +57,10 @@ private:
 
 	
 	b2World* world = new b2World(b2Vec2(0,0));
-	Car currentCar = Car(world);
+	Car currentCar;
 	Track* currentTrack;
+	NeuralNetwork currentNetwork;
+	int stepCounter;
 };
 
 #endif

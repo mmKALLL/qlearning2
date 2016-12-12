@@ -8,19 +8,27 @@
 class Learning {
 	friend class NeuralNetwork;
 
-	Learning(float defStepSize = 0.01);
 
 public:
+	Learning(float defStepSize = 0.01);
+
 	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
 	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn) {
 		adjustConnection(layer, index, targetValue, nn, defaultStepSize); //call with default value
 	}
+	
+	float getStepSize();
+	
+	// Dummy function
 	void adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
 	
-	void adjustNetwork(std::vector<float> optimalAction); // Call adjustConnection on each node in network.
+	void adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget);
 	
 	/**
-		Initial idea:
+		Basically we are going to implement this:
+		https://www.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf
+	
+		A scrapped initial idea:
 		targetValue is the value of node at [i][j] which leads to maximal fitness. That is, maximize speed as long as it doesn't
 		lead to a crash or similar. For output nodes, this typically means whether we want to accelerate or not, and turn or not.
 		

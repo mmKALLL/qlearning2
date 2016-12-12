@@ -1,14 +1,18 @@
 #include "Controller.hpp"
 
 Controller::Controller() {
-	// TODO: Esa: Does the constructor need any functionality?
-	// No need for gravity in top down physics
-	//currentTrack.setControllerReference(*this);
-	Track* track = new Track(world);
-	currentTrack = track;
+	initializeRun();
 }
 
-void Controller::initializeRun(/*TODO: params*/) {
+void Controller::initializeRun() {
+	// No need for gravity in top down physics
+	//currentTrack.setControllerReference(*this);
+	Track* track = new Track(this.world);
+	this.currentTrack = track;
+	this.currentCar = Car(this.world);
+	this.currentNetwork = NeuralNetwork(this.layerCount);
+	this.currentCar.setNetwork(this.currentNetwork);
+	this.stepCounter = 0;
 	
 }
 
@@ -66,6 +70,7 @@ float Controller::getFitness(double time) const {
 
 //Ask physics where the car would end up with actions in param
 std::vector<float> Controller::simulateStepForward(Car& car, float steer, float accelerate) const {
+	// ***************** NOT NEEDED *********************
 	// TODO: Return vector such that:
 	// vector[0] true if hit by a wall, otherwise false
 	// vector[1] x coordinate
@@ -83,6 +88,22 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 }
 
 void Controller::stepForward() {
+	this.stepCounter += 1;
+	
+	// Get action from network, then make it learn.
+	float prevVelocity = this.currentCar.getVelocity();
+	std::vector<float> action = this.currentNetwork.getCarAction(//FIXME: state);
+	this.currentCar.accelerate(action[0]);
+	this.currentCar.turn(action[1]);
+	this.teacher.adjustNetwork(this.currentCar.getNetwork());
+	
+	float reward = this.currentCar.getCollisionStatus() * -10000 + this.currentCar.getVelocity() - prevVelocity * 0.9;
+	
+	float qtarget = qvalue + teacher.getStepSize() *
+						(reward + discountFactor * action[2] - qvalue);
+	trainer.adjustNetwork(this.currentNetwork, qvalue, qtarget);
+	this.qvalue = qtarget;
+	
 	//Advances the physics simulation by one step
 	world->Step(timeStep, velocityIterations, positionIterations);
 	//According to the manual forces should be cleared after taking a step

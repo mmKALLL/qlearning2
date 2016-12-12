@@ -39,11 +39,11 @@ std::vector<float> NeuralNetwork::getOutputValues() const {
 
 //Set new inputs, re-calculate and return outputs
 std::vector<float> NeuralNetwork::getOutputValuesFromInputs
-								(std::vector<float> values) {
+								(std::vector<float> values, bool useSig) {
 	if (values.size() != nodes[0].size())
 		throw "Function input size needs to match number of input nodes";
 	setInputs(values);
-	calcAll();
+	if (useSig) calcAllSig(); else calcAll();
 	return getOutputValues();
 }
 
@@ -75,6 +75,15 @@ void NeuralNetwork::addNodes(std::vector<Node*>& nodevector, const int type) {
 	sizes[type] = nodes[type].size(); //update size
 }
 
+
+/*
+	Build a Neural Network from scratch:
+		-Creates node-objects
+		-Sets them a "unique" ID
+		-Adds nodes to the network data structure
+		-Connects all nodes
+		-Randomizes weights if requested to
+*/
 void NeuralNetwork::build(std::vector<unsigned int> layerSizes, bool rand, float low, float high) {
 	//if (layerSizes.size() != 4) throw "NeuralNetwork::build invalid layerSizes vector, should have lenght of 4";
 	int id = 0;
@@ -89,7 +98,12 @@ void NeuralNetwork::build(std::vector<unsigned int> layerSizes, bool rand, float
 	if(rand) randomize(low, high);
 }
 
-//Connect all nodes to each node in upper and lower layer
+/*
+	Connect all nodes in the Neural Network such that any given node
+	connects to every node in the layer above and below it.
+	Ie every hidden layer 1 node connects to every input node and 
+	every hidden layer 2 node.
+*/
 void NeuralNetwork::connectAll() {
 	for (unsigned int i = 0; i < nodes.size(); i++) { //For each layer
 		for (auto it = nodes[i].begin(); it != nodes[i].end(); it++) { //For each node

@@ -130,6 +130,18 @@ int fourLayerNetwork() {
 	else return -1;
 }
 
+int randomizedNetwork() {
+	NeuralNetwork network = NeuralNetwork();
+	network.build(std::vector<unsigned int> {4, 5, 4, 3}, true);
+
+	auto outputs = network.getOutputValuesFromInputs(std::vector<float> {0.4f, -0.2f, 0.15f, -0.25}, true);
+	cout << endl;
+	for(auto output : outputs){
+		cout << "Output: " << output << endl;
+	}
+	return 0;
+}
+
 int runNetworkTest() {
 	//Node testNode();
 	std::cout << "Running NeuralNetwork tests" << std::endl;
@@ -169,10 +181,10 @@ int runTests() {
 	runTest(readNodeValue, string("Node value reading"), passed, failed);
 	runTest(calculateNodeValue, string("Calculate node value"), passed, failed);
 
-	cout << "===== Testing Neural Network =====" << endl;
+	cout << endl << "===== Testing Neural Network =====" << endl;
 	runTest(simpleNetwork, string("Simple Network"), passed, failed);
 	runTest(fourLayerNetwork, string("Four-layer Network"), passed, failed);
-
+	runTest(randomizedNetwork, string("Randomized Network"), passed, failed);
 
 	//runTest(runNetworkTest, string("Network                      "), passed, failed);
 

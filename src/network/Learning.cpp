@@ -43,7 +43,7 @@ void Learning::adjustConnectionSimple(int layer, int index, float targetValue,
 
 }
 
-void Learning::adjustNetwork(std::vector<float> optimalAction)
+void Learning::adjustNetwork(/*std::vector<float> optimalAction*/)
 {
-
+	
 }

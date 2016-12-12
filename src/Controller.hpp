@@ -10,11 +10,6 @@
 class Track;
 #include "car/Track.hpp"
 
-const bool debugging = true;
-const int numberOfVisionLines = 5;
-const int fieldOfView = 90; // TODO: FoV slider
-const float timeToFitnessMultiplier = 1.2;
-const float defaultStepSize = 0.001; // learning rate
 
 class Controller {
 public:
@@ -44,7 +39,14 @@ public:
     void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
     
 private:
-
+	
+	const bool debugging = true;
+	const int numberOfVisionLines = 5;
+	const int fieldOfView = 90; // TODO: FoV slider
+	const float timeToFitnessMultiplier = 1.2;
+	const float defaultStepSize = 0.001; // learning rate
+	const Learning teacher = Learning(defaultStepSize);
+	
 	// Simulation runs at 60 fps
 	float32 timeStep = 1 / 60.0;
 	int32 velocityIterations = 8;   //how strongly to correct velocity

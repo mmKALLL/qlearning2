@@ -8,16 +8,19 @@
 class Learning {
 	friend class NeuralNetwork;
 
-	Learning(float defStepSize = 0.01);
 
 public:
+	Learning(float defStepSize = 0.01);
+
 	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
 	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn) {
 		adjustConnection(layer, index, targetValue, nn, defaultStepSize); //call with default value
 	}
+	
+	// Dummy function
 	void adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
 	
-	void adjustNetwork(std::vector<float> optimalAction); // Call adjustConnection on each node in network.
+	void adjustNetwork(/*std::vector<float> optimalAction*/NeuralNetwork& nn); // Call adjustConnection on each node in network.
 	
 	/**
 		Initial idea:

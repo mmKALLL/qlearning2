@@ -84,6 +84,10 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 }
 
 void Controller::stepForward() {
+	// Get action from network, then make it learn.
+	// FIXME: Get action from network.
+	this.teacher.adjustNetwork(this.currentCar.getNetwork());
+	
 	//Advances the physics simulation by one step
 	world->Step(timeStep, velocityIterations, positionIterations);
 	//According to the manual forces should be cleared after taking a step

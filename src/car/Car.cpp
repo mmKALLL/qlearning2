@@ -118,18 +118,16 @@ NeuralNetwork & Car::getNetwork()
 	return network;
 }
 
-std::vector<float> Car::getPosition() const
+b2Vec2 Car::getPosition() const
 {
-	b2Vec2 pos = carBody->GetPosition();
-	std::vector<float> position;
-	position.push_back(pos.x);
-	position.push_back(pos.y);
-	return position;
+	std::cout << "Launcher reaches this point" << std::endl;
+	return carBody->GetPosition();
+	std::cout << "segmentation fault before this" << std::endl;
 }
 
 float Car::getAngle() const
 {
-	return carBody->GetAngle()*RADTODEG;
+	return carBody->GetAngle() * RADTODEG;
 }
 
 float Car::getVelocity() const

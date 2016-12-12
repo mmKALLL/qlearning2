@@ -18,11 +18,12 @@ public:
 	int getCheckpoints() const;
 	bool getCollisionStatus() const;
 	NeuralNetwork& getNetwork();
-	std::vector<float> getPosition() const;
+	b2Vec2 getPosition() const;
 	std::vector<float> getDistances(int amount, int degrees);
 	
-
-	void update(float speed, float angle, int amount, int degrees); //Call this function to have car update its location speed etc
+	 //Call this function to have car update its location, speed, etc.
+	void update(float speed, float angle, int amount, int degrees);
+	
 	void accelerate(float speed);
 	void turn(float angle);
 	void setParams(std::vector<float> position, float angle, float speed);

@@ -4,12 +4,18 @@
 Track::Track(b2World* world) {
 	this->world = world;
 	
+	// Set the width and height of a single sector.
 	float width = 50.0f;
 	float height = 200.0f;
 	float length = sqrt(((width / 2) * (width / 2)) + ((height / 2) * (height / 2)));
 	float heightLengthAngle = acos((height / 2) / length);
 	
 	// TODO: Possibly read track composition from a file?
+	// TODO: The track must always begin with a "straight"
+	std::vector<std::string> track = {
+		"straight", "straight", "straight", "right", "straight"
+	};
+	/*
 	std::vector<std::tuple<float, b2Vec2>> track = {
 		std::make_tuple(0.f, b2Vec2(50, 0)), std::make_tuple(0.f, b2Vec2(100, 0)),
 		std::make_tuple(0.f, b2Vec2(150, 0)), std::make_tuple(0.f, b2Vec2(200, 0)),
@@ -18,38 +24,130 @@ Track::Track(b2World* world) {
 		std::make_tuple(0.f, b2Vec2(450, 0)), std::make_tuple(0.f, b2Vec2(500, 0)),
 		std::make_tuple(22.5f, b2Vec2(525, -25)), std::make_tuple(45.0f, b2Vec2(550, -50))
 	};
-	
-	sf::Vector2f lastBottomRight;
-	
+	*/
+	// Initialize an empty vector to hold the graphical representation of the circuit.
 	std::vector<sf::VertexArray> sectors;
+	float angle = 0.f;
+	b2Vec2 midPoint = b2Vec2(50, 0);
+	sf::Vector2f lastLeftCorner;
+	sf::Vector2f lastRightCorner;
+	
 	for (auto & element : track) {
-		float angle = std::get<0>(element);
-		b2Vec2 midPoint = std::get<1>(element);
-		newSector(width, height, angle, midPoint);
-		
-		float bottomLeftYOffset = cos(angle * DEGTORAD - heightLengthAngle) * length;
-		float bottomLeftXOffset = sin(angle * DEGTORAD - heightLengthAngle) * length;
-		float topRightYOffset = -bottomLeftYOffset;
-		float topRightXOffset = -bottomLeftXOffset;
-		float topLeftYOffset = sin((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
-		float topLeftXOffset = cos((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
-		float bottomRightYOffset = -topLeftYOffset;
-		float bottomRightXOffset = -topLeftXOffset;
-		
-		sf::VertexArray sector(sf::LinesStrip, 5);
-		sector[0].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
-		sector[1].position = sf::Vector2f(midPoint.x + topRightXOffset, midPoint.y + topRightYOffset);
-		sector[2].position = sf::Vector2f(midPoint.x + bottomRightXOffset, midPoint.y + bottomRightYOffset);
-		sector[3].position = sf::Vector2f(midPoint.x + bottomLeftXOffset, midPoint.y + bottomLeftYOffset);
-		sector[4].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
-		lastBottomRight = sector[2].position;
-		sector[0].color = sf::Color::Blue;
-		sector[1].color = sf::Color::Blue;
-		sector[2].color = sf::Color::Blue;
-		sector[3].color = sf::Color::Blue;
-		sector[4].color = sf::Color::Blue;
-		
-		sectors.push_back(sector);
+		if (element == "straight") {
+			newSector(width, height, angle, midPoint);
+			
+			float bottomLeftYOffset = cos(angle * DEGTORAD - heightLengthAngle) * length;
+			float bottomLeftXOffset = sin(angle * DEGTORAD - heightLengthAngle) * length;
+			float topRightYOffset = -bottomLeftYOffset;
+			float topRightXOffset = -bottomLeftXOffset;
+			float topLeftYOffset = sin((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
+			float topLeftXOffset = cos((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
+			float bottomRightYOffset = -topLeftYOffset;
+			float bottomRightXOffset = -topLeftXOffset;
+			
+			sf::VertexArray sector(sf::LinesStrip, 5);
+			sector[0].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+			sector[1].position = sf::Vector2f(midPoint.x + topRightXOffset, midPoint.y + topRightYOffset);
+			sector[2].position = sf::Vector2f(midPoint.x + bottomRightXOffset, midPoint.y + bottomRightYOffset);
+			sector[3].position = sf::Vector2f(midPoint.x + bottomLeftXOffset, midPoint.y + bottomLeftYOffset);
+			sector[4].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+			lastLeftCorner = sector[1].position;
+			lastRightCorner = sector[0].position;
+			sector[0].color = sf::Color::Blue;
+			sector[1].color = sf::Color::Blue;
+			sector[2].color = sf::Color::Blue;
+			sector[3].color = sf::Color::Blue;
+			sector[4].color = sf::Color::Blue;
+			
+			sectors.push_back(sector);
+			
+			midPoint.x += cos(angle * DEGTORAD) * width;
+			midPoint.y += cos((angle + 90.0f) * DEGTORAD) * width;
+		} else if (element == "left") {
+			for (unsigned i = 0; i < 10; i++) {
+				newSector(width, height, angle, midPoint);
+				
+				float bottomLeftYOffset = cos(angle * DEGTORAD - heightLengthAngle) * length;
+				float bottomLeftXOffset = sin(angle * DEGTORAD - heightLengthAngle) * length;
+				float topRightYOffset = -bottomLeftYOffset;
+				float topRightXOffset = -bottomLeftXOffset;
+				float topLeftYOffset = sin((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
+				float topLeftXOffset = cos((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
+				float bottomRightYOffset = -topLeftYOffset;
+				float bottomRightXOffset = -topLeftXOffset;
+				
+				sf::VertexArray sector(sf::LinesStrip, 5);
+				sector[0].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+				sector[1].position = sf::Vector2f(midPoint.x + topRightXOffset, midPoint.y + topRightYOffset);
+				sector[2].position = sf::Vector2f(midPoint.x + bottomRightXOffset, midPoint.y + bottomRightYOffset);
+				sector[3].position = sf::Vector2f(midPoint.x + bottomLeftXOffset, midPoint.y + bottomLeftYOffset);
+				sector[4].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+				lastLeftCorner = sector[1].position;
+				lastRightCorner = sector[0].position;
+				sector[0].color = sf::Color::Blue;
+				sector[1].color = sf::Color::Blue;
+				sector[2].color = sf::Color::Blue;
+				sector[3].color = sf::Color::Blue;
+				sector[4].color = sf::Color::Blue;
+				
+				sectors.push_back(sector);
+
+				if (i < 9) {
+					angle += 10.0f;
+				}
+				float xChange = cos(angle * DEGTORAD) * (width / 2);
+				float yChange = sin(angle * DEGTORAD) * (width / 2);
+				midPoint.x = lastRightCorner.x;
+				midPoint.y = lastRightCorner.y;
+				midPoint.x += xChange;
+				midPoint.y -= yChange;
+				midPoint.x -= sin(angle * DEGTORAD) * (height / 2);
+				midPoint.y -= cos(angle * DEGTORAD) * (height / 2);
+			}
+		} else if (element == "right") {
+			for (unsigned i = 0; i < 10; i++) {
+				newSector(width, height, angle, midPoint);
+				
+				float bottomLeftYOffset = cos(angle * DEGTORAD - heightLengthAngle) * length;
+				float bottomLeftXOffset = sin(angle * DEGTORAD - heightLengthAngle) * length;
+				float topRightYOffset = -bottomLeftYOffset;
+				float topRightXOffset = -bottomLeftXOffset;
+				float topLeftYOffset = sin((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
+				float topLeftXOffset = cos((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
+				float bottomRightYOffset = -topLeftYOffset;
+				float bottomRightXOffset = -topLeftXOffset;
+				
+				sf::VertexArray sector(sf::LinesStrip, 5);
+				sector[0].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+				sector[1].position = sf::Vector2f(midPoint.x + topRightXOffset, midPoint.y + topRightYOffset);
+				sector[2].position = sf::Vector2f(midPoint.x + bottomRightXOffset, midPoint.y + bottomRightYOffset);
+				sector[3].position = sf::Vector2f(midPoint.x + bottomLeftXOffset, midPoint.y + bottomLeftYOffset);
+				sector[4].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+				lastLeftCorner = sector[1].position;
+				lastRightCorner = sector[0].position;
+				sector[0].color = sf::Color::Blue;
+				sector[1].color = sf::Color::Blue;
+				sector[2].color = sf::Color::Blue;
+				sector[3].color = sf::Color::Blue;
+				sector[4].color = sf::Color::Blue;
+				
+				sectors.push_back(sector);
+
+				if (i < 9) {
+					angle -= 10.0f;
+				}
+				float xChange = cos(angle * DEGTORAD) * (width / 2);
+				float yChange = sin(angle * DEGTORAD) * (width / 2);
+				midPoint.x = lastLeftCorner.x;
+				midPoint.y = lastLeftCorner.y;
+				midPoint.x += xChange;
+				midPoint.y -= yChange;
+				midPoint.x += sin(angle * DEGTORAD) * (height / 2);
+				midPoint.y += cos(angle * DEGTORAD) * (height / 2);
+			}
+		} else {
+			throw "Corrupted track file.";
+		}
 	}
 	
 	GUI(sectors); // Return?
@@ -57,6 +155,56 @@ Track::Track(b2World* world) {
 
 Track::~Track() {
 
+}
+/*
+void Track::straight(&float angle, &b2Vec2 midPoint, &sf::Vector2f rightCorner, &sf::Vector2f leftCorner) {
+	
+}
+
+void Track::leftTurn(&float angle, &b2Vec2 midPoint, &sf::Vector2f rightCorner, &sf::Vector2f leftCorner) {
+	
+}
+
+void Track::rightTurn(&float angle, &b2Vec2 midPoint, &sf::Vector2f rightCorner, &sf::Vector2f leftCorner) {
+	
+}
+*/
+// This method creates a track part that the physics engine can utilize. The method takes the width, height, angle and middle point of the track part as parameters.
+void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint) {
+	b2BodyDef bd;
+	bd.position.Set(middlePoint.x, middlePoint.y);
+	
+	b2Body* trackPart = world->CreateBody(&bd);
+
+	b2EdgeShape shape;
+	b2FixtureDef checkpoints;
+	checkpoints.shape = &shape;
+	checkpoints.isSensor = true;
+
+
+	// Left vertical
+	shape.Set(b2Vec2(-width, -height), b2Vec2(-width, height));
+	trackPart->CreateFixture(&checkpoints);
+
+	// Right vertical
+	shape.Set(b2Vec2(width, -height), b2Vec2(width, height));
+	trackPart->CreateFixture(&checkpoints);
+
+	b2FixtureDef walls;
+	walls.shape = &shape;
+
+	walls.isSensor = false;
+
+	// Top horizontal
+	shape.Set(b2Vec2(-width, height), b2Vec2(width, height));
+	trackPart->CreateFixture(&walls);
+
+	// Bottom horizontal
+	shape.Set(b2Vec2(-width, -height), b2Vec2(width, -height));
+
+	trackPart->CreateFixture(&walls);
+	trackPart->SetTransform(middlePoint, angle * DEGTORAD);
+	circuit.push_back(trackPart);
 }
 
 void Track::GUI(std::vector<sf::VertexArray> sectors) {
@@ -94,18 +242,13 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 	sf::RectangleShape car(sf::Vector2f(40, 30));
 	car.setOrigin(20, 15);
 	car.setFillColor(sf::Color(255, 55, 55));
+	b2Vec2 carPosition;
 
 	sf::View camera;
 	camera.setSize(sf::Vector2f(1000, 1000));
 
 	while (window.isOpen()) {
 		sf::Event event;
-		//std::cout << "Drawing a frame" << std::endl;
-		// TEMPOARY BUBBLEGUM CODE, ERASE LATER *******
-
-
-
-		// BUBBLEGUM CODE ENDS ************************
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
 				window.close();
@@ -117,7 +260,8 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 		}
 
 		window.clear(sf::Color::Black);
-		car.move(1, 0);
+		carPosition = controller->getCarPosition();
+		car.setPosition(carPosition.x, carPosition.y);
 		camera.setCenter(car.getPosition());
 		window.setView(camera);
 		for (auto x : sectors) {
@@ -126,44 +270,7 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 		window.draw(car);
 		window.draw(sprite);
 		window.display();
+		//controller->stepForward();
 		
 	}
-}
-
-// This method creates a track part that the physics engine can utilize. The method takes the width, height, angle and middle point of the track part as parameters.
-void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint) {
-	b2BodyDef bd;
-	bd.position.Set(middlePoint.x, middlePoint.y);
-	
-	b2Body* trackPart = world->CreateBody(&bd);
-
-	b2EdgeShape shape;
-	b2FixtureDef checkpoints;
-	checkpoints.shape = &shape;
-	checkpoints.isSensor = true;
-
-
-	// Left vertical
-	shape.Set(b2Vec2(-width, -height), b2Vec2(-width, height));
-	trackPart->CreateFixture(&checkpoints);
-
-	// Right vertical
-	shape.Set(b2Vec2(width, -height), b2Vec2(width, height));
-	trackPart->CreateFixture(&checkpoints);
-
-	b2FixtureDef walls;
-	walls.shape = &shape;
-
-	walls.isSensor = false;
-
-	// Top horizontal
-	shape.Set(b2Vec2(-width, height), b2Vec2(width, height));
-	trackPart->CreateFixture(&walls);
-
-	// Bottom horizontal
-	shape.Set(b2Vec2(-width, -height), b2Vec2(width, -height));
-
-	trackPart->CreateFixture(&walls);
-	trackPart->SetTransform(middlePoint, angle * DEGTORAD);
-	circuit.push_back(trackPart);
 }

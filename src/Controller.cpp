@@ -25,8 +25,8 @@ const std::vector<float> Controller::getSightVector(int amount, int degrees) {
 	return currentCar.getDistances(amount, degrees);
 }
 
-const std::vector<float> Controller::getCarPosition() const {
-	// x and y-coordinates in that order
+const b2Vec2 Controller::getCarPosition() const {
+	// x- and y-coordinates of the current car
 	return currentCar.getPosition();
 }
 
@@ -36,8 +36,7 @@ float Controller::getCarDistanceFromMiddle() const {
 }
 
 float Controller::getCarVelocity() const {
-	// TODO: Olli/Jussi: Return the car's current speed.
-	//Done'd
+	// Returns the current car's current speed.
 	return currentCar.getVelocity();
 }
 
@@ -76,7 +75,7 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 
 	std::vector<float> result;
 	result.push_back(currentCar.getCollisionStatus());
-	result.insert(result.end(), currentCar.getPosition().begin(), currentCar.getPosition().end());
+	result.insert(result.end(), currentCar.getPosition().x, currentCar.getPosition().y);
 	result.push_back(currentCar.getVelocity());
 	result.push_back(currentCar.getAngle());
 

@@ -29,7 +29,7 @@ public:
 
 	//---Getters for car
 	const std::vector<float> getSightVector(int size, int degrees);
-	const std::vector<float> getCarPosition() const;
+	const b2Vec2 getCarPosition() const;
 	float getCarDistanceFromMiddle() const;
 	float getCarVelocity() const;
 	float getCarDistanceTraveled() const;
@@ -52,8 +52,8 @@ private:
 
 	
 	b2World* world = new b2World(b2Vec2(0,0));
-	Track* currentTrack;
 	Car currentCar = Car(world);
+	Track* currentTrack;
 };
 
 #endif

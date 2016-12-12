@@ -16,7 +16,7 @@ public:
 	~Track();
 
 	void GUI(std::vector<sf::VertexArray>);
-	sf::VertexArray newSector(float width, float height, float angle, b2Vec2 middlePoint);
+	void newSector(float width, float height, float angle, b2Vec2 middlePoint);
 
 	void setControllerReference(Controller* cntrl) { controller = cntrl; }
 

@@ -17,6 +17,8 @@ public:
 		adjustConnection(layer, index, targetValue, nn, defaultStepSize); //call with default value
 	}
 	
+	float getStepSize();
+	
 	// Dummy function
 	void adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
 	

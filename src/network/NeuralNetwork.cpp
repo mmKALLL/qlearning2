@@ -40,6 +40,7 @@ std::vector<float> NeuralNetwork::getOutputValues() const {
 	return values;
 }
 
+// FIXME: Doesn't work under the new q-learning system?
 //Set new inputs, re-calculate and return outputs
 std::vector<float> NeuralNetwork::getOutputValuesFromInputs
 								(std::vector<float> values, bool useSig) {
@@ -87,6 +88,7 @@ std::vector<float> getAction(std::vector<float> state, unsigned int actionDepth,
 		if (probTarget <= 0.0f) {
 			result.push_back(-1.0f + (i / actionDepth) * (2.0f / (actionDepth - 1)));
 			result.push_back(-1.0f + (i % actionDepth) * (2.0f / (actionDepth - 1)));
+			result.push_back(qvalues[i]);
 			return result;
 		}
 	}

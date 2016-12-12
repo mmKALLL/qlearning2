@@ -46,6 +46,8 @@ private:
 	const float timeToFitnessMultiplier = 1.2;
 	const float defaultStepSize = 0.001; // learning rate
 	const unsigned int layerCount = 4;
+	const float qvalue = 0.0f;
+	const float discountFactor = 0.1; // [0.0f, 1.0f)
 	const Learning teacher = Learning(defaultStepSize);
 	
 	// Simulation runs at 60 fps

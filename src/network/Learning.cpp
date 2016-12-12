@@ -43,6 +43,10 @@ void Learning::adjustConnectionSimple(int layer, int index, float targetValue,
 
 }
 
+float Learning::getStepSize() {
+	return this.defaultStepSize;
+}
+
 void Learning::adjustNetwork(/*std::vector<float> optimalAction*/)
 {
 	

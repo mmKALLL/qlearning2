@@ -71,6 +71,7 @@ float Controller::getFitness(double time) const {
 
 //Ask physics where the car would end up with actions in param
 std::vector<float> Controller::simulateStepForward(Car& car, float steer, float accelerate) const {
+	// ***************** NOT NEEDED *********************
 	// TODO: Return vector such that:
 	// vector[0] true if hit by a wall, otherwise false
 	// vector[1] x coordinate
@@ -88,12 +89,21 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 }
 
 void Controller::stepForward() {
-	// Get action from network, then make it learn.
+	this.stepCounter += 1;
 	
+	// Get action from network, then make it learn.
+	float prevVelocity = this.currentCar.getVelocity();
 	std::vector<float> action = this.currentNetwork.getCarAction(//FIXME: state);
 	this.currentCar.accelerate(action[0]);
 	this.currentCar.turn(action[1]);
 	this.teacher.adjustNetwork(this.currentCar.getNetwork());
+	
+	float reward = this.currentCar.getCollisionStatus() * -10000 + this.currentCar.getVelocity() - prevVelocity * 0.9;
+	
+	float qtarget = qvalue + teacher.getStepSize() *
+						(reward + discountFactor * action[2] - qvalue);
+	trainer.adjustNetwork(this.currentNetwork);
+	this.qvalue = qtarget;
 	
 	//Advances the physics simulation by one step
 	world->Step(timeStep, velocityIterations, positionIterations);

@@ -102,7 +102,7 @@ void Controller::stepForward() {
 	
 	float qtarget = qvalue + teacher.getStepSize() *
 						(reward + discountFactor * action[2] - qvalue);
-	trainer.adjustNetwork(this.currentNetwork);
+	trainer.adjustNetwork(this.currentNetwork, qvalue, qtarget);
 	this.qvalue = qtarget;
 	
 	//Advances the physics simulation by one step

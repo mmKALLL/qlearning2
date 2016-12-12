@@ -39,15 +39,14 @@ void Learning::adjustConnectionSimple(int layer, int index, float targetValue,
 	float oldValue = node->calcValue();
 	//float difference = targetValue - currentValue;
 	//float smallestDifference = difference;
-
-
+	
+	
 }
 
 float Learning::getStepSize() {
 	return this.defaultStepSize;
 }
 
-void Learning::adjustNetwork(/*std::vector<float> optimalAction*/)
-{
+void Learning::adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget) {
 	
 }

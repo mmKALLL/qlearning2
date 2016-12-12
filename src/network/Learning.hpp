@@ -22,7 +22,7 @@ public:
 	// Dummy function
 	void adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
 	
-	void adjustNetwork(/*std::vector<float> optimalAction*/NeuralNetwork& nn); // Call adjustConnection on each node in network.
+	void adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget);
 	
 	/**
 		Basically we are going to implement this:

@@ -10,7 +10,7 @@ NeuralNetwork::NeuralNetwork(unsigned int layerCount) {
 	
 	for (unsigned int i = 0; i < layerCount; i++) {
 		nodes.push_back(std::vector<Node*>{});
-	}
+	} // FIXME: Esa; make it work so that it builds an appropriate network for the new system
 }
 
 int NeuralNetwork::getInputSize() const {

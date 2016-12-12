@@ -13,18 +13,9 @@ Track::Track(b2World* world) {
 	// TODO: Possibly read track composition from a file?
 	// TODO: The track must always begin with a "straight"
 	std::vector<std::string> track = {
-		"straight", "straight", "straight", "right", "straight"
+		"straight", "straight", "straight", "left", "straight", "straight", "straight"
 	};
-	/*
-	std::vector<std::tuple<float, b2Vec2>> track = {
-		std::make_tuple(0.f, b2Vec2(50, 0)), std::make_tuple(0.f, b2Vec2(100, 0)),
-		std::make_tuple(0.f, b2Vec2(150, 0)), std::make_tuple(0.f, b2Vec2(200, 0)),
-		std::make_tuple(0.f, b2Vec2(250, 0)), std::make_tuple(0.f, b2Vec2(300, 0)),
-		std::make_tuple(0.f, b2Vec2(350, 0)), std::make_tuple(0.f, b2Vec2(400, 0)),
-		std::make_tuple(0.f, b2Vec2(450, 0)), std::make_tuple(0.f, b2Vec2(500, 0)),
-		std::make_tuple(22.5f, b2Vec2(525, -25)), std::make_tuple(45.0f, b2Vec2(550, -50))
-	};
-	*/
+
 	// Initialize an empty vector to hold the graphical representation of the circuit.
 	std::vector<sf::VertexArray> sectors;
 	float angle = 0.f;
@@ -270,7 +261,7 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 		window.draw(car);
 		window.draw(sprite);
 		window.display();
-		//controller->stepForward();
+		controller->stepForward();
 		
 	}
 }

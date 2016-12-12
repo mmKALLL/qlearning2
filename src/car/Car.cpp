@@ -1,9 +1,7 @@
 #include "Car.hpp"
 
-
 Car::Car(b2World* world)
 {
-	
 	this->world = world;
 	//Create definition for car body
 	b2BodyDef carBodyDef;

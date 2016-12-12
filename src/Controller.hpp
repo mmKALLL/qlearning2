@@ -46,9 +46,9 @@ private:
 	const float timeToFitnessMultiplier = 1.2;
 	const float defaultStepSize = 0.001; // learning rate
 	const unsigned int layerCount = 4;
-	const float qvalue = 0.0f;
+	const float actionDepth = 5;
 	const float discountFactor = 0.1; // [0.0f, 1.0f)
-	const Learning teacher = Learning(defaultStepSize);
+	Learning trainer = Learning(defaultStepSize);
 	
 	// Simulation runs at 60 fps
 	float32 timeStep = 1 / 60.0;
@@ -61,6 +61,9 @@ private:
 	Track* currentTrack;
 	NeuralNetwork currentNetwork;
 	int stepCounter;
+	float qvalue = 0.0f;
+	float explorationCoefficient = 3;
+	
 };
 
 #endif

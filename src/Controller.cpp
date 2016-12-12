@@ -7,13 +7,12 @@ Controller::Controller() {
 void Controller::initializeRun() {
 	// No need for gravity in top down physics
 	//currentTrack.setControllerReference(*this);
-	Track* track = new Track(this.world);
-	this.currentTrack = track;
-	this.currentCar = Car(this.world);
-	this.currentNetwork = NeuralNetwork(this.layerCount);
-	this.currentCar.setNetwork(this.currentNetwork);
-	this.stepCounter = 0;
-	
+	Track* track = new Track(world);
+	currentTrack = track;
+	currentCar = Car(world);
+	currentNetwork = NeuralNetwork(layerCount);
+	currentCar.setNetwork(currentNetwork);
+	stepCounter = 0;
 }
 
 const Track& Controller::getTrack() const {
@@ -88,21 +87,23 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 }
 
 void Controller::stepForward() {
-	this.stepCounter += 1;
+	this->stepCounter += 1;
+	explorationCoefficient > 0.05 ? explorationCoefficient -= 0.001 : true;
 	
 	// Get action from network, then make it learn.
-	float prevVelocity = this.currentCar.getVelocity();
-	std::vector<float> action = this.currentNetwork.getCarAction(//FIXME: state);
-	this.currentCar.accelerate(action[0]);
-	this.currentCar.turn(action[1]);
-	this.teacher.adjustNetwork(this.currentCar.getNetwork());
+	float prevVelocity = this->currentCar.getVelocity();
+	std::vector<float> state = getSightVector(numberOfVisionLines, fieldOfView);
+	state.push_back(prevVelocity);
 	
-	float reward = this.currentCar.getCollisionStatus() * -10000 + this.currentCar.getVelocity() - prevVelocity * 0.9;
+	std::vector<float> action = this->currentNetwork.getAction(state, actionDepth, explorationCoefficient);
+	this->currentCar.accelerate(action[0]);
+	this->currentCar.turn(action[1]);
 	
-	float qtarget = qvalue + teacher.getStepSize() *
-						(reward + discountFactor * action[2] - qvalue);
-	trainer.adjustNetwork(this.currentNetwork, qvalue, qtarget);
-	this.qvalue = qtarget;
+	float reward = this->currentCar.getCollisionStatus() * -10000 + this->currentCar.getVelocity() - prevVelocity * 0.9;
+	
+	float qtarget = qvalue + trainer.getStepSize() * (reward + discountFactor * action[2] - qvalue);
+	trainer.adjustNetwork(this->currentNetwork, qvalue, qtarget);
+	this->qvalue = qtarget;
 	
 	//Advances the physics simulation by one step
 	world->Step(timeStep, velocityIterations, positionIterations);

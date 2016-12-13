@@ -22,7 +22,7 @@ public:
 	std::vector<float> getDistances(int amount, int degrees);
 	
 	 //Call this function to have car update its location, speed, etc.
-	void update(float speed, float angle, int amount, int degrees);
+	void update(float speed, float angle);
 	
 	void accelerate(float speed);
 	void turn(float angle);

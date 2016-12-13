@@ -33,7 +33,7 @@ void Controller::initializeRun() {
 	if (writeActionsToFile) {
 		carActionFile.close();
 		std::string fileName = "car" + runCounter + "_actions.txt";
-		carActionFile.open(fileName.c_str());
+		carActionFile.open(fileName.c_str(); std::ofstream::out | std::ofstream::trunc); // overwrite existing
 	}
 }
 

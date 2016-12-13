@@ -45,7 +45,7 @@ private:
 	
 	/***** General settings *****/
 	const bool debugging = true;
-	const bool writeActionsToFile = false; // overwrites existing files
+	const bool writeActionsToFile = false; // car driving history; overwrites existing history files
 	const int numberOfVisionLines = 5;
 	const int fieldOfView = 90; // TODO: FoV slider
 	
@@ -59,7 +59,7 @@ private:
 	const unsigned int layerCount = 2 + hiddenLayerSizes.size(); 							// Don't touch.
 	const float nodeInitLow = -0.4;						// Randomized initial node weights are between these
 	const float nodeInitHigh = 0.4;
-	const int stateSize = numberOfVisionLines + 1;		// Add current velocity into state input vector.
+	const int stateSize = numberOfVisionLines + 1;		// Don't touch. Add current velocity into state input vector.
 	
 	/***** Action-space search and learning-related constants *****/
 	const int learningMode = 1;							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).

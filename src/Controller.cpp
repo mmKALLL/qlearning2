@@ -1,7 +1,17 @@
 #include "Controller.hpp"
 
 Controller::Controller() {
+	if (writeActionsToFile) {
+		carActionFile.open("carActionError.txt")
+	}
+	runCounter = 0;
 	initializeRun();
+}
+
+Controller::~Controller() {
+	if (writeActionsToFile) {
+		carActionFile.close();
+	}
 }
 
 void Controller::initializeRun() {
@@ -23,6 +33,14 @@ void Controller::initializeRun() {
 	currentNetwork.build(layerSizes, true, nodeInitLow, nodeInitHigh);
 	currentCar->setNetwork(currentNetwork);
 	stepCounter = 0;
+	qvalue = 0.0f;
+	runCounter += 1;
+	
+	if (writeActionsToFile) {
+		carActionFile.close();
+		std::string fileName = "car" + runCounter + "_actions.txt";
+		carActionFile.open(fileName.c_str());
+	}
 }
 
 const Car& Controller::getCar() const {
@@ -99,9 +117,11 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 
 void Controller::stepForward() {
 	this->stepCounter += 1;
-	explorationCoefficient > minExplorationCoefficient ? explorationCoefficient -= explorationCoefficientDecrease : true;
 	
 	// Get action from network, then make it learn.
+	if (explorationCoefficient > minExplorationCoefficient) {
+		 explorationCoefficient -= explorationCoefficientDecrease;
+	}
 	float prevVelocity = currentCar->getVelocity();
 	std::vector<float> state = getSightVector(numberOfVisionLines, fieldOfView);
 	state.push_back(prevVelocity);
@@ -115,6 +135,12 @@ void Controller::stepForward() {
 	float qtarget = qvalue + trainer.getStepSize() * (reward + discountFactor * action[2] - qvalue);
 	trainer.adjustNetwork(currentNetwork, qvalue, qtarget);
 	this->qvalue = qtarget;
+	
+
+	//carActionFile.open(); // maybe not needed if we only write??
+	if (writeActionsToFile) {
+		carActionFile << action[0] << "," << action[1] << action[2] << std::endl;
+	}
 	
 	//Advances the physics simulation by one step
 	m_world->Step(timeStep, velocityIterations, positionIterations);

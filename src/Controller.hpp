@@ -3,6 +3,8 @@
 #include <Box2D/Box2D.h>
 #include <vector>
 #include <tuple>
+#include <iostream>
+#include <fstream>
 #include "network/NeuralNetwork.hpp"
 #include "network/Learning.hpp"
 #include "car/Car.hpp"
@@ -14,6 +16,7 @@ class Track;
 class Controller {
 public:
 	Controller();
+	~Controller();
 	void initializeRun(/*params?*/); // Application launched or previous car's run completely over, so start new run
 	
 	//---Generic getters
@@ -40,10 +43,17 @@ public:
     
 private:
 	
+	/***** General settings *****/
 	const bool debugging = true;
+	const bool writeActionsToFile = true; // overwrites existing files
 	const int numberOfVisionLines = 5;
 	const int fieldOfView = 90; // TODO: FoV slider
-
+	
+	// Simulation runs at 60 fps
+	float32 timeStep = 1.0 / 60.0;
+	int32 velocityIterations = 8;   //how strongly to correct velocity
+	int32 positionIterations = 3;   //how strongly to correct position
+	
 	/***** Network building related constants *****/
 	const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {4, 6}; 	// Adjust network node topology with this.
 	const unsigned int layerCount = 2 + hiddenLayerSizes.size(); 							// Don't touch.
@@ -55,7 +65,7 @@ private:
 	const int learningMode = 1;							// Which weight adjustment algorithm to use. Currently only value 1 is supported (gradient descent).
 	const float defaultStepSize = 0.001; 				// Learning rate; multiplies learned outcome's impact on network node weights
 	const float actionDepth = 5; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.
-	const float discountFactor = 0.1; 					// [0.0f, 1.0f); importance of "later" vs "now"
+	const float discountFactor = 0.1; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
 	float explorationCoefficient = 3; 					// Weighs exploration over exploitation in Q-search; decreases each step until minimum
 	const float minExplorationCoefficient = 0.05;
 	const float explorationCoefficientDecrease = 0.001;
@@ -65,18 +75,16 @@ private:
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
 	const float wallPenalty = -10000.0f;				// Reward penalty for hitting a wall.
 	const float prevVelocityCoefficient = 0.9f;			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
-	
-	// Simulation runs at 60 fps
-	float32 timeStep = 1.0 / 60.0;
-	int32 velocityIterations = 8;   //how strongly to correct velocity
-	int32 positionIterations = 3;   //how strongly to correct position
 
+	/***** Controller variables *****/
 	b2World* m_world;
 	Car* currentCar;
 	Track* currentTrack;
 	NeuralNetwork currentNetwork;
+	std::ofstream carActionFile;
+	int runCounter;
 	int stepCounter;
-	float qvalue = 0.0f;
+	float qvalue;
 	
 };
 

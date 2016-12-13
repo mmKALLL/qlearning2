@@ -68,7 +68,7 @@ void racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, int currentL
 			float newWeight = ???;
 			float nodeTarget = ???;
 			n->setWeight(i, newWeight);
-			racistNodeAdjustment(nn.nodes[currentLayer - 1][i], nn, nodeTarget, currentLayer - 1)
+			racistNodeAdjustment(nn.nodes[currentLayer - 1][i], nn, nodeTarget, currentLayer - 1);
 		}
 	}
 }

@@ -36,7 +36,7 @@ Car::~Car()
 	
 }
 
-void Car::update(float speed, float angle, int amount, int degrees)
+void Car::update(float speed, float angle)
 {
 	if (physics.collisionCheck(carBody) == 1) {
 		checkpoints++;
@@ -45,7 +45,6 @@ void Car::update(float speed, float angle, int amount, int degrees)
 		collisionStatus = true;
 	}
 	physics.updateFriction(carBody);
-	getDistances(amount, degrees);
 	accelerate(speed);
 	turn(angle);
 	

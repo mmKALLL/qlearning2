@@ -123,7 +123,7 @@ void Controller::stepForward() {
 	state.push_back(prevVelocity);
 	
 	std::vector<float> action = currentNetwork.getAction(state, actionDepth, explorationCoefficient);
-	currentCar->update(action[0], action[1], numberOfVisionLines, fieldOfView);
+	currentCar->update(action[0], action[1]);
 	
 	float reward = currentCar->getCollisionStatus() * wallPenalty + currentCar->getVelocity() - prevVelocity * prevVelocityCoefficient;
 	

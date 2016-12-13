@@ -17,14 +17,14 @@ public:
 	void initializeRun(/*params?*/); // Application launched or previous car's run completely over, so start new run
 	
 	//---Generic getters
+	const Car& getCar() const;
     const Track& getTrack() const;
-    const Car& getCar() const;
 
 	//std::vector<double>& getActionForCar(Car& car, NeuralNetwork& nn) const;
 
 	//---Getters for car
+	const std::vector<float> getCarPosition() const;
 	const std::vector<float> getSightVector(int size, int degrees);
-	const b2Vec2 getCarPosition() const;
 	float getCarDistanceFromMiddle() const;
 	float getCarVelocity() const;
 	float getCarDistanceTraveled() const;
@@ -55,9 +55,8 @@ private:
 	int32 velocityIterations = 8;   //how strongly to correct velocity
 	int32 positionIterations = 3;   //how strongly to correct position
 
-	
-	b2World* world = new b2World(b2Vec2(0,0));
-	Car currentCar;
+	b2World* world;
+	Car* currentCar;
 	Track* currentTrack;
 	NeuralNetwork currentNetwork;
 	int stepCounter;

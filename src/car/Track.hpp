@@ -12,7 +12,7 @@ class Controller;
 
 class Track {
 public:
-	Track(b2World* world);
+	Track(b2World*);
 	~Track();
 	void setControllerReference(Controller* cntrl) { controller = cntrl; }
 	/*

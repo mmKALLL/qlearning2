@@ -9,7 +9,7 @@ class Car
 {
 public:
 	// Constructors
-	Car(b2World* world);
+	Car(b2World*);
 	~Car();
 
 	// Getters
@@ -18,7 +18,7 @@ public:
 	int getCheckpoints() const;
 	bool getCollisionStatus() const;
 	NeuralNetwork& getNetwork();
-	b2Vec2 getPosition() const;
+	std::vector<float> getPosition() const;
 	std::vector<float> getDistances(int amount, int degrees);
 	
 	 //Call this function to have car update its location, speed, etc.

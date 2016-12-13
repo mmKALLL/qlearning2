@@ -13,7 +13,7 @@ Track::Track(b2World* world) {
 	// TODO: Possibly read track composition from a file?
 	// TODO: The track must always begin with a "straight"
 	std::vector<std::string> track = {
-		"straight", "straight", "straight", "left", "straight", "straight", "straight"
+		"straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "left", "straight", "straight", "straight", "right", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight"
 	};
 
 	// Initialize an empty vector to hold the graphical representation of the circuit.
@@ -172,7 +172,6 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 	checkpoints.shape = &shape;
 	checkpoints.isSensor = true;
 
-
 	// Left vertical
 	shape.Set(b2Vec2(-width, -height), b2Vec2(-width, height));
 	trackPart->CreateFixture(&checkpoints);
@@ -200,44 +199,51 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 
 void Track::GUI(std::vector<sf::VertexArray> sectors) {
 	
-	// Experiment area
+	sf::Sprite sprite;
+	sprite.setOrigin(25, 100);
 	
+	// Create the finish line texture
 	sf::Texture sector;
 	unsigned int x = 50;
 	unsigned int y = 200;
 	sector.create(x, y);
-	
 	sf::Uint8* pixels = new sf::Uint8[x * y * 4];
-	int j = 0;
+	int column = 0;
+	int row = 0;
+	int color = 255;
 	for (unsigned i = 0; i < x * y * 4; i += 4) {
-		if (j < 255) {
-			j++;
-		} else {
-			j = 0;
+		pixels[i] = color;
+		pixels[i + 1] = color;
+		pixels[i + 2] = color;
+		pixels[i + 3] = 255;
+		
+		column++;
+		if (column >= 10) {
+			column = 0;
+			row++;
+			if (!(row % 5 != 0) != (row % 50 != 0)) {
+				if (color == 255) {
+					color = 0;
+				} else {
+					color = 255;
+				}
+			}
 		}
-    	pixels[i] = 0;
-    	pixels[i + 1] = 0;
-    	pixels[i + 2] = j;
-    	pixels[i + 3] = 255;
 	}
 	sector.update(pixels);
-	
-	sf::Sprite sprite;
 	sprite.setTexture(sector);
-	
-	// Actual code
 	
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "qlearning2");
 	window.setVerticalSyncEnabled(true);
-
+	
 	sf::RectangleShape car(sf::Vector2f(40, 30));
 	car.setOrigin(20, 15);
 	car.setFillColor(sf::Color(255, 55, 55));
-	b2Vec2 carPosition;
-
+	std::vector<float> carPosition;
+	
 	sf::View camera;
 	camera.setSize(sf::Vector2f(1000, 1000));
-
+	
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -249,17 +255,18 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 				camera.setSize(sf::Vector2f(event.size.width, event.size.height));
 			}
 		}
-
+		
 		window.clear(sf::Color::Black);
+		std::cout << "Trying to get the position of the current car from Track.cpp" << std::endl;
 		carPosition = controller->getCarPosition();
-		car.setPosition(carPosition.x, carPosition.y);
+		car.setPosition(carPosition[0], carPosition[1]);
 		camera.setCenter(car.getPosition());
 		window.setView(camera);
 		for (auto x : sectors) {
 			window.draw(x);
 		}
-		window.draw(car);
 		window.draw(sprite);
+		window.draw(car);
 		window.display();
 		controller->stepForward();
 		

@@ -1,8 +1,7 @@
 #include "Car.hpp"
 
-Car::Car(b2World* world)
+Car::Car(b2World* world) : world(world)
 {
-	this->world = world;
 	//Create definition for car body
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;
@@ -116,11 +115,13 @@ NeuralNetwork & Car::getNetwork()
 	return network;
 }
 
-b2Vec2 Car::getPosition() const
+std::vector<float> Car::getPosition() const
 {
-	std::cout << "Launcher reaches this point" << std::endl;
-	return carBody->GetPosition();
-	std::cout << "segmentation fault before this" << std::endl;
+	b2Vec2 pos = carBody->GetPosition();
+	std::vector<float> position;
+	position.push_back(pos.x);
+	position.push_back(pos.y);
+	return position;
 }
 
 float Car::getAngle() const

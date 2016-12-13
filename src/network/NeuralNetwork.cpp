@@ -42,8 +42,7 @@ std::vector<float> NeuralNetwork::getOutputValues() const {
 
 // FIXME: Doesn't work under the new q-learning system?
 //Set new inputs, re-calculate and return outputs
-std::vector<float> NeuralNetwork::getOutputValuesFromInputs
-								(std::vector<float> values, bool useSig) {
+std::vector<float> NeuralNetwork::getOutputValuesFromInputs (std::vector<float> values, bool useSig) {
 	if (values.size() != nodes[0].size())
 		throw "Function input size needs to match number of input nodes";
 	setInputs(values);
@@ -53,16 +52,17 @@ std::vector<float> NeuralNetwork::getOutputValuesFromInputs
 
 // Get action based on state. Action depth tells how many action combinations to evaluate.
 // Use only odd numbers. Exploration coefficient weighs exploration; lower it to increase exploitation.
-std::vector<float> getAction(std::vector<float> state, unsigned int actionDepth, float explorationCoefficient) {
+std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned int actionDepth, float explorationCoefficient) {
 	
 	std::vector<float> qvalues;
 	std::vector<float> result;
-	for (float& acc = -1; acc <= 1.00001; acc += (2.0f / (actionDepth - 1))) {
-		for (float& turn = -1; turn <= 1.00001; turn += (2.0f / (actionDepth - 1))) {
+	for (float acc = -1; acc <= 1.00001; acc += (2.0f / (actionDepth - 1))) {
+		for (float turn = -1; turn <= 1.00001; turn += (2.0f / (actionDepth - 1))) {
 			std::vector<float> input = state;
 			input.push_back(acc);
 			input.push_back(turn);
-			qvalues.push_back(this.getOutputValuesFromInputs(input, false));
+			std::vector<float> outputValues = getOutputValuesFromInputs(input, false);
+			qvalues.insert(qvalues.end(), outputValues.begin(), outputValues.end());
 		}
 	}
 	
@@ -83,7 +83,7 @@ std::vector<float> getAction(std::vector<float> state, unsigned int actionDepth,
 	}
 	
 	double probTarget = rng(mt) * probSum;
-	for (int& i = 0; i < actionProbabilities; i++) {
+	for (int i = 0; i < actionProbabilities.size(); i++) {
 		probTarget -= actionProbabilities[i];
 		if (probTarget <= 0.0f) {
 			result.push_back(-1.0f + (i / actionDepth) * (2.0f / (actionDepth - 1)));

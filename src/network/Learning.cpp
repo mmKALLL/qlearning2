@@ -44,7 +44,7 @@ void Learning::adjustConnectionSimple(int layer, int index, float targetValue,
 }
 
 float Learning::getStepSize() {
-	return this.defaultStepSize;
+	return defaultStepSize;
 }
 
 void Learning::adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget) {

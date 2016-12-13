@@ -49,10 +49,10 @@ private:
 	const int numberOfVisionLines = 5;
 	const int fieldOfView = 90; // TODO: FoV slider
 	
-	// Simulation runs at 60 fps
-	float32 timeStep = 1.0 / 60.0;
-	int32 velocityIterations = 8;   //how strongly to correct velocity
-	int32 positionIterations = 3;   //how strongly to correct position
+	/***** Simulation constants *****/
+	const float32 timeStep = 1.0 / 60.0;
+	const int32 velocityIterations = 8;   //how strongly to correct velocity
+	const int32 positionIterations = 3;   //how strongly to correct position
 	
 	/***** Network building related constants *****/
 	const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {4, 6}; 	// Adjust network node topology with this.
@@ -62,7 +62,7 @@ private:
 	const int stateSize = numberOfVisionLines + 1;		// Add current velocity into state input vector.
 	
 	/***** Action-space search and learning-related constants *****/
-	const int learningMode = 1;							// Which weight adjustment algorithm to use. Currently only value 1 is supported (gradient descent).
+	const int learningMode = 1;							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).
 	const float defaultStepSize = 0.001; 				// Learning rate; multiplies learned outcome's impact on network node weights
 	const float actionDepth = 5; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.
 	const float discountFactor = 0.1; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"

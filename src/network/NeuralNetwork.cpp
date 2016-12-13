@@ -60,6 +60,8 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 	
 	std::vector<float> qvalues;
 	std::vector<float> result;
+	
+	// Try uniform combinations of actions, store network's Q-value approximations for each of them
 	for (float acc = -1; acc <= 1.00001; acc += (2.0f / (actionDepth - 1))) {
 		for (float turn = -1; turn <= 1.00001; turn += (2.0f / (actionDepth - 1))) {
 			std::vector<float> input = state;
@@ -75,6 +77,7 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 		}
 	}
 	
+	// Boltzmann probability distribution which weighs exploration over exploitation early on
 	std::vector<float> actionProbabilities;
 	float quotient = 0.0f;
 	for (float& x : qvalues) {
@@ -91,13 +94,14 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 		probSum += x;
 	}
 	
+	// Choose an action from the distribution
 	double probTarget = rng(mt) * probSum;
 	for (int i = 0; i < actionProbabilities.size(); i++) {
 		probTarget -= actionProbabilities[i];
 		if (probTarget <= 0.0f) {
-			result.push_back(-1.0f + (i / actionDepth) * (2.0f / (actionDepth - 1)));
-			result.push_back(-1.0f + (i % actionDepth) * (2.0f / (actionDepth - 1)));
-			result.push_back(qvalues[i]);
+			result.push_back(-1.0f + (i / actionDepth) * (2.0f / (actionDepth - 1))); 	// acceleration
+			result.push_back(-1.0f + (i % actionDepth) * (2.0f / (actionDepth - 1))); 	// turning rate
+			result.push_back(qvalues[i]);												// Q-value
 			return result;
 		}
 	}

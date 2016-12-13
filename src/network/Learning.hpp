@@ -2,6 +2,7 @@
 #define QLEARNING_LEARNING_H
 #include "NeuralNetwork.hpp"
 #include "Node.hpp"
+#include "../Controller.hpp"
 #include <vector>
 
 // SPOOKY SCARY SKELETONS
@@ -11,21 +12,16 @@ class Learning {
 
 public:
 	Learning(float defStepSize = 0.01);
-
-	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
-	void adjustConnection(int layer, int index, float targetValue, NeuralNetwork& nn) {
-		adjustConnection(layer, index, targetValue, nn, defaultStepSize); //call with default value
-	}
-	
 	float getStepSize();
 	
 	// Dummy function
 	void adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
-	
+
+	// New and shiny stuff
 	void adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget, int mode = 1);
-	
+
 	void racistNetworkLearning(NeuralNetwork& nn, float qvalue, float qtarget);
-	
+	void racistNodeAdjustment(Node& n, float target);
 	/**
 		Basically we are going to implement this:
 		https://www.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf

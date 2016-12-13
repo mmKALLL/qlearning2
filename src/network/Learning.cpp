@@ -55,6 +55,15 @@ void Learning::adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget, int
 	}
 }
 
-void Learning::racistNetworkLearning(NeuralNetwork& nn, float qvalue, float qtarget) {
-	
+void Learning::racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget) {
+	float error = qtarget - qvalue;
+	int layers = nn.nodes.size();
+	racistNodeAdjustment(nn.nodes[layerCount - 1][0], error, layers - 1);
+}
+
+void racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, int currentLayer) {
+	if (currentLayer > 0) {
+		//for ()
+		//n->setWeight(nn.nodes[currentLayer][])
+	}
 }

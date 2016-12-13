@@ -44,7 +44,7 @@ private:
 	
 	/***** General settings *****/
 	const bool debugging = true;
-	const bool writeActionsToFile = true; // overwrites existing files
+	const bool writeActionsToFile = false; // overwrites existing files
 	const int numberOfVisionLines = 5;
 	const int fieldOfView = 90; // TODO: FoV slider
 	

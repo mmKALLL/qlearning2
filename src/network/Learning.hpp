@@ -22,9 +22,9 @@ public:
 	// Dummy function
 	void adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
 	
-	void adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget);
+	void adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget, int mode = 1);
 	
-	void racistNetworkLearning(NeuralNetwork& nn, float qvalue, float qtarget, int mode = 1);
+	void racistNetworkLearning(NeuralNetwork& nn, float qvalue, float qtarget);
 	
 	/**
 		Basically we are going to implement this:

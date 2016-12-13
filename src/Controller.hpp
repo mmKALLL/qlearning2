@@ -51,7 +51,7 @@ private:
 	
 	/***** Network building related constants *****/
 	const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {4, 6}; 	// Adjust network node topology with this.
-	const unsigned int layerCount = 2 + size(hiddenLayerSizes); // Don't touch.
+	const unsigned int layerCount = 2 + hiddenLayerSizes.size(); // Don't touch.
 	const float nodeInitLow = -0.4;						// Randomized initial node weights are between these
 	const float nodeInitHigh = -0.4;
 	const int stateSize = numberOfVisionLines + 1;		// Add current velocity into state input vector.

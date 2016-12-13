@@ -54,7 +54,7 @@ std::vector<float> NeuralNetwork::getOutputValuesFromInputs (std::vector<float> 
 // Use only odd numbers. Exploration coefficient weighs exploration; lower it to increase exploitation.
 std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned int actionDepth, float explorationCoefficient) {
 	
-	if (size(state) + extraInputs != sizes[0]) {
+	if (state.size() + extraInputs != sizes[0]) {
 		throw "Wrong size of input vector in NeuralNetwork::getAction(). Did you forget to update Controller::stateSize and NeuralNetwork::extraInputs?";
 	}
 	
@@ -67,7 +67,7 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 			input.push_back(turn);
 			input.push_back(1.0f); // bias input
 			std::vector<float> outputValues = getOutputValuesFromInputs(input, false);
-			if (size(outputValues) != 1) {
+			if (outputValues.size() != 1) {
 				throw "Invalid amount of output nodes in NeuralNetwork::getAction().";
 			} else {
 				qvalues.push_back(outputValues[0]);

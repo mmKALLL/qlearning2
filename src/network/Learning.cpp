@@ -61,9 +61,14 @@ void Learning::racistNetworkLearning(Controller& controller, NeuralNetwork& nn, 
 	racistNodeAdjustment(nn.nodes[layerCount - 1][0], error, layers - 1);
 }
 
+// Recursively backpropagate weights
 void racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, int currentLayer) {
 	if (currentLayer > 0) {
-		//for ()
-		//n->setWeight(nn.nodes[currentLayer][])
+		for (unsigned int i = 0; i < nn.nodes[currentLayer].size(); i++) {
+			float newWeight = ???;
+			float nodeTarget = ???;
+			n->setWeight(i, newWeight);
+			racistNodeAdjustment(nn.nodes[currentLayer - 1][i], nn, nodeTarget, currentLayer - 1)
+		}
 	}
 }

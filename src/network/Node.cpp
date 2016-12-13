@@ -38,7 +38,7 @@ const std::tuple<Node*, float>& Node::getConnection(int index) const {
 }
 
 /*
-	Non-recursively calculate the value of this node 
+	Non-recursively calculate the value of this node
 	without caring if inputs are old.
 */
 float Node::calcValue() {
@@ -96,6 +96,8 @@ void Node::setValue(float val) {
 void Node::setWeight(const unsigned int index, const float weight) {
 	if (index < connectionsIn.size()) {
 		std::get<1>(connectionsIn[index]) = weight;
+	} else {
+		throw "IndexOutOfBounds at Node::setWeight() (Learning and NeuralNetwork are likely culprits).";
 	}
 }
 

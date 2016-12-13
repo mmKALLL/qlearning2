@@ -8,12 +8,6 @@ Controller::Controller() {
 	initializeRun();
 }
 
-Controller::~Controller() {
-	if (writeActionsToFile) {
-		carActionFile.close();
-	}
-}
-
 void Controller::initializeRun() {
 	// No need for gravity in top down physics
 	// currentTrack.setControllerReference(*this);
@@ -64,6 +58,7 @@ const std::vector<float> Controller::getSightVector(int amount, int degrees) {
 
 float Controller::getCarDistanceFromMiddle() const {
 	// TODO: Jussi: Implement function to get car middle point's distance from center of track
+	// TODO: Function not required anymore?
 	return 0.0f;
 }
 
@@ -79,12 +74,13 @@ float Controller::getCarDistanceTraveled() const {
 	return currentCar->getCheckpoints();
 }
 
+/***** OLD CODE, USE STEPFORWARD() INSTEAD *****/
 // Ask neural network to provide a set of actions.
-std::vector<float> Controller::getCarAction(NeuralNetwork& nn) {
+/*std::vector<float> Controller::getCarAction(NeuralNetwork& nn) {
 	std::vector<float> params = getSightVector(numberOfVisionLines, fieldOfView); // TODO: Use some external constants?
 	params.push_back(getCarVelocity());
 	return currentCar->getNetwork().getOutputValuesFromInputs(params);
-}
+}*/
 
 float Controller::getFitness() const {
 	// TODO Jussi/Esa/Simo

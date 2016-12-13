@@ -16,7 +16,6 @@ class Track;
 class Controller {
 public:
 	Controller();
-	~Controller();
 	void initializeRun(/*params?*/); // Application launched or previous car's run completely over, so start new run
 	
 	//---Generic getters

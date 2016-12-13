@@ -8,26 +8,26 @@ ehthumbs.db
 Thumbs.db
 
 # C++ objects
-.o
+*.o
 
 # Others
-.cache
+*.cache
 /bin/
 /Skele Aihe/
-.cproject
+*.cproject
 Debug/
 SFML/
 
 
 # VS
 /Skele Aihe/
-.project
-.sln
-.csproj
-.cpproj
-.vcxproj
-.vs
-.gitattributes
+*.project
+*.sln
+*.csproj
+*.cpproj
+*.vcxproj
+*.vs
+*.gitattributes
 /Properties/
 Skele Aihe.*
-x64/
+

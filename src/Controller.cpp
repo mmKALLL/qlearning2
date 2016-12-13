@@ -123,8 +123,7 @@ void Controller::stepForward() {
 	state.push_back(prevVelocity);
 	
 	std::vector<float> action = currentNetwork.getAction(state, actionDepth, explorationCoefficient);
-	currentCar->accelerate(action[0]);
-	currentCar->turn(action[1]);
+	currentCar->update(action[0], action[1], numberOfVisionLines, fieldOfView);
 	
 	float reward = currentCar->getCollisionStatus() * wallPenalty + currentCar->getVelocity() - prevVelocity * prevVelocityCoefficient;
 	
@@ -132,8 +131,6 @@ void Controller::stepForward() {
 	trainer.adjustNetwork(currentNetwork, qvalue, qtarget);
 	this->qvalue = qtarget;
 	
-
-	//carActionFile.open(); // maybe not needed if we only write??
 	if (writeActionsToFile) {
 		carActionFile << action[0] << "," << action[1] << action[2] << std::endl;
 	}

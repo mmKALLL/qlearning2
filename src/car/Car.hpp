@@ -45,7 +45,7 @@ private:
 	int checkpoints = 0;
 	bool collisionStatus = false;
 	
-	b2World* world;
+	b2World* world = nullptr;
 	Physics physics = Physics(world);
 
 	NeuralNetwork network;

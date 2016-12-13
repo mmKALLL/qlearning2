@@ -26,11 +26,13 @@ Car::Car(b2World* world) : world(world)
 	carFixtureDef.friction = 0.5;
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
+
+
 }
 
 Car::~Car()
 {
-	carBody->GetWorld()->DestroyBody(carBody);
+	
 	
 }
 
@@ -117,6 +119,7 @@ NeuralNetwork & Car::getNetwork()
 
 std::vector<float> Car::getPosition() const
 {
+	std::cout << "TEt" << std::endl;
 	b2Vec2 pos = carBody->GetPosition();
 	std::vector<float> position;
 	position.push_back(pos.x);

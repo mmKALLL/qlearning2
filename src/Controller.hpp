@@ -55,7 +55,7 @@ private:
 	int32 velocityIterations = 8;   //how strongly to correct velocity
 	int32 positionIterations = 3;   //how strongly to correct position
 
-	b2World* world;
+	b2World* m_world;
 	Car* currentCar;
 	Track* currentTrack;
 	NeuralNetwork currentNetwork;

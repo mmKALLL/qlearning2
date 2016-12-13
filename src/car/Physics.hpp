@@ -9,6 +9,7 @@ class Physics
 {
 public:
 	Physics(b2World* world);
+	
 
 	std::vector<float> updateRays(b2Body& carBody, int size, int degrees);
 	void updateFriction(b2Body* carBody);

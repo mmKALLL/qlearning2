@@ -7,9 +7,9 @@ Controller::Controller() {
 void Controller::initializeRun() {
 	// No need for gravity in top down physics
 	// currentTrack.setControllerReference(*this);
-	world = new b2World(b2Vec2(0,0));
-	currentCar = new Car(world);
-	currentTrack = new Track(world);
+	m_world = new b2World(b2Vec2(0,0));
+	currentCar = new Car(m_world);
+	currentTrack = new Track(m_world, this);
 	currentNetwork = NeuralNetwork(layerCount);
 	currentCar->setNetwork(currentNetwork);
 	stepCounter = 0;
@@ -107,9 +107,9 @@ void Controller::stepForward() {
 	this->qvalue = qtarget;
 	
 	//Advances the physics simulation by one step
-	world->Step(timeStep, velocityIterations, positionIterations);
+	m_world->Step(timeStep, velocityIterations, positionIterations);
 	//According to the manual forces should be cleared after taking a step
-	world->ClearForces();
+	m_world->ClearForces();
 	// Call this to have car update its collision status and do all steering related stuff
 	//currentCar.update(float speed, float angle, int amount, int degrees);
 }

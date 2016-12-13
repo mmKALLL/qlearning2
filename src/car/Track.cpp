@@ -1,9 +1,10 @@
 #include "Track.hpp"
 // Rad to Deg -> * 57.2957795f
 
-Track::Track(b2World* world) {
-	this->world = world;
-	
+Track::Track(b2World* world, Controller* controller) : world(world), controller(controller) {
+	if (this->world) {
+		std::cout << "Track connected to world" << std::endl;
+	}
 	// Set the width and height of a single sector.
 	float width = 50.0f;
 	float height = 200.0f;

@@ -23,9 +23,9 @@ public:
 
 
 
-Physics::Physics(b2World* world)
+Physics::Physics(b2World* world) : world(world)
 {
-	this->world = world;
+
 }
 
 

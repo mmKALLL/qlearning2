@@ -4,6 +4,7 @@
 #include "Node.hpp"
 #include "../Controller.hpp"
 #include <vector>
+#include <tuple>
 
 // SPOOKY SCARY SKELETONS
 class Learning {
@@ -15,13 +16,13 @@ public:
 	float getStepSize();
 	
 	// Dummy function
-	void adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn, float stepSize);
+	void adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn);
 
 	// New and shiny stuff
-	void adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget, int mode = 1);
+	void adjustNetwork(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget, int mode = 1);
 
-	void racistNetworkLearning(NeuralNetwork& nn, float qvalue, float qtarget);
-	void racistNodeAdjustment(Node& n, float target);
+	void racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget);
+	void racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer);
 	/**
 		Basically we are going to implement this:
 		https://www.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf
@@ -41,7 +42,7 @@ public:
 	*/
 
 private:
-	float defaultStepSize;
+	float stepSize;
 };
 
 #endif

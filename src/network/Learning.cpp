@@ -1,7 +1,7 @@
 #include "Learning.hpp"
 
-Learning::Learning(float sSize) {
-	defaultStepSize = sSize;
+Learning::Learning(float defStepSize) {
+	stepSize = sSize;
 }
 
 
@@ -33,7 +33,7 @@ void Learning::adjustConnection(int layer, int index, float targetValue,
 //Adjust connections to this node to get its value closer to target
 //Simple dummy algorithm to get somehow going
 void Learning::adjustConnectionSimple(int layer, int index, float targetValue,
-	NeuralNetwork& nn, float stepSize) {
+	NeuralNetwork& nn) {
 
 	auto node = nn.nodes[layer][index];
 	float oldValue = node->calcValue();
@@ -47,9 +47,9 @@ float Learning::getStepSize() {
 	return defaultStepSize;
 }
 
-void Learning::adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget, int mode) {
+void Learning::adjustNetwork(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget, int mode) {
 	if (mode == 1) {
-		racistNetworkLearning(nn, qvalue, qtarget); // Change this line to change learning algorithm.
+		racistNetworkLearning(controller, nn, qvalue, qtarget); // Change this line to change learning algorithm.
 	} else if (mode == 0) {
 		// do nothing
 	} else {
@@ -60,17 +60,21 @@ void Learning::adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget, int
 void Learning::racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget) {
 	float error = qtarget - qvalue;
 	int layers = nn.nodes.size();
-	racistNodeAdjustment(nn.nodes[layerCount - 1][0], error, layers - 1);
+	racistNodeAdjustment(nn.nodes[layerCount - 1][0], nn, error, controller->prevWeightCoefficient, layers - 1);
 }
 
 // Recursively backpropagate weights
-void racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, int currentLayer) {
+void racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer) {
 	if (currentLayer > 0) {
-		for (unsigned int i = 0; i < nn.nodes[currentLayer].size(); i++) {
-			float newWeight = ???;
-			float nodeTarget = ???;
-			n->setWeight(i, newWeight);
-			racistNodeAdjustment(nn.nodes[currentLayer - 1][i], nn, nodeTarget, currentLayer - 1);
+		float inputWeightTotal = 0.0f;
+		for (unsigned int i = 0; i < nn.nodes[currentLayer - 1].size(); i++) {
+			inputWeightTotal += n->getWeight(i);
+		}
+		for (unsigned int i = 0; i < nn.nodes[currentLayer - 1].size(); i++) {
+			float newWeight = ???; // prev_weight + stepsize * (sign(in_i.value) * error * (1 + abs(prev_weight) * prevWeightCoefficient))
+			float nodeTarget = ???; //
+			n->setWeight(i, newWeight); // currently no correction for first layers receiving multiple adjustments
+			racistNodeAdjustment(nn.nodes[currentLayer - 1][i], nn, nodeTarget, prevWeightCoefficient, currentLayer - 1);
 		}
 	}
 }

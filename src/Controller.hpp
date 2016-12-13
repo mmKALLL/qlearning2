@@ -69,6 +69,7 @@ private:
 	float explorationCoefficient = 3; 					// Weighs exploration over exploitation in Q-search; decreases on each step until minimum
 	const float minExplorationCoefficient = 0.05;
 	const float explorationCoefficientDecrease = 0.001;
+	const float prevWeightCoefficient = 0.2;			// How large impact the previous weight's magnitude has in learning
 	Learning trainer = Learning(defaultStepSize);
 	
 	/***** Reward function coefficients, see reward in Controller::takeStep() *****/

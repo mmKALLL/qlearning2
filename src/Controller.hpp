@@ -49,8 +49,14 @@ private:
 	const float wallPenalty = -10000.0f;				// Reward penalty for hitting a wall.
 	const float prevVelocityCoefficient = 0.9f;			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
 	
+	/***** Network building related constants *****/
+	const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {4, 6}; 	// Adjust network node topology with this.
+	const unsigned int layerCount = 2 + size(hiddenLayerSizes); // Don't touch.
+	const float nodeInitLow = -0.4;						// Randomized initial node weights are between these
+	const float nodeInitHigh = -0.4;
+	const int stateSize = numberOfVisionLines + 1;		// Add current velocity into state input vector.
+	
 	/***** Action-space search and learning-related constants *****/
-	const unsigned int layerCount = 4;					// Don't touch or things will explode.
 	const int learningMode = 1;							// Which weight adjustment algorithm to use. Currently only value 1 is supported.
 	const float defaultStepSize = 0.001; 				// Learning rate; multiplies learned outcome's impact on network node weights
 	const float actionDepth = 5; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.

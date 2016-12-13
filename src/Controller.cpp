@@ -11,6 +11,16 @@ void Controller::initializeRun() {
 	currentCar = new Car(m_world);
 	currentTrack = new Track(m_world, this);
 	currentNetwork = NeuralNetwork(layerCount);
+	
+	// Build network
+	std::vector<unsigned int> layerSizes;
+	layerSizes.push_back(stateSize + currentNetwork->extraInputs); // input layer size
+	for (auto x : hiddenLayerSizes) {
+		layerSizes.push_back(x);
+	}
+	layerSizes.push_back(1); // output layer
+	
+	currentNetwork.build(layerSizes, true, nodeInitLow, nodeInitHigh);
 	currentCar->setNetwork(currentNetwork);
 	stepCounter = 0;
 }

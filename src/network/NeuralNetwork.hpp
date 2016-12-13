@@ -27,6 +27,8 @@ public:
 	void calcAll();
 	void calcAllSig();
 	void randomize(float low, float high);
+	
+	const int extraInputs = 3;
 
 protected:
 	std::vector<std::vector<Node*>> nodes;

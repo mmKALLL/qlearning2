@@ -54,6 +54,10 @@ std::vector<float> NeuralNetwork::getOutputValuesFromInputs (std::vector<float> 
 // Use only odd numbers. Exploration coefficient weighs exploration; lower it to increase exploitation.
 std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned int actionDepth, float explorationCoefficient) {
 	
+	if (size(state) + extraInputs != sizes[0]) {
+		throw "Wrong size of input vector in NeuralNetwork::getAction(). Did you forget to update Controller::stateSize and NeuralNetwork::extraInputs?";
+	}
+	
 	std::vector<float> qvalues;
 	std::vector<float> result;
 	for (float acc = -1; acc <= 1.00001; acc += (2.0f / (actionDepth - 1))) {
@@ -61,8 +65,13 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 			std::vector<float> input = state;
 			input.push_back(acc);
 			input.push_back(turn);
+			input.push_back(1.0f); // bias input
 			std::vector<float> outputValues = getOutputValuesFromInputs(input, false);
-			qvalues.insert(qvalues.end(), outputValues.begin(), outputValues.end());
+			if (size(outputValues) != 1) {
+				throw "Invalid amount of output nodes in NeuralNetwork::getAction().";
+			} else {
+				qvalues.push_back(outputValues[0]);
+			}
 		}
 	}
 	
@@ -195,7 +204,8 @@ void NeuralNetwork::randomize(float low, float high) {
 	for (auto nodeVector : nodes) { // for each layer
 		for (Node* node : nodeVector) { // for each node
 			for (unsigned int i = 0; i < node->getConnectionsIn().size(); i++) { // for each connection
-				float rnd = low + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (high - low)));
+				//lol no float rnd = low + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (high - low)));
+				float rnd = low + mt(rng) * (high - low);
 				node->setWeight(i, rnd);
 			}
 		}

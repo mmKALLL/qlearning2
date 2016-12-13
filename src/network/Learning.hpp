@@ -24,6 +24,8 @@ public:
 	
 	void adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget);
 	
+	void racistNetworkLearning(NeuralNetwork& nn, float qvalue, float qtarget, int mode = 1);
+	
 	/**
 		Basically we are going to implement this:
 		https://www.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf

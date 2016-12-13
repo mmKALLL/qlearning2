@@ -47,6 +47,14 @@ float Learning::getStepSize() {
 	return defaultStepSize;
 }
 
-void Learning::adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget) {
+void Learning::adjustNetwork(NeuralNetwork& nn, float qvalue, float qtarget, int mode) {
+	if (mode == 1) {
+		racistNetworkLearning(nn, qvalue, qtarget); // Change this line to change learning algorithm.
+	} else {
+		throw "Learning.cpp: No learning algorithm with mode number " + mode + " found.";
+	}
+}
+
+void Learning::racistNetworkLearning(NeuralNetwork& nn, float qvalue, float qtarget) {
 	
 }

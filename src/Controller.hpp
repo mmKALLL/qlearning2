@@ -47,10 +47,11 @@ private:
 	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
 	const float wallPenalty = -10000.0f;				// Reward penalty for hitting a wall.
-	const float prevVelocityCoefficient = 0.9f;			// Reward multiplier for increasing speed vs going fast.
+	const float prevVelocityCoefficient = 0.9f;			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
 	
 	/***** Action-space search and learning-related constants *****/
 	const unsigned int layerCount = 4;					// Don't touch or things will explode.
+	const int learningMode = 1;							// Which weight adjustment algorithm to use. Currently only value 1 is supported.
 	const float defaultStepSize = 0.001; 				// Learning rate; multiplies learned outcome's impact on network node weights
 	const float actionDepth = 5; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.
 	const float discountFactor = 0.1; 					// [0.0f, 1.0f); importance of "later" vs "now"

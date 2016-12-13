@@ -100,7 +100,7 @@ void Controller::stepForward() {
 	currentCar->accelerate(action[0]);
 	currentCar->turn(action[1]);
 	
-	float reward = currentCar->getCollisionStatus() * -10000 + currentCar->getVelocity() - prevVelocity * 0.9;
+	float reward = currentCar->getCollisionStatus() * wallPenalty + currentCar->getVelocity() - prevVelocity * prevVelocityCoefficient;
 	
 	float qtarget = qvalue + trainer.getStepSize() * (reward + discountFactor * action[2] - qvalue);
 	trainer.adjustNetwork(currentNetwork, qvalue, qtarget);

@@ -43,11 +43,20 @@ private:
 	const bool debugging = true;
 	const int numberOfVisionLines = 5;
 	const int fieldOfView = 90; // TODO: FoV slider
-	const float timeToFitnessMultiplier = 1.2;
-	const float defaultStepSize = 0.001; // learning rate
-	const unsigned int layerCount = 4;
-	const float actionDepth = 5;
-	const float discountFactor = 0.1; // [0.0f, 1.0f)
+	
+	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
+	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
+	const float wallPenalty = -10000.0f;				// Reward penalty for hitting a wall.
+	const float prevVelocityCoefficient = 0.9f;			// Reward multiplier for increasing speed vs going fast.
+	
+	/***** Action-space search and learning-related constants *****/
+	const unsigned int layerCount = 4;					// Don't touch or things will explode.
+	const float defaultStepSize = 0.001; 				// Learning rate; multiplies learned outcome's impact on network node weights
+	const float actionDepth = 5; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.
+	const float discountFactor = 0.1; 					// [0.0f, 1.0f); importance of "later" vs "now"
+	float explorationCoefficient = 3; 					// Weighs exploration over exploitation in Q-search; decreases each step until minimum
+	const float minExplorationCoefficient = 0.05;
+	const float explorationCoefficientDecrease = 0.001;
 	Learning trainer = Learning(defaultStepSize);
 	
 	// Simulation runs at 60 fps
@@ -61,7 +70,6 @@ private:
 	NeuralNetwork currentNetwork;
 	int stepCounter;
 	float qvalue = 0.0f;
-	float explorationCoefficient = 3;
 	
 };
 

@@ -89,7 +89,7 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 
 void Controller::stepForward() {
 	this->stepCounter += 1;
-	explorationCoefficient > 0.05 ? explorationCoefficient -= 0.001 : true;
+	explorationCoefficient > minExplorationCoefficient ? explorationCoefficient -= explorationCoefficientDecrease : true;
 	
 	// Get action from network, then make it learn.
 	float prevVelocity = currentCar->getVelocity();

@@ -65,7 +65,7 @@ private:
 	const float defaultStepSize = 0.001; 				// Learning rate; multiplies learned outcome's impact on network node weights
 	const float actionDepth = 5; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.
 	const float discountFactor = 0.1; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
-	float explorationCoefficient = 3; 					// Weighs exploration over exploitation in Q-search; decreases each step until minimum
+	float explorationCoefficient = 3; 					// Weighs exploration over exploitation in Q-search; decreases on each step until minimum
 	const float minExplorationCoefficient = 0.05;
 	const float explorationCoefficientDecrease = 0.001;
 	Learning trainer = Learning(defaultStepSize);

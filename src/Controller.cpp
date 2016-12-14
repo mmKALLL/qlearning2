@@ -46,6 +46,13 @@ void Controller::initializeRun() {
 		carActionFile.open(fileName.c_str(), std::ofstream::out | std::ofstream::trunc); // overwrite existing
 	}
 	std::cout << "Hello World! My name is initializeRun()-chan!" << std::endl;
+	
+	if (fastforward && runCounter < maxFastForwardRuns) {
+		int prevrun = runCounter;
+		while (prevrun == runCounter) {
+			stepForward();
+		}
+	}
 }
 
 const Car& Controller::getCar() const {
@@ -147,7 +154,7 @@ void Controller::stepForward() {
 	this->qvalue = qtarget;
 	
 	if (writeActionsToFile) {
-		carActionFile << action[0] << "," << action[1] << "," << action[2] << std::endl;
+		carActionFile << stepCounter << "," << action[0] << "," << action[1] << "," << action[2] << std::endl;
 	}
 	
 	//currentCar->testDrive();

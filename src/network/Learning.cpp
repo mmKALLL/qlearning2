@@ -56,7 +56,7 @@ void Learning::racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwo
 			
 			// Magic happens. Pseudocode and then real code. Painstakingly implemented a pseudo-backpropagation from scratch. Because I can.
 			// prev_weight + stepsize * (sign(in_i.value) * error * (1 + abs(prev_weight) * prevWeightCoefficient))
-			float newWeight = n.getWeight(i) + stepSize * (inputValueSign * error * (1 + abs(n.getWeight(i)) * prevWeightCoefficient));
+			float newWeight = 0;//n.getWeight(i) + stepSize * (inputValueSign * error * (1 + abs(n.getWeight(i)) * prevWeightCoefficient));
 			// prev_value * prevValueCoefficient + (1 - prevValueCoefficient) * (target / prev_weight) / nn.nodes[currentLayer - 1].size()
 			float nodeTarget = input.getValue() * controller.prevValueCoefficient + (1 - controller.prevValueCoefficient) * (target / n.getWeight(i)) / nn.nodes[currentLayer - 1].size();
 			racistNodeAdjustment(controller, *nn.nodes[currentLayer - 1][i], nn, nodeTarget, prevWeightCoefficient, currentLayer - 1);

@@ -101,7 +101,7 @@ float Controller::getFitness(double time) const {
 
 void Controller::stepForward() {
 	this->stepCounter += 1;
-	
+	if(!carDebug){
 	// Get action from network, then make it learn.
 	if (explorationCoefficient > minExplorationCoefficient) {
 		 explorationCoefficient -= explorationCoefficientDecrease;
@@ -122,9 +122,10 @@ void Controller::stepForward() {
 	if (writeActionsToFile) {
 		carActionFile << action[0] << "," << action[1] << "," << action[2] << std::endl;
 	}
-	
-	//currentCar->testDrive();
-
+	}
+	else{
+		currentCar->testDrive();
+	}
 
 	//Advances the physics simulation by one step
 	m_world->Step(timeStep, velocityIterations, positionIterations);

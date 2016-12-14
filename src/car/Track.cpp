@@ -2,9 +2,7 @@
 // Rad to Deg -> * 57.2957795f
 
 Track::Track(b2World* world, Controller* controller) : world(world), controller(controller) {
-	if (this->world) {
-		std::cout << "Track connected to world" << std::endl;
-	}
+
 	// Set the width and height of a single sector.
 	float width = 50.0f;
 	float height = 200.0f;
@@ -16,10 +14,14 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 	std::vector<std::string> track = {
 		"straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "left", "straight", "straight", "straight", "right", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight"
 	};
+	/*
+	std::vector<std::string> track = {
+		"straight", "left", "straight"
+	};*/
 
 	// Initialize an empty vector to hold the graphical representation of the circuit.
 	std::vector<sf::VertexArray> sectors;
-	float angle = 0.f;
+	float angle = 0.0f;
 	b2Vec2 midPoint = b2Vec2(50, 0);
 	sf::Vector2f lastLeftCorner;
 	sf::Vector2f lastRightCorner;
@@ -174,8 +176,8 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 	checkpoints.isSensor = true;
 
 	// Left vertical
-	shape.Set(b2Vec2(-width, -height), b2Vec2(-width, height));
-	trackPart->CreateFixture(&checkpoints);
+	//shape.Set(b2Vec2(-width, -height), b2Vec2(-width, height));
+	//trackPart->CreateFixture(&checkpoints);
 
 	// Right vertical
 	shape.Set(b2Vec2(width, -height), b2Vec2(width, height));

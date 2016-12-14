@@ -6,7 +6,8 @@ Controller::Controller() {
 	}
 	runCounter = 0;
 	initializeRun();
-	trainer = new Learning(defaultStepSize);
+	
+	
 }
 
 void Controller::initializeRun() {
@@ -15,6 +16,7 @@ void Controller::initializeRun() {
 	m_world = new b2World(b2Vec2(0,0));
 	currentCar = new Car(m_world);
 	currentTrack = new Track(m_world, this);
+	trainer = new Learning(defaultStepSize);
 	currentNetwork = NeuralNetwork(layerCount);
 	
 	// Build network
@@ -114,7 +116,7 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 
 void Controller::stepForward() {
 	this->stepCounter += 1;
-	
+
 	// Get action from network, then make it learn.
 	if (explorationCoefficient > minExplorationCoefficient) {
 		 explorationCoefficient -= explorationCoefficientDecrease;
@@ -135,10 +137,14 @@ void Controller::stepForward() {
 	if (writeActionsToFile) {
 		carActionFile << action[0] << "," << action[1] << action[2] << std::endl;
 	}
-	
+
 	//Advances the physics simulation by one step
 	m_world->Step(timeStep, velocityIterations, positionIterations);
 	//According to the manual forces should be cleared after taking a step
 	m_world->ClearForces();
+
+	// FOr debugging
+	std::cout << "Checkpoints: " << currentCar->getCheckpoints() << std::endl;
+	std::cout << "Collision: " << currentCar->getCollisionStatus() << std::endl;
 
 }

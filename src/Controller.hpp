@@ -7,10 +7,7 @@
 #include <fstream>
 #include "network/NeuralNetwork.hpp"
 #include "car/Car.hpp"
-
-
 #include "network/Learning.hpp"
-
 class Track;
 #include "car/Track.hpp"
 

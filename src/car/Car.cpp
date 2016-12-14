@@ -9,6 +9,7 @@ Car::Car(b2World* world) : world(world)
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;
 
+
 	//Set the initial position and angle and then create the body
 	carBodyDef.position.Set(0, 0);
 	carBodyDef.angle = 0; 
@@ -26,7 +27,7 @@ Car::Car(b2World* world) : world(world)
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
 	this->world->SetContactListener(&collision);
-
+	carBody->SetUserData(this);
 
 }
 
@@ -122,7 +123,6 @@ NeuralNetwork & Car::getNetwork()
 
 std::vector<float> Car::getPosition() const
 {
-	std::cout << "TEt" << std::endl;
 	b2Vec2 pos = carBody->GetPosition();
 	std::vector<float> position;
 	position.push_back(pos.x);

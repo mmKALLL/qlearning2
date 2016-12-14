@@ -56,7 +56,6 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 
 		if (callback.m_hit) {
 			distances.push_back((rayStart - callback.m_point).Length()-2);
-
 		}
 		else {
 			distances.push_back(rayLenght);

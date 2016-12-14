@@ -4,6 +4,7 @@ Collision collision;
 
 Car::Car(b2World* world) : world(world)
 {
+	
 	//Create definition for car body
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;

@@ -11,7 +11,6 @@ class Controller;
 class Learning {
 	friend class NeuralNetwork;
 
-
 public:
 	Learning(float defStepSize = 0.01);
 

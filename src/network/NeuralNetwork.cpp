@@ -209,7 +209,7 @@ void NeuralNetwork::randomize(float low, float high) {
 		for (Node* node : nodeVector) { // for each node
 			for (unsigned int i = 0; i < node->getConnectionsIn().size(); i++) { // for each connection
 				//lol no float rnd = low + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (high - low)));
-				float rnd = low + mt(rng) * (high - low);
+				float rnd = low + rng(mt) * (high - low);
 				node->setWeight(i, rnd);
 			}
 		}

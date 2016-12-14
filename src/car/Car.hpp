@@ -50,7 +50,7 @@ private:
 	b2World* world = nullptr;
 	Physics physics = Physics(world);
 
-	NeuralNetwork network;
+	NeuralNetwork network = NeuralNetwork();
 	
 };
 

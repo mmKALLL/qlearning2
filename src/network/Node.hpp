@@ -17,6 +17,7 @@ public:
 	const std::vector<std::tuple<Node*, float>>& getConnectionsIn() const;
 	const std::vector<Node*>& getConnectionsOut() const;
 	const std::tuple<Node*, float>& getConnection(int index) const;
+	float getWeight(const unsigned int index);
 
 	float calcValue();
 	float calcValueSig(); // Value also put through Sigmoid function

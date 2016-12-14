@@ -37,6 +37,11 @@ const std::tuple<Node*, float>& Node::getConnection(int index) const {
 	return connectionsIn[index];
 }
 
+float Node::getWeight(const unsigned int index)
+{
+	return std::get<1>(connectionsIn[index]);
+}
+
 /*
 	Non-recursively calculate the value of this node
 	without caring if inputs are old.

@@ -1,4 +1,6 @@
 #include "Car.hpp"
+Collision collision;
+
 
 Car::Car(b2World* world) : world(world)
 {
@@ -26,6 +28,7 @@ Car::Car(b2World* world) : world(world)
 	carFixtureDef.friction = 0.5;
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
+	this->world->SetContactListener(&collision);
 
 
 }
@@ -38,12 +41,6 @@ Car::~Car()
 
 void Car::update(float speed, float angle)
 {
-	if (physics.collisionCheck(carBody) == 1) {
-		checkpoints++;
-	}
-	else {
-		collisionStatus = true;
-	}
 	physics.updateFriction(carBody);
 	accelerate(speed);
 	turn(angle);
@@ -92,6 +89,16 @@ void Car::setParams(std::vector<float> position, float angle, float speed)
 	b2Vec2 vel(speed*sin(angle*DEGTORAD), speed*cos(angle*DEGTORAD));
 	carBody->SetLinearVelocity(vel);
 	carBody->SetTransform(pos, angle*DEGTORAD);
+}
+
+void Car::setCollisionStatus()
+{
+	collisionStatus = true;
+}
+
+void Car::addCheckpoint()
+{
+	checkpoints += 1;
 }
 
 

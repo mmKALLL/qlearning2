@@ -2,7 +2,7 @@
 
 Controller::Controller() {
 	if (writeActionsToFile) {
-		carActionFile.open("carActionError.txt")
+		carActionFile.open("carActionError.txt");
 	}
 	runCounter = 0;
 	initializeRun();
@@ -18,7 +18,7 @@ void Controller::initializeRun() {
 	
 	// Build network
 	std::vector<unsigned int> layerSizes;
-	layerSizes.push_back(stateSize + currentNetwork->extraInputs); // input layer size
+	layerSizes.push_back(stateSize + currentNetwork.extraInputs); // input layer size
 	for (auto x : hiddenLayerSizes) {
 		layerSizes.push_back(x);
 	}

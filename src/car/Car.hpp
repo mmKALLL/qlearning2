@@ -27,6 +27,8 @@ public:
 	void accelerate(float speed);
 	void turn(float angle);
 	void setParams(std::vector<float> position, float angle, float speed);
+	void setCollisionStatus();
+	void addCheckpoint();
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;
@@ -49,8 +51,47 @@ private:
 	Physics physics = Physics(world);
 
 	NeuralNetwork network;
+	
 };
 
+class Collision : public b2ContactListener
+{
+	void BeginContact(b2Contact* contact) {
+
+		//check if fixture A was a ball
+		void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+		void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+		if (!userDataA) {
+			if (contact->GetFixtureA()->IsSensor() == false) {
+				static_cast<Car*>(userDataB)->setCollisionStatus();
+			}
+		}
+
+		if (!userDataB) {
+			if (contact->GetFixtureB()->IsSensor() == false) {
+				static_cast<Car*>(userDataA)->setCollisionStatus();
+			}
+		}
+
+	}
+
+	void EndContact(b2Contact* contact) {
+
+		void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+		void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+		if (!userDataA) {
+			if (contact->GetFixtureA()->IsSensor() == true) {
+				static_cast<Car*>(userDataB)->addCheckpoint();
+			}
+		}
+
+		if (!userDataB) {
+			if (contact->GetFixtureB()->IsSensor() == true) {
+				static_cast<Car*>(userDataA)->addCheckpoint();
+			}
+		}
+	}
+};
 
 
 #endif

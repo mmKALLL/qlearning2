@@ -96,7 +96,7 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 	
 	// Choose an action from the distribution
 	double probTarget = rng(mt) * probSum;
-	for (int i = 0; i < actionProbabilities.size(); i++) {
+	for (unsigned int i = 0; i < actionProbabilities.size(); i++) {
 		probTarget -= actionProbabilities[i];
 		if (probTarget <= 0.0f) {
 			result.push_back(-1.0f + (i / actionDepth) * (2.0f / (actionDepth - 1))); 	// acceleration

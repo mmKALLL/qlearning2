@@ -2,9 +2,7 @@
 // Rad to Deg -> * 57.2957795f
 
 Track::Track(b2World* world, Controller* controller) : world(world), controller(controller) {
-	if (this->world) {
-		std::cout << "Track connected to world" << std::endl;
-	}
+
 	// Set the width and height of a single sector.
 	float width = 50.0f;
 	float height = 200.0f;
@@ -16,10 +14,14 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 	std::vector<std::string> track = {
 		"straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "left", "straight", "straight", "straight", "right", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight"
 	};
+	/*
+	std::vector<std::string> track = {
+		"straight", "left", "straight"
+	};*/
 
 	// Initialize an empty vector to hold the graphical representation of the circuit.
 	std::vector<sf::VertexArray> sectors;
-	float angle = 0.f;
+	float angle = 0.0f;
 	b2Vec2 midPoint = b2Vec2(50, 0);
 	sf::Vector2f lastLeftCorner;
 	sf::Vector2f lastRightCorner;
@@ -174,11 +176,11 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 	checkpoints.isSensor = true;
 
 	// Left vertical
-	shape.Set(b2Vec2(-width, -height), b2Vec2(-width, height));
-	trackPart->CreateFixture(&checkpoints);
+	//shape.Set(b2Vec2(-width, -height), b2Vec2(-width, height));
+	//trackPart->CreateFixture(&checkpoints);
 
 	// Right vertical
-	shape.Set(b2Vec2(width, -height), b2Vec2(width, height));
+	shape.Set(b2Vec2(width, -height / 2), b2Vec2(width, height / 2));
 	trackPart->CreateFixture(&checkpoints);
 
 	b2FixtureDef walls;
@@ -187,14 +189,14 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 	walls.isSensor = false;
 
 	// Top horizontal
-	shape.Set(b2Vec2(-width, height), b2Vec2(width, height));
+	shape.Set(b2Vec2(-width, height / 2), b2Vec2(width, height / 2));
 	trackPart->CreateFixture(&walls);
 
 	// Bottom horizontal
-	shape.Set(b2Vec2(-width, -height), b2Vec2(width, -height));
-
+	shape.Set(b2Vec2(-width, -height / 2), b2Vec2(width, -height / 2));
 	trackPart->CreateFixture(&walls);
-	trackPart->SetTransform(middlePoint, angle * DEGTORAD);
+
+	trackPart->SetTransform(middlePoint, -angle * DEGTORAD);
 	circuit.push_back(trackPart);
 }
 
@@ -241,6 +243,7 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 	car.setOrigin(20, 15);
 	car.setFillColor(sf::Color(255, 55, 55));
 	std::vector<float> carPosition;
+	float carRotation;
 	
 	sf::View camera;
 	camera.setSize(sf::Vector2f(1000, 1000));
@@ -258,9 +261,10 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 		}
 		
 		window.clear(sf::Color::Black);
-		std::cout << "Trying to get the position of the current car from Track.cpp" << std::endl;
 		carPosition = controller->getCarPosition();
 		car.setPosition(carPosition[0], carPosition[1]);
+		carRotation = controller->getCarRotation();
+		car.setRotation(carRotation);
 		camera.setCenter(car.getPosition());
 		window.setView(camera);
 		for (auto x : sectors) {

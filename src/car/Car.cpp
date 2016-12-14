@@ -9,6 +9,7 @@ Car::Car(b2World* world) : world(world)
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;
 
+
 	//Set the initial position and angle and then create the body
 	carBodyDef.position.Set(0, 0);
 	carBodyDef.angle = 0; 
@@ -21,12 +22,12 @@ Car::Car(b2World* world) : world(world)
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
 	// Density controls the mass of the car
-	carFixtureDef.density = 1;
+	carFixtureDef.density = 0.5;
 
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
 	this->world->SetContactListener(&collision);
-
+	carBody->SetUserData(this);
 
 }
 
@@ -42,12 +43,12 @@ void Car::update(float speed, float angle)
 	accelerate(speed);
 	turn(angle);
 	
+
+	
 }
 
 void Car::accelerate(float speed)
 {
-	// Get current forward speed and set force
-	float force = 0;
 
 	// Set desired speed in relation to if we are reversing or going forward
 	desiredSpeed = speed*maxSpeed;
@@ -59,17 +60,8 @@ void Car::accelerate(float speed)
 
 	//Depending on current speed the amount of force is determined
 	if (desiredSpeed > currentSpeed) {
-		force = maxDriveForce;
+		carBody->ApplyForce(maxDriveForce * currentForwardNormal, carBody->GetWorldCenter(), true);
 	}
-	else if (desiredSpeed < currentSpeed) {
-		force = -maxDriveForce;
-	}
-	else {
-		force = 0;
-	}
-
-	// Apply the force
-	carBody->ApplyForce(force * currentForwardNormal, carBody->GetWorldCenter(), false);
 	
 }
 
@@ -122,7 +114,6 @@ NeuralNetwork & Car::getNetwork()
 
 std::vector<float> Car::getPosition() const
 {
-	std::cout << "TEt" << std::endl;
 	b2Vec2 pos = carBody->GetPosition();
 	std::vector<float> position;
 	position.push_back(pos.x);
@@ -142,4 +133,42 @@ float Car::getVelocity() const
 
 void Car::setNetwork(NeuralNetwork newNetwork) {
 	network = newNetwork;
+}
+
+void Car::testDrive(){
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right) )
+	{
+    		// left key is pressed: move our character
+    		this->update(1, 0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) )
+	{
+    		// left key is pressed: move our character
+    		this->update(1, -0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+    		// left key is pressed: move our character
+    		this->update(0, -0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+    		// left key is pressed: move our character
+    		this->update(0, 0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+    		// left key is pressed: move our character
+    		this->update(1, 0);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+    		// left key is pressed: move our character
+    		this->update(-1, 0);
+	}
+	// FOr debugging
+	std::cout << "Velocity: " << this->getVelocity() << std::endl;
+	std::cout << "Angle: " << this->getAngle() << std::endl;
+	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
+	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
 }

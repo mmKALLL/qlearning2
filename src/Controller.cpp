@@ -6,7 +6,8 @@ Controller::Controller() {
 	}
 	runCounter = 0;
 	initializeRun();
-	trainer = new Learning(defaultStepSize);
+	
+	
 }
 
 void Controller::initializeRun() {
@@ -15,6 +16,7 @@ void Controller::initializeRun() {
 	m_world = new b2World(b2Vec2(0,0));
 	currentCar = new Car(m_world);
 	currentTrack = new Track(m_world, this);
+	trainer = new Learning(defaultStepSize);
 	currentNetwork = NeuralNetwork(layerCount);
 	
 	// Build network
@@ -63,16 +65,20 @@ float Controller::getCarDistanceFromMiddle() const {
 	return 0.0f;
 }
 
-float Controller::getCarVelocity() const {
-	// Returns the current car's current speed.
-	return currentCar->getVelocity();
-}
-
 float Controller::getCarDistanceTraveled() const {
 	// TODO Olli/Jussi Return how far the car has gone on the track
 	//				   ie how many checkpoints it has reached
 	//Done'd, though it returns the amount of checkpoints passed
 	return currentCar->getCheckpoints();
+}
+
+float Controller::getCarRotation() const{
+	return currentCar->getAngle();
+}
+
+float Controller::getCarVelocity() const {
+	// Returns the current car's current speed.
+	return currentCar->getVelocity();
 }
 
 /***** OLD CODE, USE STEPFORWARD() INSTEAD *****/
@@ -136,6 +142,9 @@ void Controller::stepForward() {
 		carActionFile << action[0] << "," << action[1] << action[2] << std::endl;
 	}
 	
+	//currentCar->testDrive();
+
+
 	//Advances the physics simulation by one step
 	m_world->Step(timeStep, velocityIterations, positionIterations);
 	//According to the manual forces should be cleared after taking a step

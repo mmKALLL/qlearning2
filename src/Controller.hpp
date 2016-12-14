@@ -7,10 +7,8 @@
 #include <fstream>
 #include "network/NeuralNetwork.hpp"
 #include "car/Car.hpp"
-
-
+class Learning;
 #include "network/Learning.hpp"
-
 class Track;
 #include "car/Track.hpp"
 
@@ -31,8 +29,9 @@ public:
 	const std::vector<float> getCarPosition() const;
 	const std::vector<float> getSightVector(int size, int degrees);
 	float getCarDistanceFromMiddle() const;
-	float getCarVelocity() const;
 	float getCarDistanceTraveled() const;
+	float getCarRotation() const;
+	float getCarVelocity() const;
 
 	//---Car actions and NN interraction
 	std::vector<float> getCarAction(NeuralNetwork& nn);

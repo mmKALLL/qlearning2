@@ -132,9 +132,9 @@ void Controller::stepForward() {
 	std::vector<float> action = currentNetwork.getAction(state, actionDepth, explorationCoefficient, useSig);
 	currentCar->update(action[0], action[1]);
 	
-	float reward = currentCar->getCollisionStatus() * wallPenalty + currentCar->getVelocity() - prevVelocity * prevVelocityCoefficient;
+	float reward = (currentCar->getCollisionStatus() * wallPenalty + currentCar->getVelocity() - prevVelocity * prevVelocityCoefficient) * rewardMultiplier;
 	
-	float qtarget = qvalue + trainer->getStepSize() * (reward + discountFactor * action[2] - qvalue);
+	float qtarget = (qvalue + trainer->getStepSize() * (reward + discountFactor * action[2] - qvalue)) * qvalueMultiplier;
 	trainer->adjustNetwork(*this, currentNetwork, qvalue, qtarget, learningMode);
 	this->qvalue = qtarget;
 	

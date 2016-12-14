@@ -45,6 +45,7 @@ void Controller::initializeRun() {
 		std::string fileName = std::string("car") + std::to_string(runCounter) + std::string("_actions.txt");
 		carActionFile.open(fileName.c_str(), std::ofstream::out | std::ofstream::trunc); // overwrite existing
 	}
+	std::cout << "Hello World! My name is initializeRun()-chan!" << std::endl;
 }
 
 const Car& Controller::getCar() const {
@@ -139,7 +140,7 @@ void Controller::stepForward() {
 	std::vector<float> action = currentNetwork.getAction(state, actionDepth, explorationCoefficient, useSig);
 	currentCar->update(action[0], action[1]);
 	
-	float reward = (currentCar->getCollisionStatus() * wallPenalty + currentCar->getVelocity() - prevVelocity * prevVelocityCoefficient) * rewardMultiplier;
+	float reward = (currentCar->getCollisionStatus() * wallPenalty + (currentCar->getVelocity() * velocityMultiplier) - (prevVelocity * velocityMultiplier) * prevVelocityCoefficient) * rewardMultiplier;
 	
 	float qtarget = (qvalue + trainer->getStepSize() * (reward + discountFactor * action[2] - qvalue)) * qvalueMultiplier;
 	trainer->adjustNetwork(*this, currentNetwork, qvalue, qtarget, learningMode);

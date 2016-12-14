@@ -69,6 +69,9 @@ float Controller::getCarVelocity() const {
 	// Returns the current car's current speed.
 	return currentCar->getVelocity();
 }
+float Controller::getCarAngle() const{
+	return currentCar->getAngle();
+}
 
 float Controller::getCarDistanceTraveled() const {
 	// TODO Olli/Jussi Return how far the car has gone on the track
@@ -148,7 +151,5 @@ void Controller::stepForward() {
 	m_world->Step(timeStep, velocityIterations, positionIterations);
 	//According to the manual forces should be cleared after taking a step
 	m_world->ClearForces();
-
-
 
 }

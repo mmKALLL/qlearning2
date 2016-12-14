@@ -43,7 +43,7 @@ private:
 	// maxspeed is maximum speed and maxDriveForce is maximum acceleration
 	b2Body* carBody = nullptr;
 	float maxSpeed = 100;
-	float maxDriveForce = 10000;
+	float maxDriveForce = 20000;
 	float MaxTurningForce = 1000;
 	std::vector<float> distances;
 	int checkpoints = 0;

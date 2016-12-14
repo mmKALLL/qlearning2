@@ -31,6 +31,7 @@ public:
 	float getCarDistanceFromMiddle() const;
 	float getCarVelocity() const;
 	float getCarDistanceTraveled() const;
+	float getCarAngle() const;
 
 	//---Car actions and NN interraction
 	std::vector<float> getCarAction(NeuralNetwork& nn);

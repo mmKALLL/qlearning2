@@ -65,7 +65,7 @@ void Car::accelerate(float speed)
 		force = maxDriveForce;
 	}
 	else if (desiredSpeed < currentSpeed) {
-		force = -maxDriveForce;
+		force = -0*maxDriveForce;
 	}
 
 

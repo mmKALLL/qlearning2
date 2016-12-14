@@ -17,6 +17,7 @@ class Controller {
 	friend class Learning;
 public:
 	Controller();
+	~Controller();
 	void initializeController(/*params?*/); // Application launched or previous car's run completely over, so start new run
 	void initializeRun();
 	
@@ -66,7 +67,7 @@ private:
 	const int stateSize = numberOfVisionLines + 1;		// Don't touch. Add current velocity into state input vector.
 	
 	/***** Action-space search and learning-related constants *****/
-	const int learningMode = 0;							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).
+	const int learningMode = 1;							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).
 	const bool useSig = false;							// Whether to use sigmoid functions in network evaluation.
 	const float defaultStepSize = 50.91; 				// Learning rate; multiplies learned outcome's impact on network node weights
 	const float actionDepth = 3; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.

@@ -8,6 +8,18 @@ Controller::Controller() {
 	initializeController();
 }
 
+Controller::~Controller() {
+	for (auto layer : currentNetwork.nodes) {
+		for (auto *node : layer) {
+			std::cout << "Node " << node->toString() << " weights: " << std::endl;
+			for (auto w : node->getConnectionsIn()) {
+				std::cout << "    w" << (*std::get<0>(w)).toString() << " " << std::get<1>(w) << std::endl;
+			}
+		}
+	}
+	
+}
+
 void Controller::initializeController() {
 	
 	// No need for gravity in top down physics

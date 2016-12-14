@@ -7,6 +7,7 @@
 
 class NeuralNetwork {
 	friend class Learning;
+	friend class Controller;
 	friend class tests;
 public:
 	NeuralNetwork(unsigned int layerCount = 4);

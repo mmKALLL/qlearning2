@@ -15,7 +15,7 @@ public:
 	int getLayerSize(int layer) const;
 	std::vector<float> getOutputValues() const;
 	std::vector<float> getOutputValuesFromInputs(std::vector<float> inputs, bool useSig = false);
-	std::vector<float> getAction(std::vector<float> state, unsigned int actionDepth = 5, float explorationCoefficient = 3);
+	std::vector<float> getAction(std::vector<float> state, unsigned int actionDepth = 5, float explorationCoefficient = 3, bool useSig = false);
 
 	void setInput(const int index, const float value);
 	void setInputs(std::vector<float>& values);

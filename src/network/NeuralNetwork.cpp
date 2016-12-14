@@ -52,7 +52,7 @@ std::vector<float> NeuralNetwork::getOutputValuesFromInputs (std::vector<float> 
 
 // Get action based on state. Action depth tells how many action combinations to evaluate.
 // Use only odd numbers. Exploration coefficient weighs exploration; lower it to increase exploitation.
-std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned int actionDepth, float explorationCoefficient) {
+std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned int actionDepth, float explorationCoefficient, bool useSig) {
 	
 	if (state.size() + extraInputs != sizes[0]) {
 		throw "Wrong size of input vector in NeuralNetwork::getAction(). Did you forget to update Controller::stateSize and NeuralNetwork::extraInputs?";
@@ -68,7 +68,7 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 			input.push_back(acc);
 			input.push_back(turn);
 			input.push_back(1.0f); // bias input
-			std::vector<float> outputValues = getOutputValuesFromInputs(input, false);
+			std::vector<float> outputValues = getOutputValuesFromInputs(input, useSig);
 			if (outputValues.size() != 1) {
 				throw "Invalid amount of output nodes in NeuralNetwork::getAction().";
 			} else {
@@ -102,6 +102,13 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 			result.push_back(-1.0f + (i / actionDepth) * (2.0f / (actionDepth - 1))); 	// acceleration
 			result.push_back(-1.0f + (i % actionDepth) * (2.0f / (actionDepth - 1))); 	// turning rate
 			result.push_back(qvalues[i]);												// Q-value
+			
+			// Leave network in the state it was with that input
+			std::vector<float> input = state;
+			input.push_back(result[0]);
+			input.push_back(result[1]);
+			input.push_back(1.0f); // bias input
+			getOutputValuesFromInputs(input, useSig);
 			return result;
 		}
 	}

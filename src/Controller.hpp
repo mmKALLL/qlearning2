@@ -65,6 +65,7 @@ private:
 	
 	/***** Action-space search and learning-related constants *****/
 	const int learningMode = 1;							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).
+	const bool useSig = false;							// Whether to use sigmoid functions or not.
 	const float defaultStepSize = 0.001; 				// Learning rate; multiplies learned outcome's impact on network node weights
 	const float actionDepth = 5; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.
 	const float discountFactor = 0.1; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"

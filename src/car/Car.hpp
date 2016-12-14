@@ -32,28 +32,24 @@ public:
 	void turn(float angle);
 	void addCheckpoint();
 	void testDrive();
-	
-	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
-
-	
-	
+		
 private:
 	// Variables for the body amd maximum speeds
 	// maxspeed is maximum speed and maxDriveForce is maximum acceleration
 	b2Body* carBody = nullptr;
-	float maxSpeed = 250;
+	float maxSpeed = 120;
 	float maxDriveForce = 3000;
 	float maxReverseForce = 1500;
-	float MaxTurningForce = 50000;
+	float MaxTurningForce = 25000;
+	bool collisionStatus = false;
 	std::vector<float> distances;
 	int checkpoints = 0;
-	bool collisionStatus = false;
+	
 	
 	b2World* world = nullptr;
 	Physics physics = Physics(world);
-
 	NeuralNetwork network;
-	
+
 };
 
 class Collision : public b2ContactListener

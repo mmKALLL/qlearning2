@@ -18,4 +18,4 @@ Car.o: src/car/Car.hpp src/car/Car.cpp src/car/Physics.hpp src/car/Physics.cpp s
 
 .PHONY: clean
 clean:
-	rm -f *.o qlearn *~
+	rm -f *.o *_actions.txt out.txt qlearn *~

@@ -139,7 +139,7 @@ void Controller::stepForward() {
 	this->qvalue = qtarget;
 	
 	if (writeActionsToFile) {
-		carActionFile << action[0] << "," << action[1] << action[2] << std::endl;
+		carActionFile << action[0] << "," << action[1] << "," << action[2] << std::endl;
 	}
 	
 	//currentCar->testDrive();

@@ -46,7 +46,7 @@ private:
 	
 	/***** General settings *****/
 	const bool debugging = true;
-	const bool writeActionsToFile = false; // car driving history; overwrites existing history files
+	const bool writeActionsToFile = true; // car driving history; overwrites existing history files
 	const int numberOfVisionLines = 5;
 	const int fieldOfView = 90; // TODO: FoV slider
 	
@@ -73,13 +73,13 @@ private:
 	const float explorationCoefficientDecrease = 0.001;
 	const float prevWeightCoefficient = 0.2;			// How large impact the previous weight's magnitude has in learning
 	const float prevValueCoefficient = 0.97;			// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
-	const float rewardMultiplier = 0.0001;				// Multiplier on reward values to prevent crashing from overflows.
+	const float rewardMultiplier = 0.9;				// Multiplier on reward values to prevent crashing from overflows.
 	const float qvalueMultiplier = 1.0;					// Don't adjust until the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
 	Learning* trainer;
 	
 	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
-	const float wallPenalty = -1000.0;			// Reward penalty for hitting a wall.
+	const float wallPenalty = -10000.0;			// Reward penalty for hitting a wall.
 	const float prevVelocityCoefficient = 0.9;	// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
 
 	/***** Controller variables *****/

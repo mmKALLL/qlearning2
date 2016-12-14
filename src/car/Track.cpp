@@ -10,14 +10,10 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 	float heightLengthAngle = acos((height / 2) / length);
 	
 	// TODO: Possibly read track composition from a file?
-	// TODO: The track must always begin with a "straight"
+	// TODO: The track must always begin with a "straight", add a check for this
 	std::vector<std::string> track = {
 		"straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "left", "straight", "straight", "straight", "right", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "right", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "left", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight", "straight"
 	};
-	/*
-	std::vector<std::string> track = {
-		"straight", "left", "straight"
-	};*/
 
 	// Initialize an empty vector to hold the graphical representation of the circuit.
 	std::vector<sf::VertexArray> sectors;
@@ -30,29 +26,9 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 		if (element == "straight") {
 			newSector(width, height, angle, midPoint);
 			
-			float bottomLeftYOffset = cos(angle * DEGTORAD - heightLengthAngle) * length;
-			float bottomLeftXOffset = sin(angle * DEGTORAD - heightLengthAngle) * length;
-			float topRightYOffset = -bottomLeftYOffset;
-			float topRightXOffset = -bottomLeftXOffset;
-			float topLeftYOffset = sin((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
-			float topLeftXOffset = cos((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
-			float bottomRightYOffset = -topLeftYOffset;
-			float bottomRightXOffset = -topLeftXOffset;
-			
-			sf::VertexArray sector(sf::LinesStrip, 5);
-			sector[0].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
-			sector[1].position = sf::Vector2f(midPoint.x + topRightXOffset, midPoint.y + topRightYOffset);
-			sector[2].position = sf::Vector2f(midPoint.x + bottomRightXOffset, midPoint.y + bottomRightYOffset);
-			sector[3].position = sf::Vector2f(midPoint.x + bottomLeftXOffset, midPoint.y + bottomLeftYOffset);
-			sector[4].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+			sf::VertexArray sector = drawSector(length, heightLengthAngle, angle, midPoint);
 			lastLeftCorner = sector[1].position;
 			lastRightCorner = sector[0].position;
-			sector[0].color = sf::Color::Blue;
-			sector[1].color = sf::Color::Blue;
-			sector[2].color = sf::Color::Blue;
-			sector[3].color = sf::Color::Blue;
-			sector[4].color = sf::Color::Blue;
-			
 			sectors.push_back(sector);
 			
 			midPoint.x += cos(angle * DEGTORAD) * width;
@@ -61,29 +37,9 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 			for (unsigned i = 0; i < 10; i++) {
 				newSector(width, height, angle, midPoint);
 				
-				float bottomLeftYOffset = cos(angle * DEGTORAD - heightLengthAngle) * length;
-				float bottomLeftXOffset = sin(angle * DEGTORAD - heightLengthAngle) * length;
-				float topRightYOffset = -bottomLeftYOffset;
-				float topRightXOffset = -bottomLeftXOffset;
-				float topLeftYOffset = sin((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
-				float topLeftXOffset = cos((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
-				float bottomRightYOffset = -topLeftYOffset;
-				float bottomRightXOffset = -topLeftXOffset;
-				
-				sf::VertexArray sector(sf::LinesStrip, 5);
-				sector[0].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
-				sector[1].position = sf::Vector2f(midPoint.x + topRightXOffset, midPoint.y + topRightYOffset);
-				sector[2].position = sf::Vector2f(midPoint.x + bottomRightXOffset, midPoint.y + bottomRightYOffset);
-				sector[3].position = sf::Vector2f(midPoint.x + bottomLeftXOffset, midPoint.y + bottomLeftYOffset);
-				sector[4].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+				sf::VertexArray sector = drawSector(length, heightLengthAngle, angle, midPoint);
 				lastLeftCorner = sector[1].position;
 				lastRightCorner = sector[0].position;
-				sector[0].color = sf::Color::Blue;
-				sector[1].color = sf::Color::Blue;
-				sector[2].color = sf::Color::Blue;
-				sector[3].color = sf::Color::Blue;
-				sector[4].color = sf::Color::Blue;
-				
 				sectors.push_back(sector);
 
 				if (i < 9) {
@@ -102,29 +58,9 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 			for (unsigned i = 0; i < 10; i++) {
 				newSector(width, height, angle, midPoint);
 				
-				float bottomLeftYOffset = cos(angle * DEGTORAD - heightLengthAngle) * length;
-				float bottomLeftXOffset = sin(angle * DEGTORAD - heightLengthAngle) * length;
-				float topRightYOffset = -bottomLeftYOffset;
-				float topRightXOffset = -bottomLeftXOffset;
-				float topLeftYOffset = sin((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
-				float topLeftXOffset = cos((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
-				float bottomRightYOffset = -topLeftYOffset;
-				float bottomRightXOffset = -topLeftXOffset;
-				
-				sf::VertexArray sector(sf::LinesStrip, 5);
-				sector[0].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
-				sector[1].position = sf::Vector2f(midPoint.x + topRightXOffset, midPoint.y + topRightYOffset);
-				sector[2].position = sf::Vector2f(midPoint.x + bottomRightXOffset, midPoint.y + bottomRightYOffset);
-				sector[3].position = sf::Vector2f(midPoint.x + bottomLeftXOffset, midPoint.y + bottomLeftYOffset);
-				sector[4].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+				sf::VertexArray sector = drawSector(length, heightLengthAngle, angle, midPoint);
 				lastLeftCorner = sector[1].position;
 				lastRightCorner = sector[0].position;
-				sector[0].color = sf::Color::Blue;
-				sector[1].color = sf::Color::Blue;
-				sector[2].color = sf::Color::Blue;
-				sector[3].color = sf::Color::Blue;
-				sector[4].color = sf::Color::Blue;
-				
 				sectors.push_back(sector);
 
 				if (i < 9) {
@@ -144,27 +80,17 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 		}
 	}
 	
-	GUI(sectors); // Return?
+	GUI(sectors); // TODO: Does the constructor need to return anything?
+	
 }
 
 Track::~Track() {
 
 }
-/*
-void Track::straight(&float angle, &b2Vec2 midPoint, &sf::Vector2f rightCorner, &sf::Vector2f leftCorner) {
-	
-}
 
-void Track::leftTurn(&float angle, &b2Vec2 midPoint, &sf::Vector2f rightCorner, &sf::Vector2f leftCorner) {
-	
-}
-
-void Track::rightTurn(&float angle, &b2Vec2 midPoint, &sf::Vector2f rightCorner, &sf::Vector2f leftCorner) {
-	
-}
-*/
-// This method creates a track part that the physics engine can utilize. The method takes the width, height, angle and middle point of the track part as parameters.
+// Creates a track part that the physics engine can utilize. The method takes the width, height, angle and middle point of the track part as parameters.
 void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint) {
+	
 	b2BodyDef bd;
 	bd.position.Set(middlePoint.x, middlePoint.y);
 	
@@ -175,11 +101,7 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 	checkpoints.shape = &shape;
 	checkpoints.isSensor = true;
 
-	// Left vertical
-	//shape.Set(b2Vec2(-width, -height), b2Vec2(-width, height));
-	//trackPart->CreateFixture(&checkpoints);
-
-	// Right vertical
+	// End of sector (right vertical edge)
 	shape.Set(b2Vec2(width, -height / 2), b2Vec2(width, height / 2));
 	trackPart->CreateFixture(&checkpoints);
 
@@ -188,16 +110,44 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 
 	walls.isSensor = false;
 
-	// Top horizontal
+	// Left barrier (top horizontal edge)
 	shape.Set(b2Vec2(-width, height / 2), b2Vec2(width, height / 2));
 	trackPart->CreateFixture(&walls);
 
-	// Bottom horizontal
+	// Right barrier (bottom horizontal edge)
 	shape.Set(b2Vec2(-width, -height / 2), b2Vec2(width, -height / 2));
 	trackPart->CreateFixture(&walls);
 
 	trackPart->SetTransform(middlePoint, -angle * DEGTORAD);
 	circuit.push_back(trackPart);
+	
+}
+
+// Creates a VertexArray that SFML uses to draw the track part in GUI
+sf::VertexArray Track::drawSector(float length, float heightLengthAngle, float angle, b2Vec2 midPoint) {
+	
+	float bottomLeftYOffset = cos(angle * DEGTORAD - heightLengthAngle) * length;
+	float bottomLeftXOffset = sin(angle * DEGTORAD - heightLengthAngle) * length;
+	float topRightYOffset = -bottomLeftYOffset;
+	float topRightXOffset = -bottomLeftXOffset;
+	float topLeftYOffset = sin((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
+	float topLeftXOffset = cos((90.0f - angle) * DEGTORAD - heightLengthAngle) * length;
+	float bottomRightYOffset = -topLeftYOffset;
+	float bottomRightXOffset = -topLeftXOffset;
+	
+	sf::VertexArray sector(sf::LinesStrip, 5);
+	sector[0].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+	sector[1].position = sf::Vector2f(midPoint.x + topRightXOffset, midPoint.y + topRightYOffset);
+	sector[2].position = sf::Vector2f(midPoint.x + bottomRightXOffset, midPoint.y + bottomRightYOffset);
+	sector[3].position = sf::Vector2f(midPoint.x + bottomLeftXOffset, midPoint.y + bottomLeftYOffset);
+	sector[4].position = sf::Vector2f(midPoint.x + topLeftXOffset, midPoint.y + topLeftYOffset);
+	sector[0].color = sf::Color::Blue;
+	sector[1].color = sf::Color::Blue;
+	sector[2].color = sf::Color::Blue;
+	sector[3].color = sf::Color::Blue;
+	sector[4].color = sf::Color::Blue;
+	return sector;
+	
 }
 
 void Track::GUI(std::vector<sf::VertexArray> sectors) {

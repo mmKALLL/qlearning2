@@ -47,8 +47,8 @@ public:
 private:
 	
 	/***** General settings *****/
-	const bool debugging = true;
 	const bool fastforward = true;		// Ripperino in pepperino, GUI
+	const bool debugging = true;
 	const int maxFastForwardRuns = 1;	// Ehehe.
 	const bool writeActionsToFile = true; // car driving history; overwrites existing history files
 	const int numberOfVisionLines = 5;

@@ -9,14 +9,6 @@ Controller::Controller() {
 }
 
 Controller::~Controller() {
-	for (auto layer : currentNetwork.nodes) {
-		for (auto *node : layer) {
-			std::cout << "Node " << node->toString() << " weights: " << std::endl;
-			for (auto w : node->getConnectionsIn()) {
-				std::cout << "    w" << (*std::get<0>(w)).toString() << ", Weight: " << std::get<1>(w) << std::endl;
-			}
-		}
-	}
 	
 }
 
@@ -147,6 +139,17 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 
 void Controller::stepForward() {
 	this->stepCounter += 1;
+	// Print network
+	if (debugging) {
+		for (auto layer : currentNetwork.nodes) {
+			for (auto *node : layer) {
+				std::cout << "Node " << node->toString() << " weights: " << std::endl;
+				for (auto w : node->getConnectionsIn()) {
+					std::cout << "    w" << (*std::get<0>(w)).toString() << ", Weight: " << std::get<1>(w) << std::endl;
+				}
+			}
+		}
+	}
 	
 	// Get action from network, then make it learn.
 	if (explorationCoefficient > minExplorationCoefficient) {

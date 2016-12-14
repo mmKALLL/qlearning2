@@ -122,7 +122,7 @@ void Controller::stepForward() {
 	stepCounter += 1;
 	
 	// Print network
-	if (debugging) {
+	if (networkDebug) {
 		std::cout << std::endl << std::endl << "** FRAME " << stepCounter << " **" << std::endl << "-------------" << std::endl << std::endl;
 		for (auto layer : currentNetwork.nodes) {
 			for (auto *node : layer) {

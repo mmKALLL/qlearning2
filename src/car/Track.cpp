@@ -261,7 +261,6 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 		}
 		
 		window.clear(sf::Color::Black);
-		std::cout << "Trying to get the position of the current car from Track.cpp" << std::endl;
 		carPosition = controller->getCarPosition();
 		car.setPosition(carPosition[0], carPosition[1]);
 		carRotation = controller->getCarRotation();

@@ -142,7 +142,7 @@ void Controller::stepForward() {
 		carActionFile << action[0] << "," << action[1] << action[2] << std::endl;
 	}
 	*/
-	//currentCar->update(10, 0.1);
+	currentCar->update(0, 0);
 	currentCar->testDrive();
 
 

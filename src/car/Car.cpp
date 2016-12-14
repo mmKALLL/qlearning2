@@ -63,14 +63,13 @@ void Car::accelerate(float speed)
 	//Depending on current speed the amount of force is determined
 	if (desiredSpeed > currentSpeed) {
 		force = maxDriveForce;
+		carBody->ApplyForce(force * currentForwardNormal, carBody->GetWorldCenter(), false);
 	}
-	else if (desiredSpeed < currentSpeed) {
-		force = -0*maxDriveForce;
-	}
+
 
 
 	// Apply the force
-	carBody->ApplyForce(force * currentForwardNormal, carBody->GetWorldCenter(), false);
+	
 	
 }
 

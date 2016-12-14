@@ -46,7 +46,7 @@ public:
 private:
 	
 	/***** General settings *****/
-	const bool networkDebug				// print network to console
+	const bool networkDebug = false;	// print network to console
 	const bool carDebug = false;		// manual driving
 	const bool fastforward = false;		// disable GUI
 	const int maxFastForwardRuns = 1;	// TODO: What is this?

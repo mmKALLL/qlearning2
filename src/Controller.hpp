@@ -62,8 +62,8 @@ private:
 	/***** Network building related constants *****/
 	const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {4, 6}; 	// Adjust network node topology with this.
 	const unsigned int layerCount = 2 + hiddenLayerSizes.size(); 							// Don't touch.
-	const float nodeInitLow = -0.4;						// Randomized initial node weights are between these
-	const float nodeInitHigh = 0.4;
+	const float nodeInitLow = -0.1;						// Randomized initial node weights are between these
+	const float nodeInitHigh = 0.1;
 	const int stateSize = numberOfVisionLines + 1;		// Don't touch. Add current velocity into state input vector.
 	
 	/***** Action-space search and learning-related constants *****/
@@ -71,8 +71,8 @@ private:
 	const bool useSig = false;							// Whether to use sigmoid functions in network evaluation.
 	const float defaultStepSize = 0.01; 				// Learning rate; multiplies learned outcome's impact on network node weights
 	const float actionDepth = 5; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.
-	const float discountFactor = 0.1; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
-	float explorationCoefficient = 4; 					// Weighs exploration over exploitation in Q-search; decreases on each step until minimum
+	const float discountFactor = 0.07; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
+	float explorationCoefficient = 2; 					// Weighs exploration over exploitation in Q-search; decreases on each step until minimum
 	const float minExplorationCoefficient = 0.08;
 	const float explorationCoefficientDecrease = 0.005;
 	const float prevWeightCoefficient = 0.2;			// How large impact the previous weight's magnitude has in learning
@@ -85,7 +85,7 @@ private:
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
 	const float wallPenalty = -1000.0;			// Reward penalty for hitting a wall.
 	const float prevVelocityCoefficient = 0.9;	// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
-	const float velocityMultiplier = 0.1;		// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
+	const float velocityMultiplier = 0.008;		// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
 
 	/***** Controller variables *****/
 	b2World* m_world;

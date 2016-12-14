@@ -140,6 +140,9 @@ void Controller::stepForward() {
 		}
 		float prevVelocity = currentCar->getVelocity();
 		std::vector<float> state = getSightVector(numberOfVisionLines, fieldOfView);
+		for (&auto x : state) {
+			x = x / 400.0f
+		}
 		state.push_back(prevVelocity);
 		
 		std::vector<float> action = currentNetwork.getAction(state, actionDepth, 	explorationCoefficient, useSig);

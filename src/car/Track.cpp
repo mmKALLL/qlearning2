@@ -24,7 +24,7 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 	
 	for (auto & element : track) {
 		if (element == "straight") {
-			newSector(width, height, angle, midPoint);
+			newSector(width, height, angle, midPoint, element);
 			
 			sf::VertexArray sector = drawSector(length, heightLengthAngle, angle, midPoint);
 			lastLeftCorner = sector[1].position;
@@ -35,7 +35,7 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 			midPoint.y += cos((angle + 90.0f) * DEGTORAD) * width;
 		} else if (element == "left") {
 			for (unsigned i = 0; i < 10; i++) {
-				newSector(width, height, angle, midPoint);
+				newSector(width, height, angle, midPoint, element);
 				
 				sf::VertexArray sector = drawSector(length, heightLengthAngle, angle, midPoint);
 				lastLeftCorner = sector[1].position;
@@ -56,7 +56,7 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 			}
 		} else if (element == "right") {
 			for (unsigned i = 0; i < 10; i++) {
-				newSector(width, height, angle, midPoint);
+				newSector(width, height, angle, midPoint, element);
 				
 				sf::VertexArray sector = drawSector(length, heightLengthAngle, angle, midPoint);
 				lastLeftCorner = sector[1].position;
@@ -89,37 +89,38 @@ Track::~Track() {
 }
 
 // Creates a track part that the physics engine can utilize. The method takes the width, height, angle and middle point of the track part as parameters.
-void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint) {
+void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint, std::string direction) {
 	
 	b2BodyDef bd;
 	bd.position.Set(middlePoint.x, middlePoint.y);
 	
 	b2Body* trackPart = world->CreateBody(&bd);
-
+	
 	b2EdgeShape shape;
 	b2FixtureDef checkpoints;
 	checkpoints.shape = &shape;
 	checkpoints.isSensor = true;
-
+	
 	// End of sector (right vertical edge)
-	shape.Set(b2Vec2(width, -height / 2), b2Vec2(width, height / 2));
+	shape.Set(b2Vec2(width / 2, -height / 2), b2Vec2(width / 2, height / 2));
 	trackPart->CreateFixture(&checkpoints);
-
+	
 	b2FixtureDef walls;
 	walls.shape = &shape;
-
-	walls.isSensor = false;
-
+	
 	// Left barrier (top horizontal edge)
-	shape.Set(b2Vec2(-width, height / 2), b2Vec2(width, height / 2));
-	trackPart->CreateFixture(&walls);
-
+	if (direction != "left") {
+		shape.Set(b2Vec2(-width / 2, height / 2), b2Vec2(width / 2, height / 2));
+		trackPart->CreateFixture(&walls);
+	}
+	
 	// Right barrier (bottom horizontal edge)
-	shape.Set(b2Vec2(-width, -height / 2), b2Vec2(width, -height / 2));
-	trackPart->CreateFixture(&walls);
+	if (direction != "right") {
+		shape.Set(b2Vec2(-width / 2, -height / 2), b2Vec2(width / 2, -height / 2));
+		trackPart->CreateFixture(&walls);
+	}
 
 	trackPart->SetTransform(middlePoint, -angle * DEGTORAD);
-	circuit.push_back(trackPart);
 	
 }
 

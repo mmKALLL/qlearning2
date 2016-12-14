@@ -16,13 +16,12 @@ public:
 	~Track();
 	void setControllerReference(Controller* cntrl) { controller = cntrl; }
 	
-	void newSector(float width, float height, float angle, b2Vec2 middlePoint);
+	void newSector(float, float, float, b2Vec2, std::string);
 	sf::VertexArray drawSector(float, float, float, b2Vec2);
 	
 	void GUI(std::vector<sf::VertexArray>);
 
 private:
-	std::vector<b2Body*> circuit;
 	b2World* world;
 	Controller* controller;
 };

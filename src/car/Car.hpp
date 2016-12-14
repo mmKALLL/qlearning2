@@ -23,7 +23,7 @@ public:
 	std::vector<float> getDistances(int amount, int degrees);
 
 	void setParams(std::vector<float> position, float angle, float speed);
-	void setCollisionStatus();
+	void setCollisionStatus(bool status);
 	void setNetwork(NeuralNetwork newNetwork);
 
 	void update(float speed, float angle);
@@ -65,13 +65,13 @@ class Collision : public b2ContactListener
 		void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
 		if (!userDataA) {
 			if (contact->GetFixtureA()->IsSensor() == false) {
-				static_cast<Car*>(userDataB)->setCollisionStatus();
+				static_cast<Car*>(userDataB)->setCollisionStatus(true);
 			}
 		}
 
 		if (!userDataB) {
 			if (contact->GetFixtureB()->IsSensor() == false) {
-				static_cast<Car*>(userDataA)->setCollisionStatus();
+				static_cast<Car*>(userDataA)->setCollisionStatus(true);
 			}
 		}
 
@@ -85,11 +85,17 @@ class Collision : public b2ContactListener
 			if (contact->GetFixtureA()->IsSensor() == true) {
 				static_cast<Car*>(userDataB)->addCheckpoint();
 			}
+			else{
+			static_cast<Car*>(userDataB)->setCollisionStatus(false);
+			}
 		}
 
 		if (!userDataB) {
 			if (contact->GetFixtureB()->IsSensor() == true) {
 				static_cast<Car*>(userDataA)->addCheckpoint();
+			}
+			else{
+			static_cast<Car*>(userDataA)->setCollisionStatus(false);
 			}
 		}
 	}

@@ -23,7 +23,7 @@ Car::Car(b2World* world) : world(world)
 	carFixtureDef.shape = &carShape;
 	// Density controls the mass of the car
 	carFixtureDef.density = 0.1f;
-
+	carFixtureDef.restitution = 0.5;
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
 	this->world->SetContactListener(&collision);
@@ -82,9 +82,9 @@ void Car::setParams(std::vector<float> position, float angle, float speed)
 	carBody->SetTransform(pos, angle*DEGTORAD);
 }
 
-void Car::setCollisionStatus()
+void Car::setCollisionStatus(bool status)
 {
-	collisionStatus = true;
+	collisionStatus = status;
 }
 
 void Car::addCheckpoint()

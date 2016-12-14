@@ -13,7 +13,7 @@ Controller::~Controller() {
 		for (auto *node : layer) {
 			std::cout << "Node " << node->toString() << " weights: " << std::endl;
 			for (auto w : node->getConnectionsIn()) {
-				std::cout << "    w" << (*std::get<0>(w)).toString() << " " << std::get<1>(w) << std::endl;
+				std::cout << "    w" << (*std::get<0>(w)).toString() << ", Weight: " << std::get<1>(w) << std::endl;
 			}
 		}
 	}

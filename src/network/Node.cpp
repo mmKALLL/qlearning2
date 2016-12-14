@@ -109,7 +109,7 @@ void Node::setWeight(const unsigned int index, const float weight) {
 //------------toString--------------
 std::string Node::toString() const {
 	std::string ss = "Node: ";
-	return ss + std::to_string(getValue());
+	return ss + std::to_string(id) + ", value: " + std::to_string(getValue());
 }
 
 

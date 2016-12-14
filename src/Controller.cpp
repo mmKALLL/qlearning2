@@ -6,6 +6,7 @@ Controller::Controller() {
 	}
 	runCounter = 0;
 	initializeRun();
+	trainer = new Learning(defaultStepSize);
 }
 
 void Controller::initializeRun() {

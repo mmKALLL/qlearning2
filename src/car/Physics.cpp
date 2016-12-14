@@ -47,7 +47,7 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 
 		world->RayCast(&callback, rayStart, rayEnd);
 		if (callback.m_hit) {
-			distances.push_back((rayStart - callback.m_point).Length());
+			distances.push_back((rayStart - callback.m_point).Length()-2);
 
 		}
 		else {

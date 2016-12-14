@@ -24,7 +24,7 @@ public:
 
 	void racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget);
 
-	void racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer);
+	void racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer);
 	
 	void backPropagationLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget);
 	

@@ -36,13 +36,13 @@ void Learning::adjustNetwork(Controller& controller, NeuralNetwork& nn, float qv
 
 void Learning::racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget) {
 	int layers = nn.nodes.size();
-	racistNodeAdjustment(nn.nodes[layerCount - 1][0], nn, error, controller.prevWeightCoefficient, layers - 1);
+	racistNodeAdjustment(controller, *nn.nodes[controller.layerCount - 1][0], nn, error, controller.prevWeightCoefficient, layers - 1);
 }
 
 
 
 // Recursively adjust weights
-void Learning::racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer) {
+void Learning::racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer) {
 	if (currentLayer > 0) {
 		float inputWeightTotal = 0.0f;
 		for (unsigned int i = 0; i < nn.nodes[currentLayer - 1].size(); i++) {
@@ -57,8 +57,8 @@ void Learning::racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, fl
 			// prev_weight + stepsize * (sign(in_i.value) * error * (1 + abs(prev_weight) * prevWeightCoefficient))
 			float newWeight = n.getWeight(i) + stepSize * (inputValueSign * error * (1 + abs(n.getWeight(i)) * prevWeightCoefficient));
 			// prev_value * prevValueCoefficient + (1 - prevValueCoefficient) * (target / prev_weight) / nn.nodes[currentLayer - 1].size()
-			float nodeTarget = input.getValue() * prevValueCoefficient + (1 - prevValueCoefficient) * (target / n.getWeight(i)) / nn.nodes[currentLayer - 1].size();
-			racistNodeAdjustment(*nn.nodes[currentLayer - 1][i], nn, nodeTarget, prevWeightCoefficient, currentLayer - 1);
+			float nodeTarget = input.getValue() * controller.prevValueCoefficient + (1 - controller.prevValueCoefficient) * (target / n.getWeight(i)) / nn.nodes[currentLayer - 1].size();
+			racistNodeAdjustment(controller, *nn.nodes[currentLayer - 1][i], nn, nodeTarget, prevWeightCoefficient, currentLayer - 1);
 			n.setWeight(i, newWeight); // TODO: currently no correction for first layers receiving multiple adjustments
 		}
 	}

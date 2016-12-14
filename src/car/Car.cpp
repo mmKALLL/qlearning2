@@ -11,9 +11,8 @@ Car::Car(b2World* world) : world(world)
 
 	//Set the initial position and angle and then create the body
 	carBodyDef.position.Set(0, 0);
-	carBodyDef.angle = 0; //set the starting angle
+	carBodyDef.angle = 0; 
 	carBody = world->CreateBody(&carBodyDef);
-	carBody->SetAngularDamping(3);
 
 	b2PolygonShape carShape;
 	// Car is somewhat long and a bit wide
@@ -23,10 +22,7 @@ Car::Car(b2World* world) : world(world)
 	carFixtureDef.shape = &carShape;
 	// Density controls the mass of the car
 	carFixtureDef.density = 1;
-	// Restitution is how bouncy it is, eg. 0 no bounce and 1 all kinetic energy is conserved in collisions
-	carFixtureDef.restitution = 0.25;
-	// Well, friction
-	carFixtureDef.friction = 0.5;
+
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
 	this->world->SetContactListener(&collision);

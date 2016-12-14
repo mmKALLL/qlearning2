@@ -7,7 +7,7 @@
 #include <fstream>
 #include "network/NeuralNetwork.hpp"
 #include "car/Car.hpp"
-
+class Learning;
 #include "network/Learning.hpp"
 
 class Track;
@@ -15,7 +15,7 @@ class Track;
 
 
 class Controller {
-friend class Learning;
+	friend class Learning;
 public:
 	Controller();
 	void initializeRun(/*params?*/); // Application launched or previous car's run completely over, so start new run

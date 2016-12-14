@@ -46,11 +46,11 @@ public:
 private:
 	
 	/***** General settings *****/
-	const bool fastforward = false;		// Ripperino in pepperino, GUI
-	const bool debugging = true;
-	const int maxFastForwardRuns = 1;	// Ehehe.
-	const bool carDebug = false;
-	const bool writeActionsToFile = true; // car driving history; overwrites existing history files
+	const bool carDebug = false;		// manual driving
+	const bool fastforward = false;		// disable GUI
+	const int maxFastForwardRuns = 1;	// TODO: What is this?
+	
+	const bool writeActionsToFile = true;	// car driving history; overwrites existing history files
 	const int numberOfVisionLines = 5;
 	const int fieldOfView = 90; // TODO: FoV slider
 	

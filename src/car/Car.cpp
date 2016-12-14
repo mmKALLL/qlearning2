@@ -9,7 +9,7 @@ Car::Car(b2World* world) : world(world)
 
 	//Set the initial position and angle and then create the body
 	carBodyDef.position.Set(0, 0);
-	carBodyDef.angle = 0; 
+	carBodyDef.angle = 0;
 	carBody = world->CreateBody(&carBodyDef);
 
 	// Car is somewhat long and a bit wide
@@ -30,14 +30,14 @@ Car::Car(b2World* world) : world(world)
 
 Car::~Car()
 {
-	world->DestroyBody(carBody);	
+	world->DestroyBody(carBody);
 }
 
 void Car::update(float speed, float angle)
 {
 	physics.updateFriction(carBody);
 	accelerate(speed);
-	turn(angle);	
+	turn(angle);
 }
 
 void Car::accelerate(float speed)
@@ -92,6 +92,11 @@ std::vector<float> Car::getDistances(int amount, int degrees) {
 int Car::getCheckpoints() const
 {
 	return checkpoints;
+}
+
+float Car::getMaxSpeed() const
+{
+	return maxSpeed;
 }
 
 bool Car::getCollisionStatus() const
@@ -161,9 +166,10 @@ void Car::testDrive(){
     		this->update(1, 0);
 	}
 
-	// FOr debugging
+	/* For debugging
 	std::cout << "Velocity: " << this->getVelocity() << std::endl;
 	std::cout << "Angle: " << this->getAngle() << std::endl;
 	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
 	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
+	*/
 }

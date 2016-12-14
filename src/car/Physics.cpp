@@ -39,8 +39,6 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 	// Rays for checking the distance
 	// Initialized with starting and ending points
 	
-	float rayLenght = 200;
-
 	for (int i = -(size - 1) / 2; i <= (size - 1) / 2; i++) {
 
 		CarRayCallback callback;

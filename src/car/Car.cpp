@@ -72,7 +72,7 @@ void Car::accelerate(float speed)
 void Car::turn(float angle)
 {
 	
-	carBody->ApplyTorque(angle*MaxTurningForce * 10*  getVelocity()/maxSpeed, true);
+	carBody->ApplyTorque(angle*MaxTurningForce * 45*  getVelocity()/maxSpeed, true);
 }
 
 void Car::setParams(std::vector<float> position, float angle, float speed)

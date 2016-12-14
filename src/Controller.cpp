@@ -5,16 +5,15 @@ Controller::Controller() {
 		carActionFile.open("carActionError.txt");
 	}
 	runCounter = 0;
-	initializeRun();
+	initializeController();
 }
 
-void Controller::initializeRun() {
+void Controller::initializeController() {
 	
 	// No need for gravity in top down physics
 	m_world = new b2World(b2Vec2(0,0));
 	currentCar = new Car(m_world);
 	
-	trainer = new Learning(defaultStepSize);
 	currentNetwork = NeuralNetwork(layerCount);
 	
 	// Build network
@@ -26,7 +25,17 @@ void Controller::initializeRun() {
 	layerSizes.push_back(1); // output layer
 	
 	currentNetwork.build(layerSizes, true, nodeInitLow, nodeInitHigh);
+	
+	currentTrack = new Track(m_world, this);
+	initializeRun();
+}
+
+void Controller::initializeRun() {
+	delete currentCar;
+	currentCar = new Car(m_world);
 	currentCar->setNetwork(currentNetwork);
+	
+	trainer = new Learning(defaultStepSize);
 	stepCounter = 0;
 	qvalue = 0.0f;
 	runCounter += 1;
@@ -36,8 +45,6 @@ void Controller::initializeRun() {
 		std::string fileName = std::string("car") + std::to_string(runCounter) + std::string("_actions.txt");
 		carActionFile.open(fileName.c_str(), std::ofstream::out | std::ofstream::trunc); // overwrite existing
 	}
-	
-	currentTrack = new Track(m_world, this);
 }
 
 const Car& Controller::getCar() const {
@@ -143,7 +150,9 @@ void Controller::stepForward() {
 	}
 	
 	//currentCar->testDrive();
-
+	if (currentCar->getCollisionStatus() == 1) {
+		initializeRun();
+	}
 
 	//Advances the physics simulation by one step
 	m_world->Step(timeStep, velocityIterations, positionIterations);

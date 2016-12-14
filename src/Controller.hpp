@@ -17,7 +17,8 @@ class Controller {
 	friend class Learning;
 public:
 	Controller();
-	void initializeRun(/*params?*/); // Application launched or previous car's run completely over, so start new run
+	void initializeController(/*params?*/); // Application launched or previous car's run completely over, so start new run
+	void initializeRun();
 	
 	//---Generic getters
 	const Car& getCar() const;

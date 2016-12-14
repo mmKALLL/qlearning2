@@ -119,7 +119,7 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 		}
 	}
 	std::cout << "probTarget after decrease: " << probTarget << std::endl;
-	throw "Not enough actions tried! Issues with actionProbabilities in NeuralNetwork::getAction().";
+	throw "Not enough actions tried! Issues with actionProbabilities in NeuralNetwork::getAction(). Most likely sum of Q-values overflowed; try a smaller multiplier.";
 	
 }
 

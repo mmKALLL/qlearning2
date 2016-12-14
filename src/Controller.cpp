@@ -123,6 +123,7 @@ void Controller::stepForward() {
 	
 	// Print network
 	if (debugging) {
+		std::cout << std::endl << "-------------" << std::endl << std::endl;
 		for (auto layer : currentNetwork.nodes) {
 			for (auto *node : layer) {
 				std::cout << "Node " << node->toString() << " weights: " << std::endl;
@@ -150,8 +151,15 @@ void Controller::stepForward() {
 		currentCar->update(action[0], action[1]);
 		
 		float reward = (currentCar->getCollisionStatus() * wallPenalty + 	(currentCar->getVelocity() * velocityMultiplier) - (prevVelocity * 	velocityMultiplier) * prevVelocityCoefficient) * rewardMultiplier;
+		std::cout << "       reward is: " << reward << std::endl;
+		std::cout << "       qvalue is: " << qvalue << std::endl;
+		std::cout << "       action[2] is: " << action[2] << std::endl;
+		std::cout << "       getStepSize is: " << /*trainer->getStepSize()*/defaultStepSize << std::endl;
+		std::cout << "       discountFactor is: " << discountFactor << std::endl;
+		std::cout << "       qvalueMultiplier is: " << qvalueMultiplier << std::endl;
 		
-		float qtarget = (qvalue + trainer->getStepSize() * (reward + discountFactor * 	action[2] - qvalue)) * qvalueMultiplier;
+		
+		float qtarget = (qvalue + /*TODO: trainer->getStepSize()*/defaultStepSize * (reward + discountFactor * 	action[2] - qvalue)) * qvalueMultiplier;
 		trainer->adjustNetwork(*this, currentNetwork, qvalue, qtarget, learningMode);
 		this->qvalue = qtarget;
 		

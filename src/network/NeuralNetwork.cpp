@@ -86,6 +86,7 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 		std::cout << "qvalue: " << x << std::endl;
 		quotient += exp(x / explorationCoefficient);
 	}
+	std::cout << "       Boltzmann quotient!!!: " << quotient << std::endl;
 	for (float& x : qvalues) {
 		actionProbabilities.push_back(
 			exp(x / explorationCoefficient) / quotient

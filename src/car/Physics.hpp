@@ -19,7 +19,7 @@ public:
 
 private:
 	b2World* world;
-	float maxLateralImpulse = 7.5;
+	float maxLateralImpulse = 30;
 };
 
 #endif

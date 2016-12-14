@@ -53,6 +53,7 @@ void Learning::racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwo
 		for (unsigned int i = 0; i < nn.nodes[currentLayer - 1].size(); i++) {
 			Node& input = *std::get<0>(n.getConnectionsIn()[i]);
 			int inputValueSign = (input.getValue() > 0) - (input.getValue() < 0);
+			
 			// Magic happens. Pseudocode and then real code. Painstakingly implemented a pseudo-backpropagation from scratch. Because I can.
 			// prev_weight + stepsize * (sign(in_i.value) * error * (1 + abs(prev_weight) * prevWeightCoefficient))
 			float newWeight = n.getWeight(i) + stepSize * (inputValueSign * error * (1 + abs(n.getWeight(i)) * prevWeightCoefficient));

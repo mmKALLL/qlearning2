@@ -288,7 +288,7 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 	for (auto & z : kerbs) {
 		sf::Vector2f begin = z.getPoint(0);
 		sf::Vector2f end = z.getPoint(10);
-		if (begin.x < end.x && begin.y < end.y || begin.x > end.x && begin.y > end.y) {
+		if ((begin.x < end.x && begin.y < end.y) || (begin.x > end.x && begin.y > end.y)) {
 			z.setTexture(&kerb2);
 		} else {
 			z.setTexture(&kerb);
@@ -298,8 +298,10 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "qlearning2");
 	window.setVerticalSyncEnabled(true);
 	
+	// If you edit the car size, remember to edit the origin too!
 	sf::RectangleShape car(sf::Vector2f(40, 30));
 	car.setOrigin(20, 15);
+	
 	car.setFillColor(sf::Color(255, 55, 55));
 	std::vector<float> carPosition;
 	float carRotation;

@@ -30,14 +30,14 @@ Car::Car(b2World* world) : world(world)
 
 Car::~Car()
 {
-	world->DestroyBody(carBody);	
+	world->DestroyBody(carBody);
 }
 
 void Car::update(float speed, float angle)
 {
 	physics.updateFriction(carBody);
 	accelerate(speed);
-	turn(angle);	
+	turn(angle);
 }
 
 void Car::accelerate(float speed)

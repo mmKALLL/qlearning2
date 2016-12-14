@@ -116,7 +116,7 @@ std::vector<float> Controller::simulateStepForward(Car& car, float steer, float 
 
 void Controller::stepForward() {
 	this->stepCounter += 1;
-
+	/*
 	// Get action from network, then make it learn.
 	if (explorationCoefficient > minExplorationCoefficient) {
 		 explorationCoefficient -= explorationCoefficientDecrease;
@@ -137,6 +137,41 @@ void Controller::stepForward() {
 	if (writeActionsToFile) {
 		carActionFile << action[0] << "," << action[1] << action[2] << std::endl;
 	}
+	*/
+	//currentCar->update(10, 0.1);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right) )
+	{
+    		// left key is pressed: move our character
+    		currentCar->update(1, 0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) )
+	{
+    		// left key is pressed: move our character
+    		currentCar->update(1, -0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+    		// left key is pressed: move our character
+    		currentCar->update(0, -0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+    		// left key is pressed: move our character
+    		currentCar->update(0, 0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+    		// left key is pressed: move our character
+    		currentCar->update(1, 0);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+    		// left key is pressed: move our character
+    		currentCar->update(-1, 0);
+	}
+
+	
 
 	//Advances the physics simulation by one step
 	m_world->Step(timeStep, velocityIterations, positionIterations);
@@ -144,6 +179,8 @@ void Controller::stepForward() {
 	m_world->ClearForces();
 
 	// FOr debugging
+	std::cout << "Velocity: " << currentCar->getVelocity() << std::endl;
+	std::cout << "Angle: " << currentCar->getAngle() << std::endl;
 	std::cout << "Checkpoints: " << currentCar->getCheckpoints() << std::endl;
 	std::cout << "Collision: " << currentCar->getCollisionStatus() << std::endl;
 

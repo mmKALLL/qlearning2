@@ -22,7 +22,7 @@ Car::Car(b2World* world) : world(world)
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
 	// Density controls the mass of the car
-	carFixtureDef.density = 1;
+	carFixtureDef.density = 0.5;
 
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
@@ -42,6 +42,8 @@ void Car::update(float speed, float angle)
 	physics.updateFriction(carBody);
 	accelerate(speed);
 	turn(angle);
+	
+
 	
 }
 
@@ -65,9 +67,7 @@ void Car::accelerate(float speed)
 	else if (desiredSpeed < currentSpeed) {
 		force = -maxDriveForce;
 	}
-	else {
-		force = 0;
-	}
+
 
 	// Apply the force
 	carBody->ApplyForce(force * currentForwardNormal, carBody->GetWorldCenter(), false);
@@ -142,4 +142,42 @@ float Car::getVelocity() const
 
 void Car::setNetwork(NeuralNetwork newNetwork) {
 	network = newNetwork;
+}
+
+void Car::testDrive(){
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right) )
+	{
+    		// left key is pressed: move our character
+    		this->update(1, 0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) )
+	{
+    		// left key is pressed: move our character
+    		this->update(1, -0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+    		// left key is pressed: move our character
+    		this->update(0, -0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+    		// left key is pressed: move our character
+    		this->update(0, 0.3);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+    		// left key is pressed: move our character
+    		this->update(1, 0);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+    		// left key is pressed: move our character
+    		this->update(-1, 0);
+	}
+	// FOr debugging
+	std::cout << "Velocity: " << this->getVelocity() << std::endl;
+	std::cout << "Angle: " << this->getAngle() << std::endl;
+	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
+	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
 }

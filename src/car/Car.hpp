@@ -1,6 +1,7 @@
 #ifndef QLEARNING_CAR_H
 #define QLEARNING_CAR_H
 #include <Box2D/Box2D.h>
+#include <SFML/Graphics.hpp>
 #include "Physics.hpp"
 #include <vector>
 #include "../network/NeuralNetwork.hpp" // TODO: Shouldn't this go through the Controller?
@@ -29,6 +30,7 @@ public:
 	void setParams(std::vector<float> position, float angle, float speed);
 	void setCollisionStatus();
 	void addCheckpoint();
+	void testDrive();
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
 	float desiredSpeed = 0;
@@ -40,8 +42,8 @@ private:
 	// Variables for the body amd maximum speeds
 	// maxspeed is maximum speed and maxDriveForce is maximum acceleration
 	b2Body* carBody = nullptr;
-	float maxSpeed = 30;
-	float maxDriveForce = 3000;
+	float maxSpeed = 100;
+	float maxDriveForce = 10000;
 	float MaxTurningForce = 1000;
 	std::vector<float> distances;
 	int checkpoints = 0;

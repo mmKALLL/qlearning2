@@ -13,11 +13,15 @@ public:
 	{
 		m_hit = true;
 		m_point = point;
+		fixtureA = fixture;
+		normalA = normal;
 		return fraction;
 	}
 
 	bool m_hit;
 	b2Vec2 m_point;
+	b2Fixture* fixtureA;
+	b2Vec2 normalA;
 };
 
 
@@ -64,12 +68,13 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 void Physics::updateFriction(b2Body* carBody) {
 	//lateral linear velocity
 	b2Vec2 impulse = carBody->GetMass() * -getLateralVelocity(carBody);
-	if (impulse.Length() > maxLateralImpulse)
+	if (impulse.Length() > maxLateralImpulse){
 		impulse *= maxLateralImpulse / impulse.Length();
+	}
 	carBody->ApplyLinearImpulse(impulse, carBody->GetWorldCenter(), true);
 
 	//angular velocity
-	carBody->ApplyAngularImpulse(0.1f * carBody->GetInertia() * -carBody->GetAngularVelocity(), true);
+	carBody->ApplyAngularImpulse(1.0f * carBody->GetInertia() * -carBody->GetAngularVelocity(), true);
 
 	//forward linear velocity
 	b2Vec2 currentForwardNormal = getForwardVelocity(carBody);

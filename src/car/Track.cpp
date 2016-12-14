@@ -180,7 +180,7 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 	//trackPart->CreateFixture(&checkpoints);
 
 	// Right vertical
-	shape.Set(b2Vec2(width, -height), b2Vec2(width, height));
+	shape.Set(b2Vec2(width, -height / 2), b2Vec2(width, height / 2));
 	trackPart->CreateFixture(&checkpoints);
 
 	b2FixtureDef walls;
@@ -189,14 +189,14 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 	walls.isSensor = false;
 
 	// Top horizontal
-	shape.Set(b2Vec2(-width, height), b2Vec2(width, height));
+	shape.Set(b2Vec2(-width, height / 2), b2Vec2(width, height / 2));
 	trackPart->CreateFixture(&walls);
 
 	// Bottom horizontal
-	shape.Set(b2Vec2(-width, -height), b2Vec2(width, -height));
-
+	shape.Set(b2Vec2(-width, -height / 2), b2Vec2(width, -height / 2));
 	trackPart->CreateFixture(&walls);
-	trackPart->SetTransform(middlePoint, angle * DEGTORAD);
+
+	trackPart->SetTransform(middlePoint, -angle * DEGTORAD);
 	circuit.push_back(trackPart);
 }
 

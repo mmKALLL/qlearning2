@@ -102,7 +102,7 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 	checkpoints.isSensor = true;
 	
 	// End of sector (right vertical edge)
-	shape.Set(b2Vec2(width, -height / 2), b2Vec2(width, height / 2));
+	shape.Set(b2Vec2(width / 2, -height / 2), b2Vec2(width / 2, height / 2));
 	trackPart->CreateFixture(&checkpoints);
 	
 	b2FixtureDef walls;
@@ -110,18 +110,17 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 	
 	// Left barrier (top horizontal edge)
 	if (direction != "left") {
-		shape.Set(b2Vec2(-width, height / 2), b2Vec2(width, height / 2));
+		shape.Set(b2Vec2(-width / 2, height / 2), b2Vec2(width / 2, height / 2));
 		trackPart->CreateFixture(&walls);
 	}
 	
 	// Right barrier (bottom horizontal edge)
 	if (direction != "right") {
-		shape.Set(b2Vec2(-width, -height / 2), b2Vec2(width, -height / 2));
+		shape.Set(b2Vec2(-width / 2, -height / 2), b2Vec2(width / 2, -height / 2));
 		trackPart->CreateFixture(&walls);
 	}
-	
+
 	trackPart->SetTransform(middlePoint, -angle * DEGTORAD);
-	circuit.push_back(trackPart);
 	
 }
 

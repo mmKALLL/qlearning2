@@ -17,12 +17,12 @@ Car::Car(b2World* world) : world(world)
 
 	b2PolygonShape carShape;
 	// Car is somewhat long and a bit wide
-	carShape.SetAsBox(2.0f, 1.5f);
+	carShape.SetAsBox(20.0f, 15.0f);
 
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
 	// Density controls the mass of the car
-	carFixtureDef.density = 0.1f;
+	carFixtureDef.density = 0.01f;
 	carFixtureDef.restitution = 0.5;
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
@@ -39,10 +39,10 @@ Car::~Car()
 
 void Car::update(float speed, float angle)
 {
-	
+	physics.updateFriction(carBody);
 	accelerate(speed);
 	turn(angle);
-	physics.updateFriction(carBody);
+	
 
 	
 }
@@ -70,7 +70,8 @@ void Car::accelerate(float speed)
 
 void Car::turn(float angle)
 {
-	carBody->ApplyTorque(angle*MaxTurningForce, true);
+	
+	carBody->ApplyTorque(angle*MaxTurningForce * 10*  getVelocity()/maxSpeed, true);
 }
 
 void Car::setParams(std::vector<float> position, float angle, float speed)

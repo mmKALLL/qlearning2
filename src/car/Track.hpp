@@ -22,7 +22,6 @@ public:
 	void GUI(std::vector<sf::VertexArray>);
 
 private:
-	std::vector<b2Body*> circuit;
 	b2World* world;
 	Controller* controller;
 };

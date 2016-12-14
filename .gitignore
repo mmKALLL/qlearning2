@@ -1,5 +1,9 @@
 # Project specific
 *_actions.txt
+*Error.txt
+*error.txt
+*qlearn
+out*.txt
 
 # Mac stuff
 .DS_Store

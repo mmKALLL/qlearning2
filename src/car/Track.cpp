@@ -21,6 +21,8 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 	b2Vec2 midPoint = b2Vec2(50, 0);
 	sf::Vector2f lastLeftCorner;
 	sf::Vector2f lastRightCorner;
+	sf::Vector2f kerbBegin;
+	sf::Vector2f kerbEnd;
 	
 	for (auto & element : track) {
 		if (element == "straight") {
@@ -34,6 +36,7 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 			midPoint.x += cos(angle * DEGTORAD) * width;
 			midPoint.y += cos((angle + 90.0f) * DEGTORAD) * width;
 		} else if (element == "left") {
+			kerbBegin = lastLeftCorner;
 			for (unsigned i = 0; i < 10; i++) {
 				newSector(width, height, angle, midPoint, element);
 				
@@ -54,7 +57,27 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 				midPoint.x -= sin(angle * DEGTORAD) * (height / 2);
 				midPoint.y -= cos(angle * DEGTORAD) * (height / 2);
 			}
+			kerbEnd = lastLeftCorner;
+			
+			
+			
+			b2BodyDef body;
+			body.position.Set((kerbBegin.x + kerbEnd.x) / 2, (kerbBegin.y + kerbEnd.y) / 2);
+			
+			b2Body* trackPart = world->CreateBody(&body);
+			
+			b2EdgeShape shape;
+			b2FixtureDef walls;
+			walls.shape = &shape;
+			
+			// Kerb
+			shape.Set(b2Vec2(body.position.x - kerbBegin.x, kerbEnd.x - body.position.x), b2Vec2(body.position.y - kerbBegin.y, kerbEnd.y - body.position.y));
+			trackPart->CreateFixture(&walls);
+			
+			
+			
 		} else if (element == "right") {
+			kerbBegin = lastRightCorner;
 			for (unsigned i = 0; i < 10; i++) {
 				newSector(width, height, angle, midPoint, element);
 				
@@ -75,6 +98,25 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 				midPoint.x += sin(angle * DEGTORAD) * (height / 2);
 				midPoint.y += cos(angle * DEGTORAD) * (height / 2);
 			}
+			kerbEnd = lastRightCorner;
+			
+			
+			
+			b2BodyDef body;
+			body.position.Set((kerbBegin.x + kerbEnd.x) / 2, (kerbBegin.y + kerbEnd.y) / 2);
+			
+			b2Body* trackPart = world->CreateBody(&body);
+			
+			b2EdgeShape shape;
+			b2FixtureDef walls;
+			walls.shape = &shape;
+			
+			// Kerb
+			shape.Set(b2Vec2(body.position.x - kerbBegin.x, kerbEnd.x - body.position.x), b2Vec2(body.position.y - kerbBegin.y, kerbEnd.y - body.position.y));
+			trackPart->CreateFixture(&walls);
+			
+			
+			
 		} else {
 			throw "Corrupted track file.";
 		}
@@ -91,10 +133,10 @@ Track::~Track() {
 // Creates a track part that the physics engine can utilize. The method takes the width, height, angle and middle point of the track part as parameters.
 void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint, std::string direction) {
 	
-	b2BodyDef bd;
-	bd.position.Set(middlePoint.x, middlePoint.y);
+	b2BodyDef body;
+	body.position.Set(middlePoint.x, middlePoint.y);
 	
-	b2Body* trackPart = world->CreateBody(&bd);
+	b2Body* trackPart = world->CreateBody(&body);
 	
 	b2EdgeShape shape;
 	b2FixtureDef checkpoints;

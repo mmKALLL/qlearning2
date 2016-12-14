@@ -24,6 +24,7 @@ public:
 private:
 	b2World* world;
 	Controller* controller;
+	
 };
 
 #endif

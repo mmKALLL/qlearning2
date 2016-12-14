@@ -94,6 +94,11 @@ int Car::getCheckpoints() const
 	return checkpoints;
 }
 
+float Car::getMaxSpeed() const
+{
+	return maxSpeed;
+}
+
 bool Car::getCollisionStatus() const
 {
 	return collisionStatus;

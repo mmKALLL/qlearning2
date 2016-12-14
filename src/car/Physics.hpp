@@ -19,6 +19,7 @@ public:
 private:
 	b2World* world;
 	float maxLateralImpulse = 30;
+	float rayLenght = 200;
 };
 
 #endif

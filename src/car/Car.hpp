@@ -16,6 +16,7 @@ public:
 	// Getters
 	float getAngle() const;
 	float getVelocity() const;
+	float getMaxSpeed() const;
 	int getCheckpoints() const;
 	bool getCollisionStatus() const;
 	NeuralNetwork& getNetwork();

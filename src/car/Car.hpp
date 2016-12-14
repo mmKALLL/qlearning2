@@ -42,9 +42,9 @@ private:
 	// Variables for the body amd maximum speeds
 	// maxspeed is maximum speed and maxDriveForce is maximum acceleration
 	b2Body* carBody = nullptr;
-	float maxSpeed = 100;
-	float maxDriveForce = 20000;
-	float MaxTurningForce = 1000;
+	float maxSpeed = 200;
+	float maxDriveForce = 500000;
+	float MaxTurningForce = 5000;
 	std::vector<float> distances;
 	int checkpoints = 0;
 	bool collisionStatus = false;

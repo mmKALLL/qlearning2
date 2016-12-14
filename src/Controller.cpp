@@ -145,8 +145,6 @@ void Controller::stepForward() {
 	//currentCar->testDrive();
 
 
-	
-
 	//Advances the physics simulation by one step
 	m_world->Step(timeStep, velocityIterations, positionIterations);
 	//According to the manual forces should be cleared after taking a step

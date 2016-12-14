@@ -79,7 +79,7 @@ void Physics::updateFriction(b2Body* carBody) {
 	//forward linear velocity
 	b2Vec2 currentForwardNormal = getForwardVelocity(carBody);
 	float currentForwardSpeed = getForwardVelocity(carBody).Normalize();
-	float dragForceMagnitude = -2 * currentForwardSpeed;
+	float dragForceMagnitude = -0.1 * currentForwardSpeed;
 	carBody->ApplyForce(dragForceMagnitude * currentForwardNormal, carBody->GetWorldCenter(), true);
 }
 

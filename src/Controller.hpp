@@ -45,6 +45,7 @@ private:
 	
 	/***** General settings *****/
 	const bool debugging = true;
+	const bool carDebug = false;
 	const bool writeActionsToFile = true; // car driving history; overwrites existing history files
 	const int numberOfVisionLines = 5;
 	const int fieldOfView = 90; // TODO: FoV slider

@@ -44,7 +44,6 @@ public:
 private:
 	
 	/***** General settings *****/
-	const bool debugging = true;
 	const bool carDebug = true;
 	const bool writeActionsToFile = true; // car driving history; overwrites existing history files
 	const int numberOfVisionLines = 5;

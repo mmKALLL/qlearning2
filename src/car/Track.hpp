@@ -19,7 +19,7 @@ public:
 	void newSector(float, float, float, b2Vec2, std::string);
 	sf::VertexArray drawSector(float, float, float, b2Vec2);
 	
-	void GUI(std::vector<sf::VertexArray>);
+	void GUI(std::vector<sf::VertexArray>, std::vector<sf::ConvexShape>&);
 
 private:
 	b2World* world;

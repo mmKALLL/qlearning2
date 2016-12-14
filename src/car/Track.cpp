@@ -17,6 +17,7 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 
 	// Initialize an empty vector to hold the graphical representation of the circuit.
 	std::vector<sf::VertexArray> sectors;
+	std::vector<sf::ConvexShape> kerbs;
 	float angle = 0.0f;
 	b2Vec2 midPoint = b2Vec2(50, 0);
 	sf::Vector2f lastLeftCorner;
@@ -36,11 +37,15 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 			midPoint.x += cos(angle * DEGTORAD) * width;
 			midPoint.y += cos((angle + 90.0f) * DEGTORAD) * width;
 		} else if (element == "left") {
+			sf::ConvexShape kerb;
+			kerb.setPointCount(11);
+			
 			kerbBegin = lastLeftCorner;
 			for (unsigned i = 0; i < 10; i++) {
 				newSector(width, height, angle, midPoint, element);
 				
 				sf::VertexArray sector = drawSector(length, heightLengthAngle, angle, midPoint);
+				kerb.setPoint(i, lastLeftCorner);
 				lastLeftCorner = sector[1].position;
 				lastRightCorner = sector[0].position;
 				sectors.push_back(sector);
@@ -59,8 +64,6 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 			}
 			kerbEnd = lastLeftCorner;
 			
-			
-			
 			b2BodyDef body;
 			body.position.Set((kerbBegin.x + kerbEnd.x) / 2, (kerbBegin.y + kerbEnd.y) / 2);
 			
@@ -71,17 +74,21 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 			walls.shape = &shape;
 			
 			// Kerb
-			shape.Set(b2Vec2(body.position.x - kerbBegin.x, kerbEnd.x - body.position.x), b2Vec2(body.position.y - kerbBegin.y, kerbEnd.y - body.position.y));
+			shape.Set(b2Vec2(-(body.position.x - kerbBegin.x), -(body.position.y - kerbBegin.y)), b2Vec2(kerbEnd.x - body.position.x, kerbEnd.y - body.position.y));
 			trackPart->CreateFixture(&walls);
 			
-			
-			
+			kerb.setPoint(10, lastLeftCorner);
+			kerbs.push_back(kerb);
 		} else if (element == "right") {
+			sf::ConvexShape kerb;
+			kerb.setPointCount(11);
+			
 			kerbBegin = lastRightCorner;
 			for (unsigned i = 0; i < 10; i++) {
 				newSector(width, height, angle, midPoint, element);
 				
 				sf::VertexArray sector = drawSector(length, heightLengthAngle, angle, midPoint);
+				kerb.setPoint(i, lastRightCorner);
 				lastLeftCorner = sector[1].position;
 				lastRightCorner = sector[0].position;
 				sectors.push_back(sector);
@@ -100,8 +107,6 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 			}
 			kerbEnd = lastRightCorner;
 			
-			
-			
 			b2BodyDef body;
 			body.position.Set((kerbBegin.x + kerbEnd.x) / 2, (kerbBegin.y + kerbEnd.y) / 2);
 			
@@ -112,17 +117,17 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 			walls.shape = &shape;
 			
 			// Kerb
-			shape.Set(b2Vec2(body.position.x - kerbBegin.x, kerbEnd.x - body.position.x), b2Vec2(body.position.y - kerbBegin.y, kerbEnd.y - body.position.y));
+			shape.Set(b2Vec2(-(body.position.x - kerbBegin.x), -(body.position.y - kerbBegin.y)), b2Vec2(kerbEnd.x - body.position.x, kerbEnd.y - body.position.y));
 			trackPart->CreateFixture(&walls);
 			
-			
-			
+			kerb.setPoint(10, lastRightCorner);
+			kerbs.push_back(kerb);
 		} else {
 			throw "Corrupted track file.";
 		}
 	}
 	
-	GUI(sectors); // TODO: Does the constructor need to return anything?
+	GUI(sectors, kerbs); // TODO: Does the constructor need to return anything?
 	
 }
 
@@ -152,16 +157,16 @@ void Track::newSector(float width, float height, float angle, b2Vec2 middlePoint
 	
 	// Left barrier (top horizontal edge)
 	if (direction != "left") {
-		shape.Set(b2Vec2(-width / 2, height / 2), b2Vec2(width / 2, height / 2));
+		shape.Set(b2Vec2(-width / 2, -height / 2), b2Vec2(width / 2, -height / 2));
 		trackPart->CreateFixture(&walls);
 	}
 	
 	// Right barrier (bottom horizontal edge)
 	if (direction != "right") {
-		shape.Set(b2Vec2(-width / 2, -height / 2), b2Vec2(width / 2, -height / 2));
+		shape.Set(b2Vec2(-width / 2, height / 2), b2Vec2(width / 2, height / 2));
 		trackPart->CreateFixture(&walls);
 	}
-
+	
 	trackPart->SetTransform(middlePoint, -angle * DEGTORAD);
 	
 }
@@ -193,7 +198,7 @@ sf::VertexArray Track::drawSector(float length, float heightLengthAngle, float a
 	
 }
 
-void Track::GUI(std::vector<sf::VertexArray> sectors) {
+void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShape>& kerbs) {
 	
 	sf::Sprite sprite;
 	sprite.setOrigin(25, 100);
@@ -229,6 +234,67 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 	sector.update(pixels);
 	sprite.setTexture(sector);
 	
+	sf::Texture kerb;
+	x = 120;
+	y = 120;
+	kerb.create(x, y);
+	pixels = new sf::Uint8[x * y * 4];
+	column = 0;
+	row = 0;
+	for (unsigned i = 0; i < x * y * 4; i += 4) {
+		if ((column - row) % 20 < 10) {
+			pixels[i] = 255;
+			pixels[i + 1] = 0;
+			pixels[i + 2] = 0;
+			pixels[i + 3] = 255;
+		} else {
+			pixels[i] = 255;
+			pixels[i + 1] = 255;
+			pixels[i + 2] = 255;
+			pixels[i + 3] = 255;
+		}
+		column++;
+		if (column % 120 == 0) {
+			row++;
+		}
+	}
+	kerb.update(pixels);
+	
+	sf::Texture kerb2;
+	x = 120;
+	y = 120;
+	kerb2.create(x, y);
+	pixels = new sf::Uint8[x * y * 4];
+	column = 0;
+	for (unsigned i = 0; i < x * y * 4; i += 4) {
+		if (column % 20 < 10) {
+			pixels[i] = 255;
+			pixels[i + 1] = 0;
+			pixels[i + 2] = 0;
+			pixels[i + 3] = 255;
+		} else {
+			pixels[i] = 255;
+			pixels[i + 1] = 255;
+			pixels[i + 2] = 255;
+			pixels[i + 3] = 255;
+		}
+		column++;
+		if (column % 120 == 0) {
+			column++;
+		}
+	}
+	kerb2.update(pixels);
+	
+	for (auto & z : kerbs) {
+		sf::Vector2f begin = z.getPoint(0);
+		sf::Vector2f end = z.getPoint(10);
+		if (begin.x < end.x && begin.y < end.y || begin.x > end.x && begin.y > end.y) {
+			z.setTexture(&kerb2);
+		} else {
+			z.setTexture(&kerb);
+		}
+	}
+	
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "qlearning2");
 	window.setVerticalSyncEnabled(true);
 	
@@ -262,6 +328,9 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 		window.setView(camera);
 		for (auto x : sectors) {
 			window.draw(x);
+		}
+		for (auto y : kerbs) {
+			window.draw(y);
 		}
 		window.draw(sprite);
 		window.draw(car);

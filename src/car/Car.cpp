@@ -11,7 +11,7 @@ Car::Car(b2World* world) : world(world)
 
 	//Set the initial position and angle and then create the body
 	carBodyDef.position.Set(0, 0);
-	carBodyDef.angle = 0; 
+	carBodyDef.angle = 0;
 	carBody = world->CreateBody(&carBodyDef);
 
 	// Car is somewhat long and a bit wide
@@ -173,9 +173,10 @@ void Car::testDrive(){
     		this->update(1, 0);
 	}
 
-	// FOr debugging
+	/* For debugging
 	std::cout << "Velocity: " << this->getVelocity() << std::endl;
 	std::cout << "Angle: " << this->getAngle() << std::endl;
 	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
 	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
+	*/
 }

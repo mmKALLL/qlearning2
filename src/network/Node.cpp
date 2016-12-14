@@ -21,7 +21,7 @@ int Node::getType() const {
 	return type;
 }
 
-const int Node::getID() const {
+int Node::getID() const {
 	return id;
 }
 

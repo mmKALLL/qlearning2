@@ -139,37 +139,8 @@ void Controller::stepForward() {
 	}
 	*/
 	//currentCar->update(10, 0.1);
+	currentCar->testDrive();
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right) )
-	{
-    		// left key is pressed: move our character
-    		currentCar->update(1, 0.3);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) )
-	{
-    		// left key is pressed: move our character
-    		currentCar->update(1, -0.3);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-    		// left key is pressed: move our character
-    		currentCar->update(0, -0.3);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-    		// left key is pressed: move our character
-    		currentCar->update(0, 0.3);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-    		// left key is pressed: move our character
-    		currentCar->update(1, 0);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-    		// left key is pressed: move our character
-    		currentCar->update(-1, 0);
-	}
 
 	
 
@@ -178,10 +149,6 @@ void Controller::stepForward() {
 	//According to the manual forces should be cleared after taking a step
 	m_world->ClearForces();
 
-	// FOr debugging
-	std::cout << "Velocity: " << currentCar->getVelocity() << std::endl;
-	std::cout << "Angle: " << currentCar->getAngle() << std::endl;
-	std::cout << "Checkpoints: " << currentCar->getCheckpoints() << std::endl;
-	std::cout << "Collision: " << currentCar->getCollisionStatus() << std::endl;
+
 
 }

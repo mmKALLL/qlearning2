@@ -13,7 +13,7 @@ public:
 
 	float getValue() const;
 	int getType() const;
-	const int getID() const;
+	int getID() const;
 	const std::vector<std::tuple<Node*, float>>& getConnectionsIn() const;
 	const std::vector<Node*>& getConnectionsOut() const;
 	const std::tuple<Node*, float>& getConnection(int index) const;

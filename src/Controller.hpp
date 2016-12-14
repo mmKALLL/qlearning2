@@ -7,6 +7,7 @@
 #include <fstream>
 #include "network/NeuralNetwork.hpp"
 #include "car/Car.hpp"
+
 class Learning;
 #include "network/Learning.hpp"
 
@@ -72,7 +73,7 @@ private:
 	const float explorationCoefficientDecrease = 0.001;
 	const float prevWeightCoefficient = 0.2;			// How large impact the previous weight's magnitude has in learning
 	const float prevValueCoefficient = 0.97;			// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
-	Learning trainer = Learning(defaultStepSize);
+	Learning* trainer = new Learning(defaultStepSize);
 	
 	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.

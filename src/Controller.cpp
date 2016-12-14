@@ -127,8 +127,8 @@ void Controller::stepForward() {
 	
 	float reward = currentCar->getCollisionStatus() * wallPenalty + currentCar->getVelocity() - prevVelocity * prevVelocityCoefficient;
 	
-	float qtarget = qvalue + trainer.getStepSize() * (reward + discountFactor * action[2] - qvalue);
-	trainer.adjustNetwork(*this, currentNetwork, qvalue, qtarget, 1);
+	float qtarget = qvalue + trainer->getStepSize() * (reward + discountFactor * action[2] - qvalue);
+	trainer->adjustNetwork(*this, currentNetwork, qvalue, qtarget, 1);
 	this->qvalue = qtarget;
 	
 	if (writeActionsToFile) {

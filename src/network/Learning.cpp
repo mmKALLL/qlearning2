@@ -43,7 +43,6 @@ void Learning::racistNetworkLearning(Controller& controller, NeuralNetwork& nn, 
 
 // Recursively adjust weights
 void Learning::racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer) {
-	std::cout << "Racism is in progress." << std::endl;
 	if (currentLayer > 0) {
 		float inputWeightTotal = 0.0f;
 		for (unsigned int i = 0; i < nn.nodes[currentLayer - 1].size(); i++) {
@@ -64,7 +63,6 @@ void Learning::racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwo
 			n.setWeight(i, newWeight); // TODO: currently no correction for first layers receiving multiple adjustments
 		}
 	}
-	std::cout << "Racism has now ended. " << n.getValue() << std::endl;
 }
 
 void Learning::backPropagationLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget) {

@@ -2,9 +2,10 @@
 #define QLEARNING_LEARNING_H
 #include "NeuralNetwork.hpp"
 #include "Node.hpp"
-#include "../Controller.hpp"
 #include <vector>
 #include <tuple>
+class Controller;
+#include "../Controller.hpp"
 
 // SPOOKY SCARY SKELETONS
 class Learning {
@@ -13,6 +14,7 @@ class Learning {
 
 public:
 	Learning(float defStepSize = 0.01);
+
 	float getStepSize();
 	
 	// Dummy function
@@ -22,6 +24,7 @@ public:
 	void adjustNetwork(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget, int mode = 1);
 
 	void racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget);
+
 	void racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer);
 	
 	void backPropagationLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget);

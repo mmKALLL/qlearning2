@@ -32,8 +32,8 @@ void Controller::initializeRun() {
 	
 	if (writeActionsToFile) {
 		carActionFile.close();
-		std::string fileName = "car" + runCounter + "_actions.txt";
-		carActionFile.open(fileName.c_str(); std::ofstream::out | std::ofstream::trunc); // overwrite existing
+		std::string fileName = std::string("car") + std::to_string(runCounter) + std::string("_actions.txt");
+		carActionFile.open(fileName.c_str(), std::ofstream::out | std::ofstream::trunc); // overwrite existing
 	}
 }
 
@@ -128,7 +128,7 @@ void Controller::stepForward() {
 	float reward = currentCar->getCollisionStatus() * wallPenalty + currentCar->getVelocity() - prevVelocity * prevVelocityCoefficient;
 	
 	float qtarget = qvalue + trainer.getStepSize() * (reward + discountFactor * action[2] - qvalue);
-	trainer.adjustNetwork(this, currentNetwork, qvalue, qtarget);
+	trainer.adjustNetwork(this, currentNetwork, qvalue, qtarget, 1);
 	this->qvalue = qtarget;
 	
 	if (writeActionsToFile) {
@@ -139,6 +139,5 @@ void Controller::stepForward() {
 	m_world->Step(timeStep, velocityIterations, positionIterations);
 	//According to the manual forces should be cleared after taking a step
 	m_world->ClearForces();
-	// Call this to have car update its collision status and do all steering related stuff
-	//currentCar.update(float speed, float angle, int amount, int degrees);
+
 }

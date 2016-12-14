@@ -9,31 +9,32 @@ Car::Car(b2World* world) : world(world)
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;
 
-
 	//Set the initial position and angle and then create the body
 	carBodyDef.position.Set(0, 0);
 	carBodyDef.angle = 0; 
 	carBody = world->CreateBody(&carBodyDef);
 
-	b2PolygonShape carShape;
 	// Car is somewhat long and a bit wide
+	b2PolygonShape carShape;
 	carShape.SetAsBox(20.0f, 15.0f);
 
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
-	// Density controls the mass of the car
 	carFixtureDef.density = 0.01f;
-	carFixtureDef.restitution = 0.5;
+	carFixtureDef.restitution = 0.5f;
+
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
-	this->world->SetContactListener(&collision);
 	carBody->SetUserData(this);
+
+	this->world->SetContactListener(&collision);
+	
 
 }
 
 Car::~Car()
 {
-	
+	world->DestroyBody(carBody);
 	
 }
 
@@ -134,7 +135,8 @@ float Car::getVelocity() const
 	return b2Dot(physics.getForwardVelocity(carBody), carBody->GetWorldVector(b2Vec2(1, 0)));
 }
 
-void Car::setNetwork(NeuralNetwork newNetwork) {
+void Car::setNetwork(NeuralNetwork newNetwork)
+{
 	network = newNetwork;
 }
 

@@ -99,25 +99,6 @@ float Controller::getFitness(double time) const {
 	return getCarDistanceTraveled() / time;
 }
 
-//Ask physics where the car would end up with actions in param
-std::vector<float> Controller::simulateStepForward(Car& car, float steer, float accelerate) const {
-	// ***************** NOT NEEDED *********************
-	// TODO: Return vector such that:
-	// vector[0] true if hit by a wall, otherwise false
-	// vector[1] x coordinate
-	// vector[2] x coordinate
-	// vector[3] velocity
-	// vector[4] angle in degrees
-
-	std::vector<float> result;
-	result.push_back(currentCar->getCollisionStatus());
-	result.insert(result.end(), currentCar->getPosition().begin(), currentCar->getPosition().end());
-	result.push_back(currentCar->getVelocity());
-	result.push_back(currentCar->getAngle());
-
-	return result;
-}
-
 void Controller::stepForward() {
 	this->stepCounter += 1;
 	

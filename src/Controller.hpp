@@ -21,7 +21,7 @@ public:
 	
 	//---Generic getters
 	const Car& getCar() const;
-    const Track& getTrack() const;
+    	const Track& getTrack() const;
 
 	//std::vector<double>& getActionForCar(Car& car, NeuralNetwork& nn) const;
 
@@ -39,8 +39,7 @@ public:
 	float getFitness(double time) const;
 
 	//---Controller actions
-	std::vector<float> simulateStepForward(Car& car, float steer, float accelerate) const;
-    void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
+    	void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
     
 private:
 	

@@ -10,7 +10,6 @@ class Physics
 public:
 	Physics(b2World* world);
 	
-
 	std::vector<float> updateRays(b2Body& carBody, int size, int degrees);
 	void updateFriction(b2Body* carBody);
 	
@@ -19,7 +18,7 @@ public:
 
 private:
 	b2World* world;
-	float maxLateralImpulse = 7.5;
+	float maxLateralImpulse = 30;
 };
 
 #endif

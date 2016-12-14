@@ -118,27 +118,9 @@ float Controller::getFitness(double time) const {
 	return getCarDistanceTraveled() / time;
 }
 
-//Ask physics where the car would end up with actions in param
-std::vector<float> Controller::simulateStepForward(Car& car, float steer, float accelerate) const {
-	// ***************** NOT NEEDED *********************
-	// TODO: Return vector such that:
-	// vector[0] true if hit by a wall, otherwise false
-	// vector[1] x coordinate
-	// vector[2] x coordinate
-	// vector[3] velocity
-	// vector[4] angle in degrees
-
-	std::vector<float> result;
-	result.push_back(currentCar->getCollisionStatus());
-	result.insert(result.end(), currentCar->getPosition().begin(), currentCar->getPosition().end());
-	result.push_back(currentCar->getVelocity());
-	result.push_back(currentCar->getAngle());
-
-	return result;
-}
-
 void Controller::stepForward() {
 	this->stepCounter += 1;
+	
 	// Print network
 	if (debugging) {
 		for (auto layer : currentNetwork.nodes) {
@@ -151,30 +133,34 @@ void Controller::stepForward() {
 		}
 	}
 	
-	// Get action from network, then make it learn.
-	if (explorationCoefficient > minExplorationCoefficient) {
-		 explorationCoefficient -= explorationCoefficientDecrease;
-	}
-	float prevVelocity = currentCar->getVelocity();
-	std::vector<float> state = getSightVector(numberOfVisionLines, fieldOfView);
-	state.push_back(prevVelocity);
-	
-	std::vector<float> action = currentNetwork.getAction(state, actionDepth, explorationCoefficient, useSig);
-	currentCar->update(action[0], action[1]);
-	
-	float reward = (currentCar->getCollisionStatus() * wallPenalty + (currentCar->getVelocity() * velocityMultiplier) - (prevVelocity * velocityMultiplier) * prevVelocityCoefficient) * rewardMultiplier;
-	
-	float qtarget = (qvalue + trainer->getStepSize() * (reward + discountFactor * action[2] - qvalue)) * qvalueMultiplier;
-	trainer->adjustNetwork(*this, currentNetwork, qvalue, qtarget, learningMode);
-	this->qvalue = qtarget;
-	
-	if (writeActionsToFile) {
-		carActionFile << stepCounter << "," << action[0] << "," << action[1] << "," << action[2] << std::endl;
-	}
-	
-	//currentCar->testDrive();
-	if (currentCar->getCollisionStatus() == 1) {
-		initializeRun();
+	if(!carDebug){
+		// Get action from network, then make it learn.
+		if (explorationCoefficient > minExplorationCoefficient) {
+		 	explorationCoefficient -= explorationCoefficientDecrease;
+		}
+		float prevVelocity = currentCar->getVelocity();
+		std::vector<float> state = getSightVector(numberOfVisionLines, fieldOfView);
+		state.push_back(prevVelocity);
+		
+		std::vector<float> action = currentNetwork.getAction(state, actionDepth, 	explorationCoefficient, useSig);
+		currentCar->update(action[0], action[1]);
+		
+		float reward = (currentCar->getCollisionStatus() * wallPenalty + 	(currentCar->getVelocity() * velocityMultiplier) - (prevVelocity * 	velocityMultiplier) * prevVelocityCoefficient) * rewardMultiplier;
+		
+		float qtarget = (qvalue + trainer->getStepSize() * (reward + discountFactor * 	action[2] - qvalue)) * qvalueMultiplier;
+		trainer->adjustNetwork(*this, currentNetwork, qvalue, qtarget, learningMode);
+		this->qvalue = qtarget;
+		
+		if (writeActionsToFile) {
+			carActionFile << stepCounter << "," << action[0] << "," << action[1] << "," << 	action[2] << std::endl;
+		}
+		
+		//currentCar->testDrive();
+		if (currentCar->getCollisionStatus() == 1) {
+			initializeRun();
+		}
+	} else {
+		currentCar->testDrive();
 	}
 
 	//Advances the physics simulation by one step

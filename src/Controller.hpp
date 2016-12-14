@@ -23,7 +23,7 @@ public:
 	
 	//---Generic getters
 	const Car& getCar() const;
-    const Track& getTrack() const;
+    	const Track& getTrack() const;
 
 	//std::vector<double>& getActionForCar(Car& car, NeuralNetwork& nn) const;
 
@@ -41,15 +41,15 @@ public:
 	float getFitness(double time) const;
 
 	//---Controller actions
-	std::vector<float> simulateStepForward(Car& car, float steer, float accelerate) const;
-    void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
+    	void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
     
 private:
 	
 	/***** General settings *****/
-	const bool fastforward = true;		// Ripperino in pepperino, GUI
+	const bool fastforward = false;		// Ripperino in pepperino, GUI
 	const bool debugging = true;
 	const int maxFastForwardRuns = 1;	// Ehehe.
+	const bool carDebug = false;
 	const bool writeActionsToFile = true; // car driving history; overwrites existing history files
 	const int numberOfVisionLines = 5;
 	const int fieldOfView = 90; // TODO: FoV slider

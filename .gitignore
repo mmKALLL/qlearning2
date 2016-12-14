@@ -18,6 +18,7 @@ Thumbs.db
 *.o
 
 # Others
+*.nfs000000000*
 *.cache
 /bin/
 /Skele Aihe/

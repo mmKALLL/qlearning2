@@ -16,6 +16,7 @@ public:
 	// Getters
 	float getAngle() const;
 	float getVelocity() const;
+	float getMaxSpeed() const;
 	int getCheckpoints() const;
 	bool getCollisionStatus() const;
 	NeuralNetwork& getNetwork();
@@ -31,30 +32,24 @@ public:
 	void turn(float angle);
 	void addCheckpoint();
 	void testDrive();
-	
-	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
-
-	
-	
+		
 private:
 	// Variables for the body amd maximum speeds
 	// maxspeed is maximum speed and maxDriveForce is maximum acceleration
 	b2Body* carBody = nullptr;
-	float maxSpeed = 250;
+	float maxSpeed = 120;
 	float maxDriveForce = 3000;
-	float maxReverseForce = 1000;
-	float MaxTurningForce = 50000;
+	float maxReverseForce = 1500;
+	float MaxTurningForce = 25000;
+	bool collisionStatus = false;
 	std::vector<float> distances;
 	int checkpoints = 0;
-	bool collisionStatus = false;
-	float desiredSpeed = 0;
-	float currentSpeed = 0;
+	
 	
 	b2World* world = nullptr;
 	Physics physics = Physics(world);
-
 	NeuralNetwork network;
-	
+
 };
 
 class Collision : public b2ContactListener

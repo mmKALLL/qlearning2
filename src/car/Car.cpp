@@ -1,10 +1,8 @@
 #include "Car.hpp"
 Collision collision;
 
-
 Car::Car(b2World* world) : world(world)
 {
-	
 	//Create definition for car body
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;
@@ -28,36 +26,29 @@ Car::Car(b2World* world) : world(world)
 	carBody->SetUserData(this);
 
 	this->world->SetContactListener(&collision);
-	
-
 }
 
 Car::~Car()
 {
-	world->DestroyBody(carBody);
-	
+	world->DestroyBody(carBody);	
 }
 
 void Car::update(float speed, float angle)
 {
 	physics.updateFriction(carBody);
 	accelerate(speed);
-	turn(angle);
-	
-
-	
+	turn(angle);	
 }
 
 void Car::accelerate(float speed)
 {
-
 	// Set desired speed in relation to if we are reversing or going forward
-	desiredSpeed = speed*maxSpeed;
+	float desiredSpeed = speed*maxSpeed;
 
 
 	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
 
-	currentSpeed = b2Dot(physics.getForwardVelocity(carBody), currentForwardNormal);
+	float currentSpeed = b2Dot(physics.getForwardVelocity(carBody), currentForwardNormal);
 
 	//Depending on current speed the amount of force is determined
 	if (desiredSpeed > currentSpeed && speed > 0) {
@@ -71,8 +62,7 @@ void Car::accelerate(float speed)
 
 void Car::turn(float angle)
 {
-	
-	carBody->ApplyTorque(angle*MaxTurningForce * 45*  getVelocity()/maxSpeed, true);
+	carBody->ApplyTorque(angle*MaxTurningForce * 45 * getVelocity()/maxSpeed, true);
 }
 
 void Car::setParams(std::vector<float> position, float angle, float speed)
@@ -94,8 +84,6 @@ void Car::addCheckpoint()
 	checkpoints += 1;
 }
 
-
-// function for returning just the distances to walls
 std::vector<float> Car::getDistances(int amount, int degrees) {
 	distances = physics.updateRays(*carBody, amount, degrees);
 	return distances;
@@ -104,6 +92,11 @@ std::vector<float> Car::getDistances(int amount, int degrees) {
 int Car::getCheckpoints() const
 {
 	return checkpoints;
+}
+
+float Car::getMaxSpeed() const
+{
+	return maxSpeed;
 }
 
 bool Car::getCollisionStatus() const

@@ -42,14 +42,18 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 	float rayLenght = 10;
 
 	for (int i = -(size - 1) / 2; i <= (size - 1) / 2; i++) {
+
 		CarRayCallback callback;
+
 		b2Vec2 rayStart = carBody.GetWorldPoint(b2Vec2(0, 0));
+
 		float y = rayLenght*cos((90 + i*degrees / (size - 1))*DEGTORAD);
 		float x = rayLenght*sin((90 + i*degrees / (size - 1))*DEGTORAD);
+
 		b2Vec2 rayEnd = carBody.GetWorldPoint(b2Vec2(x, y));
 
-
 		world->RayCast(&callback, rayStart, rayEnd);
+
 		if (callback.m_hit) {
 			distances.push_back((rayStart - callback.m_point).Length()-2);
 
@@ -57,8 +61,6 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 		else {
 			distances.push_back(rayLenght);
 		}
-
-
 	}
 
 
@@ -79,7 +81,7 @@ void Physics::updateFriction(b2Body* carBody) {
 	//forward linear velocity
 	b2Vec2 currentForwardNormal = getForwardVelocity(carBody);
 	float currentForwardSpeed = getForwardVelocity(carBody).Normalize();
-	float dragForceMagnitude = -0.1 * currentForwardSpeed;
+	float dragForceMagnitude = -0.01 * currentForwardSpeed;
 	carBody->ApplyForce(dragForceMagnitude * currentForwardNormal, carBody->GetWorldCenter(), true);
 }
 

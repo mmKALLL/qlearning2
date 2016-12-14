@@ -6,16 +6,14 @@ Controller::Controller() {
 	}
 	runCounter = 0;
 	initializeRun();
-	
-	
 }
 
 void Controller::initializeRun() {
+	
 	// No need for gravity in top down physics
-	// currentTrack.setControllerReference(*this);
 	m_world = new b2World(b2Vec2(0,0));
 	currentCar = new Car(m_world);
-	currentTrack = new Track(m_world, this);
+	
 	trainer = new Learning(defaultStepSize);
 	currentNetwork = NeuralNetwork(layerCount);
 	
@@ -38,6 +36,8 @@ void Controller::initializeRun() {
 		std::string fileName = std::string("car") + std::to_string(runCounter) + std::string("_actions.txt");
 		carActionFile.open(fileName.c_str(), std::ofstream::out | std::ofstream::trunc); // overwrite existing
 	}
+	
+	currentTrack = new Track(m_world, this);
 }
 
 const Car& Controller::getCar() const {

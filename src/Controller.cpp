@@ -119,11 +119,11 @@ float Controller::getFitness(double time) const {
 }
 
 void Controller::stepForward() {
-	this->stepCounter += 1;
+	stepCounter += 1;
 	
 	// Print network
 	if (debugging) {
-		std::cout << std::endl << "-------------" << std::endl << std::endl;
+		std::cout << std::endl << std::endl << "** FRAME " << stepCounter << " **" << std::endl << "-------------" << std::endl << std::endl;
 		for (auto layer : currentNetwork.nodes) {
 			for (auto *node : layer) {
 				std::cout << "Node " << node->toString() << " weights: " << std::endl;

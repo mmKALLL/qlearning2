@@ -72,12 +72,12 @@ private:
 	const float defaultStepSize = 0.01; 				// Learning rate; multiplies learned outcome's impact on network node weights
 	const float actionDepth = 2; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.
 	const float discountFactor = 0.07; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
-	float explorationCoefficient = 1.0; 					// Weighs exploration over exploitation in Q-search; decreases on each step until minimum
-	const float minExplorationCoefficient = 0.05;
-	const float explorationCoefficientDecrease = 0.005;
+	float explorationCoefficient = 5.0; 				// Weighs exploration over exploitation in Q-search; decreases on each step until minimum
+	const float minExplorationCoefficient = 1.0;		// Don't touch.
+	const float explorationCoefficientDecrease = 0.01;
 	const float prevWeightCoefficient = 0.0;			// How large impact the previous weight's magnitude has in learning
 	const float prevValueCoefficient = 0.97;			// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
-	const float rewardMultiplier = 1.0;				// Multiplier on reward values to prevent crashing from overflows.
+	const float rewardMultiplier = 100.0;				// Multiplier on reward values to prevent crashing from overflows.
 	const float qvalueMultiplier = 1.0;					// Don't adjust until the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
 	Learning* trainer;
 	

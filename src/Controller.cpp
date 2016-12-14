@@ -133,17 +133,18 @@ void Controller::stepForward() {
 		}
 	}
 	
-	if(!carDebug){
+	if (!carDebug) {
 		// Get action from network, then make it learn.
 		if (explorationCoefficient > minExplorationCoefficient) {
 		 	explorationCoefficient -= explorationCoefficientDecrease;
 		}
 		float prevVelocity = currentCar->getVelocity();
-		std::vector<float> state = getSightVector(numberOfVisionLines, fieldOfView);
-		for (&auto x : state) {
-			x = x / 400.0f
+		std::vector<float> sights = getSightVector(numberOfVisionLines, fieldOfView);
+		std::vector<float> state;
+		for (float x : sights) {
+			state.push_back(x / 400.0f);
 		}
-		state.push_back(prevVelocity);
+		state.push_back(prevVelocity * velocityMultiplier);
 		
 		std::vector<float> action = currentNetwork.getAction(state, actionDepth, 	explorationCoefficient, useSig);
 		currentCar->update(action[0], action[1]);

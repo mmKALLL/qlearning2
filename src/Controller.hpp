@@ -60,7 +60,7 @@ private:
 	const int32 positionIterations = 3;   //how strongly to correct position
 	
 	/***** Network building related constants *****/
-	const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {4, 6}; 	// Adjust network node topology with this.
+	const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {}; 	// Adjust network node topology with this.
 	const unsigned int layerCount = 2 + hiddenLayerSizes.size(); 							// Don't touch.
 	const float nodeInitLow = -0.1;						// Randomized initial node weights are between these
 	const float nodeInitHigh = 0.1;
@@ -83,9 +83,9 @@ private:
 	
 	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
-	const float wallPenalty = -1000.0;			// Reward penalty for hitting a wall.
-	const float prevVelocityCoefficient = 0.9;	// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
-	const float velocityMultiplier = 0.008;		// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
+	const float wallPenalty = -10.0;			// Reward penalty for hitting a wall.
+	const float prevVelocityCoefficient = 0.8;	// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
+	const float velocityMultiplier = 0.0001;		// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
 
 	/***** Controller variables *****/
 	b2World* m_world;

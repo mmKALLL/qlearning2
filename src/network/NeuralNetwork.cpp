@@ -94,6 +94,7 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 	
 	float probSum = 0.0f;
 	for (float& x : actionProbabilities) {
+		std::cout << "   actionProbability " << x << std::endl;
 		probSum += x;
 	}
 	

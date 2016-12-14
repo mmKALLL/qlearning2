@@ -63,7 +63,7 @@ void Car::accelerate(float speed)
 		carBody->ApplyForce(maxDriveForce * currentForwardNormal, carBody->GetWorldCenter(), true);
 	}
 	else if (desiredSpeed < currentSpeed && speed < 0) {
-		carBody->ApplyForce(-maxDriveForce * currentForwardNormal, carBody->GetWorldCenter(), true);
+		carBody->ApplyForce(-maxReverseForce * currentForwardNormal, carBody->GetWorldCenter(), true);
 	}
 }
 

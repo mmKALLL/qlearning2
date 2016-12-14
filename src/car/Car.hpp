@@ -42,6 +42,7 @@ private:
 	b2Body* carBody = nullptr;
 	float maxSpeed = 200;
 	float maxDriveForce = 20000;
+	float maxReverseForce = 50;
 	float MaxTurningForce = 500;
 	std::vector<float> distances;
 	int checkpoints = 0;

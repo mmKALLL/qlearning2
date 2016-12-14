@@ -70,12 +70,13 @@ private:
 	const float minExplorationCoefficient = 0.05;
 	const float explorationCoefficientDecrease = 0.001;
 	const float prevWeightCoefficient = 0.2;			// How large impact the previous weight's magnitude has in learning
+	const float prevValueCoefficient = 0.97;			// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
 	Learning trainer = Learning(defaultStepSize);
 	
 	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
-	const float wallPenalty = -10000.0f;				// Reward penalty for hitting a wall.
-	const float prevVelocityCoefficient = 0.9f;			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
+	const float wallPenalty = -10000.0;					// Reward penalty for hitting a wall.
+	const float prevVelocityCoefficient = 0.9;			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
 
 	/***** Controller variables *****/
 	b2World* m_world;

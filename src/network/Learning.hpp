@@ -23,9 +23,15 @@ public:
 
 	void racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget);
 	void racistNodeAdjustment(Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer);
+	
+	void backPropagationLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget);
+	
 	/**
 		Basically we are going to implement this:
 		https://www.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf
+		
+		And then this:
+		https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/
 	
 		A scrapped initial idea:
 		targetValue is the value of node at [i][j] which leads to maximal fitness. That is, maximize speed as long as it doesn't

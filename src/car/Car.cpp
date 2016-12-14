@@ -49,8 +49,6 @@ void Car::update(float speed, float angle)
 
 void Car::accelerate(float speed)
 {
-	// Get current forward speed and set force
-	float force = 0;
 
 	// Set desired speed in relation to if we are reversing or going forward
 	desiredSpeed = speed*maxSpeed;
@@ -62,14 +60,8 @@ void Car::accelerate(float speed)
 
 	//Depending on current speed the amount of force is determined
 	if (desiredSpeed > currentSpeed) {
-		force = maxDriveForce;
-		carBody->ApplyForce(force * currentForwardNormal, carBody->GetWorldCenter(), false);
+		carBody->ApplyForce(maxDriveForce * currentForwardNormal, carBody->GetWorldCenter(), true);
 	}
-
-
-
-	// Apply the force
-	
 	
 }
 

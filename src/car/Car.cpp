@@ -22,7 +22,7 @@ Car::Car(b2World* world) : world(world)
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
 	// Density controls the mass of the car
-	carFixtureDef.density = 0.5;
+	carFixtureDef.density = 0.1f;
 
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
@@ -39,10 +39,10 @@ Car::~Car()
 
 void Car::update(float speed, float angle)
 {
-	physics.updateFriction(carBody);
+	
 	accelerate(speed);
 	turn(angle);
-	
+	physics.updateFriction(carBody);
 
 	
 }
@@ -59,10 +59,12 @@ void Car::accelerate(float speed)
 	currentSpeed = b2Dot(physics.getForwardVelocity(carBody), currentForwardNormal);
 
 	//Depending on current speed the amount of force is determined
-	if (desiredSpeed > currentSpeed) {
+	if (desiredSpeed > currentSpeed && speed > 0) {
 		carBody->ApplyForce(maxDriveForce * currentForwardNormal, carBody->GetWorldCenter(), true);
 	}
-	
+	else if (desiredSpeed < currentSpeed && speed < 0) {
+		carBody->ApplyForce(-maxDriveForce * currentForwardNormal, carBody->GetWorldCenter(), true);
+	}
 }
 
 
@@ -136,6 +138,7 @@ void Car::setNetwork(NeuralNetwork newNetwork) {
 }
 
 void Car::testDrive(){
+	physics.updateFriction(carBody);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right) )
 	{
     		// left key is pressed: move our character
@@ -156,16 +159,17 @@ void Car::testDrive(){
     		// left key is pressed: move our character
     		this->update(0, 0.3);
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+    		// left key is pressed: move our character
+    		this->update(-1, 0);
+	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
     		// left key is pressed: move our character
     		this->update(1, 0);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-    		// left key is pressed: move our character
-    		this->update(-1, 0);
-	}
+
 	// FOr debugging
 	std::cout << "Velocity: " << this->getVelocity() << std::endl;
 	std::cout << "Angle: " << this->getAngle() << std::endl;

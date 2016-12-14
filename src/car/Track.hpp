@@ -15,12 +15,10 @@ public:
 	Track(b2World*, Controller*);
 	~Track();
 	void setControllerReference(Controller* cntrl) { controller = cntrl; }
-	/*
-	void straight(&float, &b2Vec2, &sf::Vector2f, &sf::Vector2f);
-	void leftTurn(&float, &b2Vec2, &sf::Vector2f, &sf::Vector2f);
-	void rightTurn(&float, &b2Vec2, &sf::Vector2f, &sf::Vector2f);
-	*/
+	
 	void newSector(float width, float height, float angle, b2Vec2 middlePoint);
+	sf::VertexArray drawSector(float, float, float, b2Vec2);
+	
 	void GUI(std::vector<sf::VertexArray>);
 
 private:

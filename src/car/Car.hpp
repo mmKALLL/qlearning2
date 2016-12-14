@@ -21,33 +21,33 @@ public:
 	NeuralNetwork& getNetwork();
 	std::vector<float> getPosition() const;
 	std::vector<float> getDistances(int amount, int degrees);
-	
-	 //Call this function to have car update its location, speed, etc.
-	void update(float speed, float angle);
-	
-	void accelerate(float speed);
-	void turn(float angle);
+
 	void setParams(std::vector<float> position, float angle, float speed);
 	void setCollisionStatus();
+	void setNetwork(NeuralNetwork newNetwork);
+
+	void update(float speed, float angle);
+	void accelerate(float speed);
+	void turn(float angle);
 	void addCheckpoint();
 	void testDrive();
 	
 	// Variables for desired speed, current speed, current force applied and maximun force that can be applied
-	float desiredSpeed = 0;
-	float currentSpeed = 0;
-	
-	void setNetwork(NeuralNetwork newNetwork);
 
+	
+	
 private:
 	// Variables for the body amd maximum speeds
 	// maxspeed is maximum speed and maxDriveForce is maximum acceleration
 	b2Body* carBody = nullptr;
 	float maxSpeed = 200;
-	float maxDriveForce = 500000;
-	float MaxTurningForce = 5000;
+	float maxDriveForce = 20000;
+	float MaxTurningForce = 500;
 	std::vector<float> distances;
 	int checkpoints = 0;
 	bool collisionStatus = false;
+	float desiredSpeed = 0;
+	float currentSpeed = 0;
 	
 	b2World* world = nullptr;
 	Physics physics = Physics(world);

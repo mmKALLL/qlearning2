@@ -5,8 +5,6 @@
 #include <Box2D/Box2D.h>
 #include <vector>
 
-
-
 class Physics
 {
 public:
@@ -22,10 +20,6 @@ public:
 private:
 	b2World* world;
 	float maxLateralImpulse = 7.5;
-	
-	
 };
-
-
 
 #endif

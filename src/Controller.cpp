@@ -65,19 +65,20 @@ float Controller::getCarDistanceFromMiddle() const {
 	return 0.0f;
 }
 
-float Controller::getCarVelocity() const {
-	// Returns the current car's current speed.
-	return currentCar->getVelocity();
-}
-float Controller::getCarAngle() const{
-	return currentCar->getAngle();
-}
-
 float Controller::getCarDistanceTraveled() const {
 	// TODO Olli/Jussi Return how far the car has gone on the track
 	//				   ie how many checkpoints it has reached
 	//Done'd, though it returns the amount of checkpoints passed
 	return currentCar->getCheckpoints();
+}
+
+float Controller::getCarRotation() const{
+	return currentCar->getAngle();
+}
+
+float Controller::getCarVelocity() const {
+	// Returns the current car's current speed.
+	return currentCar->getVelocity();
 }
 
 /***** OLD CODE, USE STEPFORWARD() INSTEAD *****/

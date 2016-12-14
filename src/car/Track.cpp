@@ -243,6 +243,7 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 	car.setOrigin(20, 15);
 	car.setFillColor(sf::Color(255, 55, 55));
 	std::vector<float> carPosition;
+	float carRotation;
 	
 	sf::View camera;
 	camera.setSize(sf::Vector2f(1000, 1000));
@@ -263,6 +264,8 @@ void Track::GUI(std::vector<sf::VertexArray> sectors) {
 		std::cout << "Trying to get the position of the current car from Track.cpp" << std::endl;
 		carPosition = controller->getCarPosition();
 		car.setPosition(carPosition[0], carPosition[1]);
+		carRotation = controller->getCarRotation();
+		car.setRotation(carRotation);
 		camera.setCenter(car.getPosition());
 		window.setView(camera);
 		for (auto x : sectors) {

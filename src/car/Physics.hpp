@@ -44,9 +44,9 @@ public:
 		if (!fixture->IsSensor()) {
 			m_hit = true;
 			m_point = point;
-			return fraction;
+			
 		}
-
+		return fraction;
 	}
 
 	bool m_hit;

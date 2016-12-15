@@ -30,15 +30,9 @@ public:
 	//---Getters for car
 	const std::vector<float> getCarPosition() const;
 	const std::vector<float> getSightVector(int size, int degrees);
-	float getCarDistanceFromMiddle() const;
 	float getCarDistanceTraveled() const;
 	float getCarRotation() const;
 	float getCarVelocity() const;
-
-	//---Car actions and NN interraction
-	std::vector<float> getCarAction(NeuralNetwork& nn);
-	float getFitness() const;
-	float getFitness(double time) const;
 
 	//---Controller actions
     	void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
@@ -47,9 +41,9 @@ private:
 	
 	/***** General settings *****/
 	const bool networkDebug = false;	// print network to console
-	const bool carDebug = true;		// manual driving
+	const bool carDebug = true;			// manual driving
 	const bool fastforward = false;		// disable GUI
-	const int maxFastForwardRuns = 1;	// TODO: What is this?
+	const int maxFastForwardRuns = 1;	// Untested. Half-implemented. How many runs to do before terminating fastforward.
 	
 	const bool writeActionsToFile = true;	// car driving history; overwrites existing history files
 	const int numberOfVisionLines = 5;
@@ -72,21 +66,21 @@ private:
 	const bool useSig = false;							// Whether to use sigmoid functions in network evaluation.
 	const float defaultStepSize = 0.01; 				// Learning rate; multiplies learned outcome's impact on network node weights
 	const float actionDepth = 2; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.
-	const float discountFactor = 0.07; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
+	const float discountFactor = 0.9; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
 	float explorationCoefficient = 5.0; 				// Weighs exploration over exploitation in Q-search; decreases on each step until minimum
 	const float minExplorationCoefficient = 1.0;		// Don't touch.
 	const float explorationCoefficientDecrease = 0.01;
 	const float prevWeightCoefficient = 0.0;			// How large impact the previous weight's magnitude has in learning
 	const float prevValueCoefficient = 0.97;			// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
-	const float rewardMultiplier = 100.0;				// Multiplier on reward values to prevent crashing from overflows.
+	const float rewardMultiplier = 1.0;					// Multiplier on reward values to prevent crashing from overflows.
 	const float qvalueMultiplier = 1.0;					// Don't adjust until the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
 	Learning* trainer;
 	
 	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
-	const float wallPenalty = -10.0;			// Reward penalty for hitting a wall.
-	const float prevVelocityCoefficient = 0.8;	// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
-	const float velocityMultiplier = 0.0001;		// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
+	const float wallPenalty = -100.0;					// Reward penalty for hitting a wall.
+	const float prevVelocityCoefficient = 0.8;			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
+	const float velocityMultiplier = 0.0001;			// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
 
 	/***** Controller variables *****/
 	b2World* m_world;

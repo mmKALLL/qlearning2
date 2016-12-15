@@ -1,8 +1,8 @@
 #include "Physics.hpp"
 
-Physics::Physics(b2World* world) : world(world)
+Physics::Physics(b2World* world, Car* car) : world(world), car(car)
 {
-	
+	this->world->SetContactListener(this);
 }
 
 
@@ -14,19 +14,19 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 	
 	for (int i = -(size - 1) / 2; i <= (size - 1) / 2; i++) {
 
-		
+		CarRayCastClosestCallback callback;
 
 		b2Vec2 rayStart = carBody.GetWorldPoint(b2Vec2(0, 0));
 
 		float y = rayLenght*cos((90 + i*degrees / (size - 1))*DEGTORAD);
-		float x = rayLenght*sin((90 + i*degrees / (size - 1))*DEGTORAD);
+		float x = rayLenght*sin((90  + i*degrees / (size - 1))*DEGTORAD);
 
 		b2Vec2 rayEnd = carBody.GetWorldPoint(b2Vec2(x, y));
 
-		world->RayCast(this, rayStart, rayEnd);
+		world->RayCast(&callback, rayStart, rayEnd);
 
-		if (this->m_hit) {
-			distances.push_back((rayStart - this->m_point).Length()-20);
+		if (callback.m_hit) {
+			distances.push_back((rayStart - callback.m_point).Length() -20);
 		}
 		else {
 			distances.push_back(rayLenght);
@@ -64,18 +64,47 @@ b2Vec2 Physics::getLateralVelocity(b2Body* carBody) const {
 	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
 }
 
-void Physics::CarRayCallback()
-{
-	m_hit = false;
+
+void Physics::BeginContact(b2Contact* contact) {
+
+	//check if fixture A was a ball
+	void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+	void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+	if (!userDataA) {
+		if (contact->GetFixtureA()->IsSensor() == false) {
+			car->setCollisionStatus(true);
+
+		}
+	}
+
+	if (!userDataB) {
+		if (contact->GetFixtureB()->IsSensor() == false) {
+			car->setCollisionStatus(true);
+
+		}
+	}
+
 }
 
-float32 Physics::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
-{
-	if(!fixture->IsSensor()){
-	m_hit = true;
-	m_point = point;
-	fixtureA = fixture;
-	normalA = normal;
-	return fraction;
+void Physics::EndContact(b2Contact* contact) {
+
+	void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+	void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+	if (!userDataA) {
+		if (contact->GetFixtureA()->IsSensor() == true) {
+			car->addCheckpoint();
+		}
+		else {
+			car->setCollisionStatus(false);
+		}
+	}
+
+	if (!userDataB) {
+		if (contact->GetFixtureB()->IsSensor() == true) {
+			car->addCheckpoint();
+		}
+		else {
+			car->setCollisionStatus(false);
+		}
 	}
 }

@@ -1,5 +1,5 @@
 #include "Car.hpp"
-Collision collision;
+
 
 Car::Car(b2World* world) : world(world)
 {
@@ -26,7 +26,7 @@ Car::Car(b2World* world) : world(world)
 	carBody->CreateFixture(&carFixtureDef);
 	carBody->SetUserData(this);
 
-	this->world->SetContactListener(&collision);
+	
 }
 
 Car::~Car()
@@ -172,9 +172,9 @@ void Car::testDrive(){
 	std::cout << "Angle: " << this->getAngle() << std::endl;
 	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
 	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
-	std::vector<float> distances = getDistances(3, 90);
+	std::vector<float> distances = getDistances(3, 180);
 
-	std::cout << "Distance left: " << distances[0] << std::endl;
+	std::cout << "Distance right: " << distances[0] << std::endl;
 	std::cout << "Distance front: " << distances[1] << std::endl;
-	std::cout << "Distance right: " << distances[2] << std::endl;
+	std::cout << "Distance left: " << distances[2] << std::endl;
 }

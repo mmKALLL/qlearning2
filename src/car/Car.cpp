@@ -172,4 +172,6 @@ void Car::testDrive(){
 	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
 	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
 	*/
+
+	std::cout << "Distance front: " << getDistances(3, 90)[1] << std::endl;
 }

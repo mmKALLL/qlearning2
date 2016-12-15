@@ -29,9 +29,9 @@ void Controller::initializeController() {
 	layerSizes.push_back(1); // output layer
 	
 	currentNetwork.build(layerSizes, true, nodeInitLow, nodeInitHigh);
-	
-	currentTrack = new Track(m_world, this);
+
 	initializeRun();
+	currentTrack = new Track(m_world, this);
 }
 
 void Controller::initializeRun() {

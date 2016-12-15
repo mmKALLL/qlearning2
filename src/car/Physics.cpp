@@ -1,32 +1,5 @@
 #include "Physics.hpp"
 
-
-class CarRayCallback : public b2RayCastCallback
-{
-public:
-	CarRayCallback()
-	{
-		m_hit = false;
-	}
-
-	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
-	{
-		m_hit = true;
-		m_point = point;
-		fixtureA = fixture;
-		normalA = normal;
-		return fraction;
-	}
-
-	bool m_hit;
-	b2Vec2 m_point;
-	b2Fixture* fixtureA;
-	b2Vec2 normalA;
-};
-
-
-
-
 Physics::Physics(b2World* world) : world(world)
 {
 	
@@ -41,7 +14,7 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 	
 	for (int i = -(size - 1) / 2; i <= (size - 1) / 2; i++) {
 
-		CarRayCallback callback;
+		
 
 		b2Vec2 rayStart = carBody.GetWorldPoint(b2Vec2(0, 0));
 
@@ -50,10 +23,10 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 
 		b2Vec2 rayEnd = carBody.GetWorldPoint(b2Vec2(x, y));
 
-		world->RayCast(&callback, rayStart, rayEnd);
+		world->RayCast(this, rayStart, rayEnd);
 
-		if (callback.m_hit) {
-			distances.push_back((rayStart - callback.m_point).Length()-20);
+		if (this->m_hit) {
+			distances.push_back((rayStart - this->m_point).Length()-20);
 		}
 		else {
 			distances.push_back(rayLenght);
@@ -89,4 +62,20 @@ b2Vec2 Physics::getForwardVelocity(b2Body* carBody) const {
 b2Vec2 Physics::getLateralVelocity(b2Body* carBody) const {
 	b2Vec2 currentRightNormal = carBody->GetWorldVector(b2Vec2(0, 1));
 	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
+}
+
+void Physics::CarRayCallback()
+{
+	m_hit = false;
+}
+
+float32 Physics::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
+{
+	if(!fixture->IsSensor()){
+	m_hit = true;
+	m_point = point;
+	fixtureA = fixture;
+	normalA = normal;
+	return fraction;
+	}
 }

@@ -46,8 +46,8 @@ public:
 private:
 	
 	/***** General settings *****/
-	const bool networkDebug = false;	// print network to console
-	const bool carDebug = true;		// manual driving
+	const bool networkDebug = true;	// print network to console
+	const bool carDebug = false;		// manual driving
 	const bool fastforward = false;		// disable GUI
 	const int maxFastForwardRuns = 1;	// TODO: What is this?
 	
@@ -80,7 +80,7 @@ private:
 	const float prevValueCoefficient = 0.97;			// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
 	const float rewardMultiplier = 100.0;				// Multiplier on reward values to prevent crashing from overflows.
 	const float qvalueMultiplier = 1.0;					// Don't adjust until the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
-	Learning* trainer;
+	
 	
 	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
@@ -92,6 +92,7 @@ private:
 	b2World* m_world;
 	Car* currentCar;
 	Track* currentTrack;
+	Learning* trainer;
 	NeuralNetwork currentNetwork;
 	std::ofstream carActionFile;
 	int runCounter;

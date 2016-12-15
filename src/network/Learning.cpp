@@ -1,7 +1,7 @@
 #include "Learning.hpp"
 
-Learning::Learning(float defStepSize) {
-	stepSize = defStepSize;
+Learning::Learning(float defStepSize) : stepSize(defStepSize) {
+	
 }
 
 

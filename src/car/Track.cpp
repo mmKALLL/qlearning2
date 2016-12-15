@@ -310,7 +310,6 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 	camera.setSize(sf::Vector2f(1000, 1000));
 	
 	sf::Clock timer;
-	sf::Time frame = sf::milliseconds(16.6);
 	
 	while (window.isOpen()) {
 		sf::Event event;
@@ -341,11 +340,8 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 		window.draw(car);
 		window.display();
 		
-		// If it has been more than 1/60th of a second, proceed with the program
-		if (timer.getElapsedTime() >= frame) {
-			timer.restart();
-			controller->stepForward();
-		}
+		// The program automatically runs at 60 FPS
+		controller->stepForward(timer.restart().asSeconds());
 		
 	}
 }

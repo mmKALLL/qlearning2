@@ -41,13 +41,13 @@ public:
 	float getFitness(double time) const;
 
 	//---Controller actions
-    	void stepForward(); //Moves simulation; make call to NN and then ask physics to parse action
+    void stepForward(float timeStep); //Moves simulation; makes a call to NeuralNetwork and asks Physics to parse action
     
 private:
 	
 	/***** General settings *****/
 	const bool networkDebug = false;	// print network to console
-	const bool carDebug = true;		// manual driving
+	const bool carDebug = false;		// manual driving
 	const bool fastforward = false;		// disable GUI
 	const int maxFastForwardRuns = 1;	// TODO: What is this?
 	
@@ -56,7 +56,6 @@ private:
 	const int fieldOfView = 90; // TODO: FoV slider
 	
 	/***** Simulation constants *****/
-	const float32 timeStep = 1.0 / 60.0;
 	const int32 velocityIterations = 8;   //how strongly to correct velocity
 	const int32 positionIterations = 3;   //how strongly to correct position
 	

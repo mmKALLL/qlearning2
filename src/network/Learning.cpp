@@ -36,7 +36,14 @@ void Learning::adjustNetwork(Controller& controller, NeuralNetwork& nn, float qv
 
 void Learning::racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget) {
 	int layers = nn.nodes.size();
+	
+	// Debug code
+	Node& n = *nn.nodes[controller.layerCount - 1][0];
+	std::cout << "inputValueSign for output: " << (n.getValue() > 0) - (n.getValue() < 0) << std::endl;
+	
+	
 	racistNodeAdjustment(controller, *nn.nodes[controller.layerCount - 1][0], nn, qtarget, controller.prevWeightCoefficient, layers - 1);
+	
 }
 
 

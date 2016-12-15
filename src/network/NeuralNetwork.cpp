@@ -81,19 +81,19 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 	// Boltzmann probability distribution which weighs exploration over exploitation early on
 	std::vector<float> actionProbabilities;
 	float quotient = 0.0f;
-	std::cout << "QVALUES SIZE: " << qvalues.size() << std::endl;
+	std::cout << "qvalues size: " << qvalues.size() << std::endl;
 	for (float& x : qvalues) {
 		std::cout << "qvalue: " << x << std::endl;
-		quotient += exp(x / explorationCoefficient);
+		quotient += exp((x / 1000.0) / explorationCoefficient); // Divide by 1000 to prevent exponential growth for abs(qvalue) > 1.
 	}
-	std::cout << "       Boltzmann quotient!!!: " << quotient << std::endl;
 	for (float& x : qvalues) {
 		std::cout << "        Boltzmann action odds!!: " << exp(x / explorationCoefficient) << std::endl;
 		actionProbabilities.push_back(
-			exp(x / explorationCoefficient) / quotient
+			exp((x / 1000.0) / explorationCoefficient) / quotient
 		);
 	}
-	
+	std::cout << "            Boltzmann quotient!!!: " << quotient << std::endl;
+
 	float probSum = 0.0f;
 	for (float& x : actionProbabilities) {
 		std::cout << "   actionProbability " << x << std::endl;
@@ -122,7 +122,7 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 		}
 	}
 	std::cout << "probTarget after decrease: " << probTarget << std::endl;
-	throw "Not enough actions tried! Issues with actionProbabilities in NeuralNetwork::getAction(). Most likely sum of Q-values overflowed; try a smaller multiplier.";
+	throw "Not enough actions tried! Issues with actionProbabilities in NeuralNetwork::getAction(). Most likely sum of Q-values overflowed or Boltzmann distribution quotient is too large; try a smaller multiplier.";
 	
 }
 

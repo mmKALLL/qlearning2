@@ -29,9 +29,10 @@ void Controller::initializeController() {
 	layerSizes.push_back(1); // output layer
 	
 	currentNetwork.build(layerSizes, true, nodeInitLow, nodeInitHigh);
+
 	initializeRun();
 	currentTrack = new Track(m_world, this);
-	
+
 }
 
 void Controller::initializeRun() {
@@ -54,7 +55,7 @@ void Controller::initializeRun() {
 	if (fastforward && runCounter < maxFastForwardRuns) {
 		int prevrun = runCounter;
 		while (prevrun == runCounter) {
-			stepForward();
+			stepForward(1.0f / 60.0f);
 		}
 	}
 }
@@ -118,7 +119,7 @@ float Controller::getFitness(double time) const {
 	return getCarDistanceTraveled() / time;
 }
 
-void Controller::stepForward() {
+void Controller::stepForward(float timeStep) {
 	stepCounter += 1;
 	
 	// Print network

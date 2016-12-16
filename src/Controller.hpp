@@ -11,7 +11,7 @@ class Learning;
 #include "network/Learning.hpp"
 class Track;
 #include "car/Track.hpp"
-
+#include "FileReader.hpp"
 
 class Controller {
 	friend class Learning;

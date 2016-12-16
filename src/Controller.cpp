@@ -1,6 +1,8 @@
 #include "Controller.hpp"
 
 Controller::Controller() {
+	FileReader reader = FileReader();
+	reader.test();
 	if (writeActionsToFile) {
 		carActionFile.open("carActionError.txt");
 	}

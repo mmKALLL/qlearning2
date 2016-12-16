@@ -2,9 +2,9 @@
 
 Physics::Physics(b2World* world, Car* car) : world(world), car(car)
 {
+	// Set the world to use our physics class as collision checker
 	this->world->SetContactListener(this);
 }
-
 
 std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 
@@ -32,7 +32,6 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 			distances.push_back(rayLenght);
 		}
 	}
-
 
 	return distances;
 }
@@ -67,7 +66,8 @@ b2Vec2 Physics::getLateralVelocity(b2Body* carBody) const {
 
 void Physics::BeginContact(b2Contact* contact) {
 
-	//check if fixture A was a ball
+	// Car has it's userdata set and it's used to check collision status of walls
+	// Checkpoints are sensors and walls are not and approriate action is selected
 	void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
 	void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
 	if (!userDataA) {
@@ -80,7 +80,6 @@ void Physics::BeginContact(b2Contact* contact) {
 	if (!userDataB) {
 		if (contact->GetFixtureB()->IsSensor() == false) {
 			car->setCollisionStatus(true);
-
 		}
 	}
 

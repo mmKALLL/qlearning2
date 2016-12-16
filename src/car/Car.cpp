@@ -17,6 +17,7 @@ Car::Car(b2World* world) : world(world)
 	b2PolygonShape carShape;
 	carShape.SetAsBox(20.0f, 15.0f);
 
+	// Create a fixture for car, attach the shape and few parameters for and then create the car to the world
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
 	carFixtureDef.density = 0.01f;
@@ -24,9 +25,7 @@ Car::Car(b2World* world) : world(world)
 
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
-	carBody->SetUserData(this);
-
-	
+	carBody->SetUserData(this);	
 }
 
 Car::~Car()
@@ -46,9 +45,8 @@ void Car::accelerate(float speed)
 	// Set desired speed in relation to if we are reversing or going forward
 	float desiredSpeed = speed*maxSpeed;
 
-
+	// Get current forward vector and speed
 	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
-
 	float currentSpeed = b2Dot(physics->getForwardVelocity(carBody), currentForwardNormal);
 
 	//Depending on current speed the amount of force is determined
@@ -69,7 +67,6 @@ void Car::turn(float angle)
 void Car::setParams(std::vector<float> position, float angle, float speed)
 {
 	b2Vec2 pos(position[0], position[1]);
-	// sin and cos might be otherway around
 	b2Vec2 vel(speed*sin(angle*DEGTORAD), speed*cos(angle*DEGTORAD));
 	carBody->SetLinearVelocity(vel);
 	carBody->SetTransform(pos, angle*DEGTORAD);

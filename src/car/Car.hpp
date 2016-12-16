@@ -9,7 +9,6 @@ class Physics;
 
 class Car
 {
-
 public:
 	// Constructors
 	Car(b2World*);
@@ -24,20 +23,20 @@ public:
 	NeuralNetwork& getNetwork();
 	std::vector<float> getPosition() const;
 	std::vector<float> getDistances(int amount, int degrees);
-
+	// Setters
 	void setParams(std::vector<float> position, float angle, float speed);
 	void setCollisionStatus(bool status);
 	void setNetwork(NeuralNetwork newNetwork);
 
+	// Car's status updaters
 	void update(float speed, float angle);
 	void accelerate(float speed);
 	void turn(float angle);
 	void addCheckpoint();
+
 	void testDrive();
 		
 private:
-	// Variables for the body amd maximum speeds
-	// maxspeed is maximum speed and maxDriveForce is maximum acceleration
 	b2Body* carBody = nullptr;
 	float maxSpeed = 120;
 	float maxDriveForce = 3000;
@@ -46,12 +45,9 @@ private:
 	bool collisionStatus = false;
 	std::vector<float> distances;
 	int checkpoints = 0;
-	
-	
+
 	b2World* world = nullptr;
 	Physics* physics;
 	NeuralNetwork network;
-
 };
-
 #endif

@@ -13,17 +13,20 @@ class Physics : public b2ContactListener, public b2RayCastCallback
 public:
 	Physics(b2World* world, Car* car);
 	
+	// Car's vision related functions
 	std::vector<float> updateRays(b2Body& carBody, int size, int degrees);
-	void updateFriction(b2Body* carBody);
+	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction);
 
-	
+	// Friction
+	void updateFriction(b2Body* carBody);
 	b2Vec2 getForwardVelocity(b2Body* carBody) const;
 	b2Vec2 getLateralVelocity(b2Body* carBody) const;
 
+	// Collision checking
+	// Functions what to do when collision starts and ends
 	void BeginContact(b2Contact* contact);
 	void EndContact(b2Contact* contact);
-	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction);
-
+	
 private:
 	b2World* world;
 	Car* car;

@@ -7,7 +7,7 @@
 class Car;
 #include "Car.hpp"
 
-class Physics : public b2ContactListener
+class Physics : public b2ContactListener, public b2RayCastCallback
 {
 
 public:
@@ -22,35 +22,16 @@ public:
 
 	void BeginContact(b2Contact* contact);
 	void EndContact(b2Contact* contact);
-
+	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction);
 
 private:
 	b2World* world;
 	Car* car;
 	float maxLateralImpulse = 30;
 	float rayLenght = 500;
-};
-
-class CarRayCastClosestCallback : public b2RayCastCallback
-{
-public:
-	CarRayCastClosestCallback()
-	{
-		m_hit = false;
-	}
-
-	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
-	{
-		if (!fixture->IsSensor()) {
-			m_hit = true;
-			m_point = point;
-			
-		}
-		return fraction;
-	}
-
-	bool m_hit;
+	bool m_hit = false;
 	b2Vec2 m_point;
+	float32 m_fraction;
 };
 
 #endif

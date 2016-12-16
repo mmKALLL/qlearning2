@@ -14,8 +14,8 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 	
 	for (int i = -(size - 1) / 2; i <= (size - 1) / 2; i++) {
 
-		CarRayCastClosestCallback callback;
-
+		
+		m_hit = false;
 		b2Vec2 rayStart = carBody.GetWorldPoint(b2Vec2(0, 0));
 
 		float y = rayLenght*cos((90 + i*degrees / (size - 1))*DEGTORAD);
@@ -23,10 +23,10 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 
 		b2Vec2 rayEnd = carBody.GetWorldPoint(b2Vec2(x, y));
 
-		world->RayCast(&callback, rayStart, rayEnd);
+		world->RayCast(this, rayStart, rayEnd);
 
-		if (callback.m_hit) {
-			distances.push_back((rayStart - callback.m_point).Length() -20);
+		if (this->m_hit) {
+			distances.push_back((rayStart - rayEnd).Length()*m_fraction);
 		}
 		else {
 			distances.push_back(rayLenght);
@@ -107,4 +107,14 @@ void Physics::EndContact(b2Contact* contact) {
 			car->setCollisionStatus(false);
 		}
 	}
+}
+float32 Physics::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
+{
+	if (!fixture->IsSensor()) {
+		m_hit = true;
+		m_point = point;
+		m_fraction = fraction;
+
+	}
+	return fraction;
 }

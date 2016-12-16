@@ -32,6 +32,7 @@ private:
 	bool m_hit = false;
 	b2Vec2 m_point;
 	float32 m_fraction;
+	b2Vec2 m_normal;
 };
 
 #endif

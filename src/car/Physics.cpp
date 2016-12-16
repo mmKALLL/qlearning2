@@ -114,6 +114,7 @@ float32 Physics::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2
 		m_hit = true;
 		m_point = point;
 		m_fraction = fraction;
+		m_normal = normal;
 
 	}
 	return fraction;

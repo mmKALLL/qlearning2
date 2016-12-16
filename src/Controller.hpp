@@ -70,23 +70,23 @@ private:
 	/***** Action-space search and learning-related constants *****/
 	const int learningMode = 1;							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).
 	const bool useSig = false;							// Whether to use sigmoid functions in network evaluation.
-	const float defaultStepSize = 0.01; 				// Learning rate; multiplies learned outcome's impact on network node weights
-	const float actionDepth = 2; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~200 should be manageable.
-	const float discountFactor = 0.07; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
+	const float defaultStepSize = 0.004; 				// Learning rate; multiplies learned outcome's impact on network node weights
+	const float actionDepth = 3; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~80 should be manageable.
+	const float discountFactor = 0.8; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
 	float explorationCoefficient = 5.0; 				// Weighs exploration over exploitation in Q-search; decreases on each step until minimum
 	const float minExplorationCoefficient = 1.0;		// Don't touch.
 	const float explorationCoefficientDecrease = 0.01;
-	const float prevWeightCoefficient = 0.0;			// How large impact the previous weight's magnitude has in learning
-	const float prevValueCoefficient = 0.97;			// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
-	const float rewardMultiplier = 100.0;				// Multiplier on reward values to prevent crashing from overflows.
-	const float qvalueMultiplier = 1.0;					// Don't adjust until the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
+	const float prevWeightCoefficient = 0.1;			// How large impact the previous weight's magnitude has in learning
+	const float prevValueCoefficient = 1.0;				// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
+	const float rewardMultiplier = 2.0;					// Multiplier on reward values to prevent crashing from overflows.
+	const float qvalueMultiplier = 1.0;					// Don't adjust unless the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
 	
 	
 	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
-	const float wallPenalty = -10.0;			// Reward penalty for hitting a wall.
-	const float prevVelocityCoefficient = 0.8;	// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
-	const float velocityMultiplier = 0.0001;		// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
+	const float wallPenalty = -40.0;					// Reward penalty for hitting a wall.
+	const float prevVelocityCoefficient = 0.87;			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
+	const float velocityMultiplier = 0.0003;			// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
 
 	/***** Controller variables *****/
 	b2World* m_world;

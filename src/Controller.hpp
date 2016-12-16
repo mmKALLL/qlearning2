@@ -30,15 +30,9 @@ public:
 	//---Getters for car
 	const std::vector<float> getCarPosition() const;
 	const std::vector<float> getSightVector(int size, int degrees);
-	float getCarDistanceFromMiddle() const;
 	float getCarDistanceTraveled() const;
 	float getCarRotation() const;
 	float getCarVelocity() const;
-
-	//---Car actions and NN interraction
-	std::vector<float> getCarAction(NeuralNetwork& nn);
-	float getFitness() const;
-	float getFitness(double time) const;
 
 	//---Controller actions
     void stepForward(float timeStep); //Moves simulation; makes a call to NeuralNetwork and asks Physics to parse action
@@ -46,11 +40,10 @@ public:
 private:
 	
 	/***** General settings *****/
-
-	const bool networkDebug = true;	// print network to console
+	const bool networkDebug = true;		// print network to console
 	const bool carDebug = false;		// manual driving
 	const bool fastforward = false;		// disable GUI
-	const int maxFastForwardRuns = 1;	// TODO: What is this?
+	const int maxFastForwardRuns = 1;	// Untested. Half-implemented. How many runs to do before terminating fastforward.
 	
 	const bool writeActionsToFile = true;	// car driving history; overwrites existing history files
 	const int numberOfVisionLines = 5;
@@ -61,7 +54,7 @@ private:
 	const int32 positionIterations = 3;   //how strongly to correct position
 	
 	/***** Network building related constants *****/
-	const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {}; 	// Adjust network node topology with this.
+	const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {6};		// Adjust network node topology with this.
 	const unsigned int layerCount = 2 + hiddenLayerSizes.size(); 							// Don't touch.
 	const float nodeInitLow = -0.1;						// Randomized initial node weights are between these
 	const float nodeInitHigh = 0.1;
@@ -80,7 +73,6 @@ private:
 	const float prevValueCoefficient = 1.0;				// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
 	const float rewardMultiplier = 2.0;					// Multiplier on reward values to prevent crashing from overflows.
 	const float qvalueMultiplier = 1.0;					// Don't adjust unless the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
-	
 	
 	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
 	const float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.

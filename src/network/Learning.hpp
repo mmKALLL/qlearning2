@@ -4,6 +4,7 @@
 #include "Node.hpp"
 #include <vector>
 #include <tuple>
+#include <algorithm>
 
 class Controller;
 #include "../Controller.hpp"

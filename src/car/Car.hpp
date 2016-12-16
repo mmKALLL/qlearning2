@@ -2,12 +2,14 @@
 #define QLEARNING_CAR_H
 #include <Box2D/Box2D.h>
 #include <SFML/Graphics.hpp>
+class Physics;
 #include "Physics.hpp"
 #include <vector>
 #include "../network/NeuralNetwork.hpp" // TODO: Shouldn't this go through the Controller?
 
 class Car
 {
+
 public:
 	// Constructors
 	Car(b2World*);
@@ -47,55 +49,9 @@ private:
 	
 	
 	b2World* world = nullptr;
-	Physics physics = Physics(world);
+	Physics* physics;
 	NeuralNetwork network;
 
 };
-
-class Collision : public b2ContactListener
-{
-	void BeginContact(b2Contact* contact) {
-
-		//check if fixture A was a ball
-		void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
-		void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
-		if (!userDataA) {
-			if (contact->GetFixtureA()->IsSensor() == false) {
-				static_cast<Car*>(userDataB)->setCollisionStatus(true);
-			}
-		}
-
-		if (!userDataB) {
-			if (contact->GetFixtureB()->IsSensor() == false) {
-				static_cast<Car*>(userDataA)->setCollisionStatus(true);
-			}
-		}
-
-	}
-
-	void EndContact(b2Contact* contact) {
-
-		void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
-		void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
-		if (!userDataA) {
-			if (contact->GetFixtureA()->IsSensor() == true) {
-				static_cast<Car*>(userDataB)->addCheckpoint();
-			}
-			else{
-			static_cast<Car*>(userDataB)->setCollisionStatus(false);
-			}
-		}
-
-		if (!userDataB) {
-			if (contact->GetFixtureB()->IsSensor() == true) {
-				static_cast<Car*>(userDataA)->addCheckpoint();
-			}
-			else{
-			static_cast<Car*>(userDataA)->setCollisionStatus(false);
-			}
-		}
-	}
-};
-
 
 #endif

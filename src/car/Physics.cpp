@@ -1,35 +1,8 @@
 #include "Physics.hpp"
 
-
-class CarRayCallback : public b2RayCastCallback
+Physics::Physics(b2World* world, Car* car) : world(world), car(car)
 {
-public:
-	CarRayCallback()
-	{
-		m_hit = false;
-	}
-
-	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
-	{
-		m_hit = true;
-		m_point = point;
-		fixtureA = fixture;
-		normalA = normal;
-		return fraction;
-	}
-
-	bool m_hit;
-	b2Vec2 m_point;
-	b2Fixture* fixtureA;
-	b2Vec2 normalA;
-};
-
-
-
-
-Physics::Physics(b2World* world) : world(world)
-{
-	
+	this->world->SetContactListener(this);
 }
 
 
@@ -41,19 +14,19 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 	
 	for (int i = -(size - 1) / 2; i <= (size - 1) / 2; i++) {
 
-		CarRayCallback callback;
-
+		
+		m_hit = false;
 		b2Vec2 rayStart = carBody.GetWorldPoint(b2Vec2(0, 0));
 
 		float y = rayLenght*cos((90 + i*degrees / (size - 1))*DEGTORAD);
-		float x = rayLenght*sin((90 + i*degrees / (size - 1))*DEGTORAD);
+		float x = rayLenght*sin((90  + i*degrees / (size - 1))*DEGTORAD);
 
 		b2Vec2 rayEnd = carBody.GetWorldPoint(b2Vec2(x, y));
 
-		world->RayCast(&callback, rayStart, rayEnd);
+		world->RayCast(this, rayStart, rayEnd);
 
-		if (callback.m_hit) {
-			distances.push_back((rayStart - callback.m_point).Length()-20);
+		if (this->m_hit) {
+			distances.push_back((rayStart - rayEnd).Length()*m_fraction);
 		}
 		else {
 			distances.push_back(rayLenght);
@@ -89,4 +62,59 @@ b2Vec2 Physics::getForwardVelocity(b2Body* carBody) const {
 b2Vec2 Physics::getLateralVelocity(b2Body* carBody) const {
 	b2Vec2 currentRightNormal = carBody->GetWorldVector(b2Vec2(0, 1));
 	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
+}
+
+
+void Physics::BeginContact(b2Contact* contact) {
+
+	//check if fixture A was a ball
+	void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+	void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+	if (!userDataA) {
+		if (contact->GetFixtureA()->IsSensor() == false) {
+			car->setCollisionStatus(true);
+
+		}
+	}
+
+	if (!userDataB) {
+		if (contact->GetFixtureB()->IsSensor() == false) {
+			car->setCollisionStatus(true);
+
+		}
+	}
+
+}
+
+void Physics::EndContact(b2Contact* contact) {
+
+	void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
+	void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
+	if (!userDataA) {
+		if (contact->GetFixtureA()->IsSensor() == true) {
+			car->addCheckpoint();
+		}
+		else {
+			car->setCollisionStatus(false);
+		}
+	}
+
+	if (!userDataB) {
+		if (contact->GetFixtureB()->IsSensor() == true) {
+			car->addCheckpoint();
+		}
+		else {
+			car->setCollisionStatus(false);
+		}
+	}
+}
+float32 Physics::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
+{
+	if (!fixture->IsSensor()) {
+		m_hit = true;
+		m_point = point;
+		m_fraction = fraction;
+
+	}
+	return fraction;
 }

@@ -1,8 +1,9 @@
 #include "Car.hpp"
-Collision collision;
+
 
 Car::Car(b2World* world) : world(world)
 {
+	physics = new Physics(world, this);
 	//Create definition for car body
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;
@@ -25,7 +26,7 @@ Car::Car(b2World* world) : world(world)
 	carBody->CreateFixture(&carFixtureDef);
 	carBody->SetUserData(this);
 
-	this->world->SetContactListener(&collision);
+	
 }
 
 Car::~Car()
@@ -35,7 +36,7 @@ Car::~Car()
 
 void Car::update(float speed, float angle)
 {
-	physics.updateFriction(carBody);
+	physics->updateFriction(carBody);
 	accelerate(speed);
 	turn(angle);
 }
@@ -48,7 +49,7 @@ void Car::accelerate(float speed)
 
 	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
 
-	float currentSpeed = b2Dot(physics.getForwardVelocity(carBody), currentForwardNormal);
+	float currentSpeed = b2Dot(physics->getForwardVelocity(carBody), currentForwardNormal);
 
 	//Depending on current speed the amount of force is determined
 	if (desiredSpeed > currentSpeed && speed > 0) {
@@ -85,7 +86,7 @@ void Car::addCheckpoint()
 }
 
 std::vector<float> Car::getDistances(int amount, int degrees) {
-	distances = physics.updateRays(*carBody, amount, degrees);
+	distances = physics->updateRays(*carBody, amount, degrees);
 	return distances;
 }
 
@@ -125,7 +126,7 @@ float Car::getAngle() const
 
 float Car::getVelocity() const
 {
-	return b2Dot(physics.getForwardVelocity(carBody), carBody->GetWorldVector(b2Vec2(1, 0)));
+	return b2Dot(physics->getForwardVelocity(carBody), carBody->GetWorldVector(b2Vec2(1, 0)));
 }
 
 void Car::setNetwork(NeuralNetwork newNetwork)
@@ -134,7 +135,7 @@ void Car::setNetwork(NeuralNetwork newNetwork)
 }
 
 void Car::testDrive(){
-	physics.updateFriction(carBody);
+	physics->updateFriction(carBody);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right) )
 	{
     		// left key is pressed: move our character
@@ -166,10 +167,14 @@ void Car::testDrive(){
     		this->update(1, 0);
 	}
 
-	/* For debugging
+	// For debugging
 	std::cout << "Velocity: " << this->getVelocity() << std::endl;
 	std::cout << "Angle: " << this->getAngle() << std::endl;
 	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
 	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
-	*/
+	std::vector<float> distances = getDistances(3, 180);
+
+	std::cout << "Distance right: " << distances[0] << std::endl;
+	std::cout << "Distance front: " << distances[1] << std::endl;
+	std::cout << "Distance left: " << distances[2] << std::endl;
 }

@@ -16,7 +16,7 @@ using std::vector;
 
 class FileReader {
 public:
-	FileReader() { init(); }
+	FileReader();
 
 	void readFile(string name);
 

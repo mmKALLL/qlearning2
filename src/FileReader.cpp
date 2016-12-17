@@ -1,6 +1,11 @@
 #include "FileReader.hpp"
 
 
+FileReader::FileReader()
+{
+	this->init();
+}
+
 void FileReader::readFile(string name) {
 	std::ifstream file(name);
 
@@ -45,7 +50,7 @@ void FileReader::readFile(string name) {
 
 
 void FileReader::init() {
-	test();
+	this->test();
 }
 
 void FileReader::test() {

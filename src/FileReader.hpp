@@ -12,8 +12,7 @@ using std::cout;
 using std::endl;
 using std::vector;
 
-int lineNumber = 0;
-const string filename = string("constants.txt");
+
 
 class FileReader {
 public:
@@ -24,14 +23,18 @@ public:
 	void init();
 	void test(); // Some unit tests. Here because I'm lazy
 
+	//Helpers
+	string cut(string& str);
+	std::vector<string>& split(string& str);
+
 	std::map<string, float> parsedFloat;
 	std::map<string, bool> parsedBool;
 	std::map<string, int> parsedInt;
 private:
+	int lineNumber = 0;
+	const string filename = string("constants.txt");
 };
-//Helpers
-string cut(string& str);
-std::vector<string>& split(string& str);
+
 
 
 #endif

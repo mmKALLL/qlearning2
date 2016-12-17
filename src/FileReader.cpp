@@ -58,7 +58,7 @@ void FileReader::test() {
 	system("pause");
 }
 //Cut at ;
-string cut(string& str) {
+string FileReader::cut(string& str) {
 	try {
 		size_t pos = str.find(';');
 		return str.substr(0, pos);
@@ -69,7 +69,7 @@ string cut(string& str) {
 }
 
 //Split into vector at ' '
-vector<string>& split(string& str) {
+vector<string>& FileReader::split(string& str) {
 	size_t pos = 0;
 	string token;
 	vector<string> substrings;

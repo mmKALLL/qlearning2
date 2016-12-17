@@ -28,15 +28,15 @@ void FileReader::readFile(string name) {
 				string temp = cut(subs[3]);
 				//Parse! :D
 				if (subs[0] == string("float")) {
-					parsedInt.insert(std::make_pair(subs[1], std::stoi(temp)));
+					parsedFloat.insert(std::make_pair(subs[1], float(std::stoi(temp))));
 				} 
 				else if (subs[0] == string("bool")) {
-					if (temp == string("true")) parsedInt.insert(std::make_pair(subs[1], true));
-					else if (temp == string("false")) parsedInt.insert(std::make_pair(subs[1], false));
+					if (temp == string("true")) parsedBool.insert(std::make_pair(subs[1], true));
+					else if (temp == string("false")) parsedBool.insert(std::make_pair(subs[1], false));
 					else throw ("FileReader::ReadFile error in boolean value at line " + std::to_string(lineNumber));
 				} 
 				else if (subs[0] == string("int")) {
-					parsedInt.insert(std::make_pair(subs[1], std::stof(temp)));
+					parsedInt.insert(std::make_pair(subs[1], int(std::stof(temp))));
 				} 
 				else {
 					throw ("FileReader::ReadFile unsupported data type " + subs[0] + " at line "+ std::to_string(lineNumber));

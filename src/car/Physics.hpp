@@ -23,7 +23,6 @@ public:
 	b2Vec2 getLateralVelocity(b2Body* carBody) const;
 
 	// Collision checking
-	// Functions what to do when collision starts and ends
 	void BeginContact(b2Contact* contact);
 	void EndContact(b2Contact* contact);
 	

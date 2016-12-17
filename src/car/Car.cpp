@@ -4,20 +4,16 @@
 Car::Car(b2World* world) : world(world)
 {
 	physics = new Physics(world, this);
-	//Create definition for car body
 	b2BodyDef carBodyDef;
 	carBodyDef.type = b2_dynamicBody;
 
-	//Set the initial position and angle and then create the body
 	carBodyDef.position.Set(0, 0);
 	carBodyDef.angle = 0;
 	carBody = world->CreateBody(&carBodyDef);
 
-	// Car is somewhat long and a bit wide
 	b2PolygonShape carShape;
 	carShape.SetAsBox(20.0f, 15.0f);
 
-	// Create a fixture for car, attach the shape and few parameters for and then create the car to the world
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
 	carFixtureDef.density = 0.01f;
@@ -42,14 +38,11 @@ void Car::update(float speed, float angle)
 
 void Car::accelerate(float speed)
 {
-	// Set desired speed in relation to if we are reversing or going forward
 	float desiredSpeed = speed*maxSpeed;
 
-	// Get current forward vector and speed
 	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
 	float currentSpeed = b2Dot(physics->getForwardVelocity(carBody), currentForwardNormal);
 
-	//Depending on current speed the amount of force is determined
 	if (desiredSpeed > currentSpeed && speed > 0) {
 		carBody->ApplyForce(maxDriveForce * currentForwardNormal, carBody->GetWorldCenter(), true);
 	}
@@ -133,35 +126,21 @@ void Car::setNetwork(NeuralNetwork newNetwork)
 
 void Car::testDrive(){
 	physics->updateFriction(carBody);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right) )
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-    		// left key is pressed: move our character
-    		this->update(1, 0.3);
+    		this->update(1, 0);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left) )
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-    		// left key is pressed: move our character
-    		this->update(1, -0.3);
+    		this->update(-1, 0);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-    		// left key is pressed: move our character
     		this->update(0, -0.3);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-    		// left key is pressed: move our character
     		this->update(0, 0.3);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-    		// left key is pressed: move our character
-    		this->update(-1, 0);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-    		// left key is pressed: move our character
-    		this->update(1, 0);
 	}
 
 	// For debugging

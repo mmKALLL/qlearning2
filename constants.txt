@@ -24,7 +24,6 @@ int positionIterations = 3;   //how strongly to correct position
 //***** Network building related constants *****/
 float nodeInitLow = -0.1;						// Randomized initial node weights are between these
 float nodeInitHigh = 0.1;
-int stateSize = numberOfVisionLines + 1;		// Don't touch. Add current velocity into state input vector.
 
 //***** Action-space search and learning-related constants *****/
 int learningMode = 1;							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).

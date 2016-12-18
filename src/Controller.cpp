@@ -7,7 +7,7 @@ Controller::Controller() {
 	std::cout << "Loading constants...";
 
 	/***** General settings *****/
-	networkDebug = &(reader->parsedBool.at("networkDebug"));		// print network to console
+	networkDebug = reader->parsedBool.at("networkDebug");		// print network to console
 	carDebug = reader->parsedBool.at("carDebug");		// manual driving
 	fastforward = reader->parsedBool.at("fastforward");		// disable GUI
 	maxFastForwardRuns = reader->parsedInt.at("maxFastForwardRuns");	// Untested. Half-implemented. How many runs to do before terminating fastforward.

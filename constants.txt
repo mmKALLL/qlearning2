@@ -1,0 +1,46 @@
+// How to use:
+// Begin with type (bool, int, int32, float supported)
+// Space after type, name, = (ie bool networkDebug = true;)
+// Anything after semicolon in a single line is discarded
+// Empty lines are discarded
+// Semicolon is required.
+// Constant name has to match its counterpart in Controller.hpp exactly.
+// Constants don't have to be in any particular order.
+// Line that begins with '/' is comment
+
+bool networkDebug = true;		// print network to console
+bool carDebug = false;		// manual driving
+bool fastforward = false;		// disable GUI
+int maxFastForwardRuns = 1;	// Untested. Half-implemented. How many runs to do before terminating fastforward.
+
+bool writeActionsToFile = true;	// car driving history; overwrites existing history files
+int numberOfVisionLines = 5;
+int fieldOfView = 90;
+
+//***** Simulation constants *****/
+int velocityIterations = 8;   //how strongly to correct velocity
+int positionIterations = 3;   //how strongly to correct position
+
+//***** Network building related constants *****/
+float nodeInitLow = -0.1;						// Randomized initial node weights are between these
+float nodeInitHigh = 0.1;
+
+//***** Action-space search and learning-related constants *****/
+int learningMode = 1;							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).
+bool useSig = false;							// Whether to use sigmoid functions in network evaluation.
+float defaultStepSize = 0.004; 				// Learning rate; multiplies learned outcome's impact on network node weights
+float actionDepth = 3; 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~80 should be manageable.
+float discountFactor = 0.8; 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
+
+float minExplorationCoefficient = 1.0;		// Don't touch.
+float explorationCoefficientDecrease = 0.01;
+float prevWeightCoefficient = 0.1;			// How large impact the previous weight's magnitude has in learning
+float prevValueCoefficient = 1.0;				// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
+float rewardMultiplier = 2.0;					// Multiplier on reward values to prevent crashing from overflows.
+float qvalueMultiplier = 1.0;					// Don't adjust unless the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
+
+//***** Reward function coefficients, see reward in Controller::takeStep() *****/
+float timeToFitnessMultiplier = 1.2;			// Unused. Fitness function balancing multiplier.
+float wallPenalty = -40.0;					// Reward penalty for hitting a wall.
+float prevVelocityCoefficient = 0.87;			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
+float velocityMultiplier = 0.0003;			// Multiplier for increasing float accuracy to reduce out of bounds exceptions.

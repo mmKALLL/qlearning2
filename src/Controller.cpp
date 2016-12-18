@@ -1,8 +1,49 @@
 #include "Controller.hpp"
 
 Controller::Controller() {
-	FileReader reader = FileReader();
-	reader.test();
+	reader = new FileReader();
+
+	/***** General settings *****/
+	networkDebug = &(reader->parsedBool.at("networkDebug"));		// print network to console
+	carDebug = reader->parsedBool.at("carDebug");		// manual driving
+	fastforward = reader->parsedBool.at("fastforward");		// disable GUI
+	maxFastForwardRuns = reader->parsedInt.at("maxFastForwardRuns");	// Untested. Half-implemented. How many runs to do before terminating fastforward.
+
+	const bool writeActionsToFile = reader->parsedBool.at("networkDebug");	// car driving history; overwrites existing history files
+	const int numberOfVisionLines = reader->parsedInt.at("numberOfVisionLines");
+	const int fieldOfView = reader->parsedInt.at("fieldOfView"); // TODO: FoV slider
+
+						   /***** Simulation constants *****/
+	const int32 velocityIterations = reader->parsedInt.at("velocityIterations");   //how strongly to correct velocity
+	const int32 positionIterations = reader->parsedInt.at("positionIterations");   //how strongly to correct position
+
+									  /***** Network building related constants *****/
+	const float nodeInitLow = reader->parsedFloat.at("nodeInitLow");						// Randomized initial node weights are between these
+	const float nodeInitHigh = reader->parsedFloat.at("nodeInitHigh");
+
+	/***** Action-space search and learning-related constants *****/
+	const int learningMode = reader->parsedInt.at("learningMode");							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).
+	const bool useSig = reader->parsedBool.at("useSig");							// Whether to use sigmoid functions in network evaluation.
+	const float defaultStepSize = reader->parsedFloat.at("defaultStepSize"); 				// Learning rate; multiplies learned outcome's impact on network node weights
+	const float actionDepth = reader->parsedFloat.at("actionDepth"); 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~80 should be manageable.
+	const float discountFactor = reader->parsedFloat.at("discountFactor"); 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
+
+	const float minExplorationCoefficient = reader->parsedFloat.at("minExplorationCoefficient");		// Don't touch.
+	const float explorationCoefficientDecrease = reader->parsedFloat.at("explorationCoefficientDecrease");
+	const float prevWeightCoefficient = reader->parsedFloat.at("prevWeightCoefficient");			// How large impact the previous weight's magnitude has in learning
+	const float prevValueCoefficient = reader->parsedFloat.at("prevValueCoefficient");				// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
+	const float rewardMultiplier = reader->parsedFloat.at("rewardMultiplier");					// Multiplier on reward values to prevent crashing from overflows.
+	const float qvalueMultiplier = reader->parsedFloat.at("qvalueMultiplier");					// Don't adjust unless the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
+
+													/***** Reward function coefficients, see reward in Controller::takeStep() *****/
+	const float timeToFitnessMultiplier = reader->parsedFloat.at("timeToFitnessMultiplier");			// Unused. Fitness function balancing multiplier.
+	const float wallPenalty = reader->parsedFloat.at("wallPenalty");					// Reward penalty for hitting a wall.
+	const float prevVelocityCoefficient = reader->parsedFloat.at("prevVelocityCoefficient");			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
+	const float velocityMultiplier = reader->parsedFloat.at("velocityMultiplier");			// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
+
+
+
+
 	if (writeActionsToFile) {
 		carActionFile.open("carActionError.txt");
 	}

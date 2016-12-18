@@ -26,7 +26,7 @@ public:
 
 	//Helpers
 	string cut(string& str);
-	std::vector<string>& split(string& str);
+	std::vector<string> split(string& str);
 
 	std::map<string, float> parsedFloat;
 	std::map<string, bool> parsedBool;

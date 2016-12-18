@@ -42,7 +42,7 @@ void Learning::racistNetworkLearning(Controller& controller, NeuralNetwork& nn, 
 	std::cout << "inputValueSign for output: " << (n.getValue() > 0) - (n.getValue() < 0) << std::endl;
 	
 	
-	racistNodeAdjustment(controller, *nn.nodes[controller.layerCount - 1][0], nn, qtarget, controller.prevWeightCoefficient, layers - 1);
+	racistNodeAdjustment(controller, *nn.nodes[controller.layerCount - 1][0], nn, qtarget, prevWeightCoefficient, layers - 1);
 	
 }
 
@@ -68,7 +68,7 @@ void Learning::racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwo
 			newWeight = std::max(-10.0f, newWeight);
 			newWeight = std::min(10.0f, newWeight);
 			// prev_value * prevValueCoefficient + (1 - prevValueCoefficient) * (target / prev_weight) / nn.nodes[currentLayer - 1].size()
-			float nodeTarget = input.getValue() * controller.prevValueCoefficient + (1 - controller.prevValueCoefficient) * (target / n.getWeight(i)) / nn.nodes[currentLayer - 1].size();
+			float nodeTarget = input.getValue() * prevValueCoefficient + (1 - prevValueCoefficient) * (target / n.getWeight(i)) / nn.nodes[currentLayer - 1].size();
 			racistNodeAdjustment(controller, *nn.nodes[currentLayer - 1][i], nn, nodeTarget, prevWeightCoefficient, currentLayer - 1);
 			n.setWeight(i, newWeight); // TODO: currently very little correction for first layers receiving multiple adjustments
 		}

@@ -15,7 +15,7 @@ void FileReader::readFile(string name) {
 	else { // File can be safely used
 		string line;
 		while (std::getline(file, line)) {
-			cout << lineNumber << ": " << line << endl;
+			//cout << lineNumber << ": " << line << endl;
 			vector<string> subs = split(line);
 			if (subs.size() > 3 &&
 				subs[0].at(0) != '/' && 

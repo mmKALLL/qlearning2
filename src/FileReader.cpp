@@ -4,7 +4,7 @@
 FileReader::FileReader()
 {
 	readFile(filename);
-	test();
+	//test();
 }
 
 void FileReader::readFile(string name) {

@@ -73,19 +73,6 @@ void Controller::initializeController() {
 	}
 	layerSizes.push_back(1); // output layer
 
-	//
-	std::cout << "numberOfVisionLines : " << numberOfVisionLines << endl;
-	std::cout << "numberOfVisionLines + 1: " << (numberOfVisionLines +1) << endl;
-	std::cout << "..which should equal to statesize " << endl;
-	std::cout << "Statesize : " << stateSize << endl;
-	std::cout << "Statesize + 3: " << (stateSize + 3) << endl;
-
-	for (int s : layerSizes) {
-		std::cout << s << endl;
-	}
-	std::cout << " " << nodeInitLow << " " << nodeInitHigh << endl;
-	//
-
 	currentNetwork.build(layerSizes, true, nodeInitLow, nodeInitHigh);
 
 	initializeRun();

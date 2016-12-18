@@ -27,6 +27,7 @@ Car::Car(b2World* world) : world(world)
 Car::~Car()
 {
 	world->DestroyBody(carBody);
+	delete physics;
 }
 
 void Car::update(float speed, float angle)
@@ -75,8 +76,8 @@ void Car::addCheckpoint()
 	checkpoints += 1;
 }
 
-std::vector<float> Car::getDistances(int amount, int degrees) {
-	distances = physics->updateRays(*carBody, amount, degrees);
+std::vector<float> Car::getDistances(int amount, int degrees, std::vector<float> rayDistances) {
+	distances = physics->updateRays(*carBody, amount, degrees, rayDistances);
 	return distances;
 }
 
@@ -103,10 +104,7 @@ NeuralNetwork & Car::getNetwork()
 std::vector<float> Car::getPosition() const
 {
 	b2Vec2 pos = carBody->GetPosition();
-	std::vector<float> position;
-	position.push_back(pos.x);
-	position.push_back(pos.y);
-	return position;
+	return{pos.x, pos.y};
 }
 
 float Car::getAngle() const
@@ -148,8 +146,7 @@ void Car::testDrive(){
 	std::cout << "Angle: " << this->getAngle() << std::endl;
 	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
 	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
-	std::vector<float> distances = getDistances(3, 180);
-
+	std::vector<float> distances = getDistances(3, 180, {0.3f, 0.5f, 1.0f});
 	std::cout << "Distance right: " << distances[0] << std::endl;
 	std::cout << "Distance front: " << distances[1] << std::endl;
 	std::cout << "Distance left: " << distances[2] << std::endl;

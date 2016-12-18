@@ -11,7 +11,6 @@ class Learning;
 #include "network/Learning.hpp"
 class Track;
 #include "car/Track.hpp"
-#include "FileReader.hpp"
 
 class Controller {
 	friend class Learning;
@@ -23,13 +22,13 @@ public:
 	
 	//---Generic getters
 	const Car& getCar() const;
-    	const Track& getTrack() const;
+    const Track& getTrack() const;
 
 	//std::vector<double>& getActionForCar(Car& car, NeuralNetwork& nn) const;
 
 	//---Getters for car
 	const std::vector<float> getCarPosition() const;
-	const std::vector<float> getSightVector(int size, int degrees);
+	const std::vector<float> getSightVector(int size, int degrees, std::vector<float> rayDistances);
 	float getCarDistanceTraveled() const;
 	float getCarRotation() const;
 	float getCarVelocity() const;
@@ -40,14 +39,15 @@ public:
 private:
 	
 	/***** General settings *****/
-	const bool networkDebug = true;		// print network to console
-	const bool carDebug = false;		// manual driving
+	const bool networkDebug = false;		// print network to console
+	const bool carDebug = true;		// manual driving
 	const bool fastforward = false;		// disable GUI
 	const int maxFastForwardRuns = 1;	// Untested. Half-implemented. How many runs to do before terminating fastforward.
 	
 	const bool writeActionsToFile = true;	// car driving history; overwrites existing history files
 	const int numberOfVisionLines = 5;
 	const int fieldOfView = 90; // TODO: FoV slider
+	const std::vector<float> rayDistances{0.3f, 0.5f, 1.0f};
 	
 	/***** Simulation constants *****/
 	const int32 velocityIterations = 8;   //how strongly to correct velocity

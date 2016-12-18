@@ -1,20 +1,15 @@
 #include "Physics.hpp"
 
-Physics::Physics(b2World* world, Car* car) : world(world), car(car)
-{
+Physics::Physics(b2World* world, Car* car) : world(world), car(car){
 	// Set the world to use our physics class as collision checker
 	this->world->SetContactListener(this);
 }
 
-std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
-
+std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees, std::vector<float> rayDistances){
 	std::vector<float> distances;
-	// Rays for checking the distance
-	// Initialized with starting and ending points
 	
 	for (int i = -(size - 1) / 2; i <= (size - 1) / 2; i++) {
 
-		
 		m_hit = false;
 		b2Vec2 rayStart = carBody.GetWorldPoint(b2Vec2(0, 0));
 
@@ -24,13 +19,19 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees) {
 		b2Vec2 rayEnd = carBody.GetWorldPoint(b2Vec2(x, y));
 
 		world->RayCast(this, rayStart, rayEnd);
-
 		if (this->m_hit) {
-			distances.push_back((rayStart - rayEnd).Length()*m_fraction);
+			for (auto it = rayDistances.begin(); it != rayDistances.end(); it++) {
+				if (m_fraction <= *it) {
+					distances.push_back(*it);
+					break;
+				}
+			}
 		}
 		else {
-			distances.push_back(rayLenght);
+			distances.push_back(1);
 		}
+
+
 	}
 
 	return distances;
@@ -85,8 +86,7 @@ void Physics::BeginContact(b2Contact* contact) {
 
 }
 
-void Physics::EndContact(b2Contact* contact) {
-
+void Physics::EndContact(b2Contact* contact){
 	void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
 	void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
 	if (!userDataA) {
@@ -107,8 +107,7 @@ void Physics::EndContact(b2Contact* contact) {
 		}
 	}
 }
-float32 Physics::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
-{
+float32 Physics::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction){
 	if (!fixture->IsSensor()) {
 		m_hit = true;
 		m_point = point;

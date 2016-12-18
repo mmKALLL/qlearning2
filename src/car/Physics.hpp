@@ -14,7 +14,7 @@ public:
 	Physics(b2World* world, Car* car);
 	
 	// Car's vision related functions
-	std::vector<float> updateRays(b2Body& carBody, int size, int degrees);
+	std::vector<float> updateRays(b2Body& carBody, int size, int degrees, std::vector<float> rayDistances);
 	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction);
 
 	// Friction
@@ -30,8 +30,8 @@ private:
 	b2World* world;
 	Car* car;
 	float maxLateralImpulse = 30;
-	float rayLenght = 500;
-	bool m_hit = false;
+	float rayLenght = 150;
+	bool m_hit;
 	b2Vec2 m_point;
 	float32 m_fraction;
 	b2Vec2 m_normal;

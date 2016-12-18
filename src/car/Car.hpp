@@ -22,7 +22,7 @@ public:
 	bool getCollisionStatus() const;
 	NeuralNetwork& getNetwork();
 	std::vector<float> getPosition() const;
-	std::vector<float> getDistances(int amount, int degrees);
+	std::vector<float> getDistances(int amount, int degrees, std::vector<float> rayDistances);
 	// Setters
 	void setParams(std::vector<float> position, float angle, float speed);
 	void setCollisionStatus(bool status);

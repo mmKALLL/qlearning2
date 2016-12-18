@@ -1,8 +1,6 @@
 #include "Controller.hpp"
 
 Controller::Controller() {
-	FileReader reader = FileReader();
-	reader.test();
 	if (writeActionsToFile) {
 		carActionFile.open("carActionError.txt");
 	}
@@ -75,9 +73,9 @@ const std::vector<float> Controller::getCarPosition() const {
 	return currentCar->getPosition();
 }
 
-const std::vector<float> Controller::getSightVector(int amount, int degrees) {
+const std::vector<float> Controller::getSightVector(int amount, int degrees, std::vector<float> rayDistances) {
 	// As of 4.12 only works for uneven amount of rays
-	return currentCar->getDistances(amount, degrees);
+	return currentCar->getDistances(amount, degrees, rayDistances);
 }
 
 float Controller::getCarDistanceTraveled() const {
@@ -115,7 +113,7 @@ void Controller::stepForward(float timeStep) {
 		 	explorationCoefficient -= explorationCoefficientDecrease;
 		}
 		float prevVelocity = currentCar->getVelocity();
-		std::vector<float> sights = getSightVector(numberOfVisionLines, fieldOfView);
+		std::vector<float> sights = getSightVector(numberOfVisionLines, fieldOfView, rayDistances);
 		std::vector<float> state;
 		for (float x : sights) {
 			state.push_back(x / 400.0f);
@@ -146,7 +144,8 @@ void Controller::stepForward(float timeStep) {
 		if (currentCar->getCollisionStatus() == 1) {
 			initializeRun();
 		}
-	} else {
+	} 
+	else {
 		currentCar->testDrive();
 	}
 

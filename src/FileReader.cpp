@@ -4,6 +4,7 @@
 FileReader::FileReader()
 {
 	readFile(filename);
+	test();
 }
 
 void FileReader::readFile(string name) {
@@ -47,19 +48,7 @@ void FileReader::readFile(string name) {
 	}
 }
 
-
-void FileReader::init() {
-	readFile(filename);
-	//this->test();
-}
-
 void FileReader::test() {
-	cout << "networkDebug " << parsedBool[string("networkDebug")] << endl;
-	cout << "nodeInitLow " << parsedFloat.at("nodeInitLow") << endl;
-	cout << "actionDepth " << parsedFloat["actionDepth"] << endl;
-	cout << "positionIterations " << parsedInt["positionIterations"] << endl;
-	cout << "defaultStepSize " << parsedFloat["defaultStepSize"] << endl;
-	cout << "discountFactor " << parsedFloat["discountFactor"] << endl;
 
 	cout << endl << "Printing floats: " << endl;
 	for (auto it = parsedFloat.begin(); it != parsedFloat.end(); it++) {

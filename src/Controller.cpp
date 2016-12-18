@@ -43,6 +43,7 @@ Controller::Controller() {
 	  prevVelocityCoefficient = reader->parsedFloat.at("prevVelocityCoefficient");			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
 	  velocityMultiplier = reader->parsedFloat.at("velocityMultiplier");			// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
 
+	  stateSize = numberOfVisionLines + 1;
 
 	  std::cout << " Done!" << endl;
 
@@ -71,7 +72,20 @@ void Controller::initializeController() {
 		layerSizes.push_back(x);
 	}
 	layerSizes.push_back(1); // output layer
-	
+
+	//
+	std::cout << "numberOfVisionLines : " << numberOfVisionLines << endl;
+	std::cout << "numberOfVisionLines + 1: " << (numberOfVisionLines +1) << endl;
+	std::cout << "..which should equal to statesize " << endl;
+	std::cout << "Statesize : " << stateSize << endl;
+	std::cout << "Statesize + 3: " << (stateSize + 3) << endl;
+
+	for (int s : layerSizes) {
+		std::cout << s << endl;
+	}
+	std::cout << " " << nodeInitLow << " " << nodeInitHigh << endl;
+	//
+
 	currentNetwork.build(layerSizes, true, nodeInitLow, nodeInitHigh);
 
 	initializeRun();

@@ -54,11 +54,11 @@ private:
 	 int32 positionIterations;   //how strongly to correct position
 	
 	/***** Network building related constants *****/
-	 std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {6};		// Adjust network node topology with this.
-	 unsigned int layerCount = 2 + hiddenLayerSizes.size(); 							// Don't touch.
+	 const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {6};		// Adjust network node topology with this.
+	 const unsigned int layerCount = 2 + hiddenLayerSizes.size(); 							// Don't touch.
 	 float nodeInitLow;						// Randomized initial node weights are between these
 	 float nodeInitHigh;
-	 int stateSize = numberOfVisionLines + 1;		// Don't touch. Add current velocity into state input vector.
+	 int stateSize;		// Don't touch. Add current velocity into state input vector.
 	
 	/***** Action-space search and learning-related constants *****/
 	 int learningMode;							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).

@@ -21,7 +21,6 @@ public:
 
 	void readFile(string name);
 
-	void init();
 	void test(); // Some unit tests. Here because I'm lazy
 
 	//Helpers

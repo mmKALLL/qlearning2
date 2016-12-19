@@ -17,7 +17,6 @@ Car::Car(b2World* world) : world(world)
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
 	carFixtureDef.density = 0.2f;
-	// carFixtureDef.restitution = 0.5f; // Not needed, since we don't simulate crashing
 
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
@@ -156,6 +155,7 @@ void Car::testDrive()
 
 	// Debug prints for driving
 	std::cout << "Velocity: " << this->getVelocity() << std::endl;
+	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
 	/*
 	std::cout << "Angular velocity: " << carBody->GetAngularVelocity() << std::endl;
 	std::cout << "Angle: " << this->getAngle() << std::endl;

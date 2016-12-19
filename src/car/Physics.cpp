@@ -108,7 +108,7 @@ void Physics::EndContact(b2Contact* contact) {
 	}
 }
 
-// TODO: Olli, comment this
+// Overloads the function in b2RayCastCallback class and it the fixture that is related to collision is not a sensor then it marks that the car has hit the wall
 float32 Physics::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction) {
 	if (!fixture->IsSensor()) {
 		m_hit = true;

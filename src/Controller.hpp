@@ -43,17 +43,17 @@ private:
 	/***** General settings *****/
 	bool networkDebug;		// print network to console
 	bool carDebug;		// manual driving
-	bool fastforward;		// disable GUI
 	int maxFastForwardRuns;	// Untested. Half-implemented. How many runs to do before terminating fastforward.
-	
 	bool writeActionsToFile;	// car driving history; overwrites existing history files
+	
 	int numberOfVisionLines;
-	int fieldOfView; // TODO: FoV slider
+	int fieldOfView;
 	const std::vector<float> rayDistances{ 0.3f, 0.5f, 1.0f };
 	
 	/***** Simulation constants *****/
-	int32 velocityIterations;   //how strongly to correct velocity
-	int32 positionIterations;   //how strongly to correct position
+	float timeStep;				//the duration of one frame (60 FPS)
+	int32 velocityIterations;	//how strongly to correct velocity
+	int32 positionIterations;	//how strongly to correct position
 	
 	/***** Network building related constants *****/
 	const std::vector<unsigned int> hiddenLayerSizes = std::vector<unsigned int> {6};		// Adjust network node topology with this.

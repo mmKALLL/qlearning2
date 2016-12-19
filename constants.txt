@@ -10,14 +10,14 @@
 
 bool networkDebug = false;		// print network to console
 bool carDebug = false;		// manual driving
-bool fastforward = false;		// disable GUI
 int maxFastForwardRuns = 1;	// Untested. Half-implemented. How many runs to do before terminating fastforward.
-
 bool writeActionsToFile = true;	// car driving history; overwrites existing history files
+
 int numberOfVisionLines = 5;
 int fieldOfView = 90;
 
 //***** Simulation constants *****/
+float timeStep = 1.0f / 60.0f;  //the duration of one frame (60 FPS)
 int velocityIterations = 1;   //how strongly to correct velocity (was 8)
 int positionIterations = 1;   //how strongly to correct position (was 3)
 

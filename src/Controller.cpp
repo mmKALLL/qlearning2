@@ -9,16 +9,16 @@ Controller::Controller() {
 	/***** General settings *****/
 	networkDebug = reader->parsedBool.at("networkDebug");		// print network to console
 	carDebug = reader->parsedBool.at("carDebug");		// manual driving
-	fastforward = reader->parsedBool.at("fastforward");		// disable GUI
 	maxFastForwardRuns = reader->parsedInt.at("maxFastForwardRuns");	// Untested. Half-implemented. How many runs to do before terminating fastforward.
-
 	writeActionsToFile = reader->parsedBool.at("networkDebug");	// car driving history; overwrites existing history files
+	
 	numberOfVisionLines = reader->parsedInt.at("numberOfVisionLines");
 	fieldOfView = reader->parsedInt.at("fieldOfView"); // TODO: FoV slider
 
 	/***** Simulation constants *****/
-	velocityIterations = reader->parsedInt.at("velocityIterations");   //how strongly to correct velocity
-	positionIterations = reader->parsedInt.at("positionIterations");   //how strongly to correct position
+	timeStep = reader->parsedFloat.at("timeStep");						//the duration of one frame (60 FPS)
+	velocityIterations = reader->parsedInt.at("velocityIterations");	//how strongly to correct velocity
+	positionIterations = reader->parsedInt.at("positionIterations");	//how strongly to correct position
 
 	/***** Network building related constants *****/
 	nodeInitLow = reader->parsedFloat.at("nodeInitLow");						// Randomized initial node weights are between these
@@ -98,12 +98,14 @@ void Controller::initializeRun() {
 	}
 	std::cout << "Hello World! My name is initializeRun()-chan!" << std::endl; // TODO: Remove this line.
 	
+	/*
 	if (fastforward && runCounter < maxFastForwardRuns) {
 		int prevrun = runCounter;
 		while (prevrun == runCounter) {
 			stepForward(1.0f / 60.0f);
 		}
 	}
+	*/
 }
 
 const Car& Controller::getCar() const {
@@ -142,7 +144,7 @@ void Controller::stepForward(float timeStep) {
 	
 	// Print network to console
 	if (networkDebug) {
-		std::cout << std::endl << std::endl << "** FRAME " << stepCounter << " **" << std::endl << "-------------" << std::endl << std::endl;
+		std::cout << std::endl << "=== FRAME " << stepCounter << " ===" << std::endl << std::endl;
 		for (auto layer : currentNetwork.nodes) {
 			for (auto *node : layer) {
 				std::cout << "Node " << node->toString() << " weights: " << std::endl;
@@ -170,12 +172,12 @@ void Controller::stepForward(float timeStep) {
 		currentCar->update(action[0], action[1]);
 		
 		float reward = (currentCar->getCollisionStatus() * wallPenalty + 	(currentCar->getVelocity() * velocityMultiplier) - (prevVelocity * 	velocityMultiplier) * prevVelocityCoefficient) * rewardMultiplier;
-		std::cout << "       reward is: " << reward << std::endl;
-		std::cout << "       qvalue is: " << qvalue << std::endl;
-		std::cout << "       action[2] is: " << action[2] << std::endl;
-		std::cout << "       getStepSize is: " << /*trainer->getStepSize()*/defaultStepSize << std::endl;
-		std::cout << "       discountFactor is: " << discountFactor << std::endl;
-		std::cout << "       qvalueMultiplier is: " << qvalueMultiplier << std::endl;
+		//std::cout << "       reward is: " << reward << std::endl;
+		//std::cout << "       qvalue is: " << qvalue << std::endl;
+		//std::cout << "       action[2] is: " << action[2] << std::endl;
+		//std::cout << "       getStepSize is: " << /*trainer->getStepSize()*/defaultStepSize << std::endl;
+		//std::cout << "       discountFactor is: " << discountFactor << std::endl;
+		//std::cout << "       qvalueMultiplier is: " << qvalueMultiplier << std::endl;
 		
 		
 		float qtarget = (qvalue + /*TODO: trainer->getStepSize()*/defaultStepSize * (reward + discountFactor * 	action[2] - qvalue)) * qvalueMultiplier;
@@ -195,9 +197,9 @@ void Controller::stepForward(float timeStep) {
 		currentCar->testDrive();
 	}
 
-	//Advances the physics simulation by one step
+	// Advance the physics simulation by one step
 	m_world->Step(timeStep, velocityIterations, positionIterations);
-	//According to the manual forces should be cleared after taking a step
+	// According to the manual, forces should be cleared after taking a step
 	m_world->ClearForces();
 
 }

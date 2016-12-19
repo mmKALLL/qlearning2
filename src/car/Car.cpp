@@ -155,8 +155,8 @@ void Car::testDrive()
 	this->update(acceleration, steering);
 
 	// Debug prints for driving
-	/*
 	std::cout << "Velocity: " << this->getVelocity() << std::endl;
+	/*
 	std::cout << "Angular velocity: " << carBody->GetAngularVelocity() << std::endl;
 	std::cout << "Angle: " << this->getAngle() << std::endl;
 	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;

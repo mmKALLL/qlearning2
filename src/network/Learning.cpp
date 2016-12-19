@@ -39,7 +39,7 @@ void Learning::racistNetworkLearning(Controller& controller, NeuralNetwork& nn, 
 	
 	// Debug code
 	Node& n = *nn.nodes[controller.layerCount - 1][0];
-	std::cout << "inputValueSign for output: " << (n.getValue() > 0) - (n.getValue() < 0) << std::endl;
+	//std::cout << "inputValueSign for output: " << (n.getValue() > 0) - (n.getValue() < 0) << std::endl;
 	
 	
 	racistNodeAdjustment(controller, *nn.nodes[controller.layerCount - 1][0], nn, qtarget, controller.prevWeightCoefficient, layers - 1);
@@ -57,7 +57,7 @@ void Learning::racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwo
 		}
 
 		float error = n.getValue() - target;
-		std::cout << "       target is: " << target <<  ", error is: " << error << std::endl;
+		//std::cout << "       target is: " << target <<  ", error is: " << error << std::endl;
 		for (unsigned int i = 0; i < nn.nodes[currentLayer - 1].size(); i++) {
 			Node& input = *std::get<0>(n.getConnectionsIn()[i]);
 			int inputValueSign = (input.getValue() > 0) - (input.getValue() < 0);

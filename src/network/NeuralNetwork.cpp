@@ -53,8 +53,8 @@ std::vector<float> NeuralNetwork::getOutputValuesFromInputs (std::vector<float> 
 // Get action based on state. Action depth tells how many action combinations to evaluate.
 // Use only odd numbers. Exploration coefficient weighs exploration; lower it to increase exploitation.
 std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned int actionDepth, float explorationCoefficient, bool useSig) {
-	std::cout << "Sizes: " << state.size() << " " << extraInputs << std::endl;
-	std::cout << "Nodes 0 : " << nodes[0].size() << std::endl;
+	//std::cout << "Sizes: " << state.size() << " " << extraInputs << std::endl;
+	//std::cout << "Nodes 0 : " << nodes[0].size() << std::endl;
 	if (state.size() + extraInputs != nodes[0].size()) {
 		throw "Wrong size of input vector in NeuralNetwork::getAction(). Did you forget to update Controller::stateSize and NeuralNetwork::extraInputs?";
 	}
@@ -81,32 +81,32 @@ std::vector<float> NeuralNetwork::getAction(std::vector<float> state, unsigned i
 	// Boltzmann probability distribution which weighs exploration over exploitation early on
 	std::vector<float> actionProbabilities;
 	float quotient = 0.0f;
-	std::cout << "qvalues size: " << qvalues.size() << std::endl;
+	//std::cout << "qvalues size: " << qvalues.size() << std::endl;
 	for (float& x : qvalues) {
-		std::cout << "qvalue: " << x << std::endl;
+		//std::cout << "qvalue: " << x << std::endl;
 		quotient += exp((x / 1000.0) / explorationCoefficient); // Divide by 1000 to prevent exponential growth for abs(qvalue) > 1.
 	}
 	for (float& x : qvalues) {
-		std::cout << "        Boltzmann action odds!!: " << exp(x / explorationCoefficient) << std::endl;
+		//std::cout << "        Boltzmann action odds!!: " << exp(x / explorationCoefficient) << std::endl;
 		actionProbabilities.push_back(
 			exp((x / 1000.0) / explorationCoefficient) / quotient
 		);
 	}
-	std::cout << "            Boltzmann quotient!!!: " << quotient << std::endl;
+	//std::cout << "            Boltzmann quotient!!!: " << quotient << std::endl;
 
 	float probSum = 0.0f;
 	for (float& x : actionProbabilities) {
-		std::cout << "   actionProbability " << x << std::endl;
+		//std::cout << "   actionProbability " << x << std::endl;
 		probSum += x;
 	}
 	
 	// Choose an action from the distribution
 	double probTarget = rng(mt) * probSum;
-	std::cout << "AP size " << actionProbabilities.size() << " and sum: " << probSum << std::endl;
-	std::cout << "probTarget before decrease: " << probTarget << std::endl;
+	//std::cout << "AP size " << actionProbabilities.size() << " and sum: " << probSum << std::endl;
+	//std::cout << "probTarget before decrease: " << probTarget << std::endl;
 	for (unsigned int i = 0; i < actionProbabilities.size(); i++) {
 		probTarget -= actionProbabilities[i];
-		std::cout << "probTarget before decrease: " << probTarget << std::endl;
+		//std::cout << "probTarget before decrease: " << probTarget << std::endl;
 		if (probTarget <= 0.0f) {
 			result.push_back(-1.0f + (i / actionDepth) * (2.0f / (actionDepth - 1))); 	// acceleration
 			result.push_back(-1.0f + (i % actionDepth) * (2.0f / (actionDepth - 1))); 	// turning rate

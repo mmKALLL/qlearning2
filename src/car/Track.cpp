@@ -312,6 +312,7 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 	sf::Clock timer;
 	sf::Time accumulate = sf::Time::Zero;
 	sf::Time frameTime = sf::seconds(1.0f / 60.0f);
+	bool fastForward = false;
 	
 	while (window.isOpen()) {
 		sf::Event event;
@@ -319,16 +320,28 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			}
+			if (event.type == sf::Event::KeyPressed) {
+    			if (event.key.code == sf::Keyboard::Escape) {
+        			window.close();
+    			}
+				if (event.key.code == sf::Keyboard::F) {
+        			fastForward = !fastForward;
+    			}
+			}
 			if (event.type == sf::Event::Resized) {
 				// Update the camera to the new window size.
 				camera.setSize(sf::Vector2f(event.size.width, event.size.height));
 			}
 		}
 		
-		accumulate += timer.restart() * 5.0f;
+		if (!fastForward) {
+			accumulate += timer.restart() * 5.0f; // Normal simulation renders every 5 steps
+		} else {
+			accumulate += timer.restart() * 144.0f; // With more than 140 steps GUI falls behind
+		}
 		while (accumulate > frameTime) {
 			accumulate -= frameTime;
-			
+			/*
 			sf::Event event;
 			while (window.pollEvent(event)) {
 				if (event.type == sf::Event::Closed) {
@@ -339,7 +352,7 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 					camera.setSize(sf::Vector2f(event.size.width, event.size.height));
 				}
 			}
-			
+			*/
 			controller->stepForward(frameTime.asSeconds());
 		}
 		

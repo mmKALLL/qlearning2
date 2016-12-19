@@ -29,7 +29,6 @@ public:
 private:
 	b2World* world;
 	Car* car;
-	float maxLateralImpulse = 30;
 	float rayLenght = 150;
 	bool m_hit;
 	b2Vec2 m_point;

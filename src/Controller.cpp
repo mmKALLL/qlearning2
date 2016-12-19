@@ -16,37 +16,37 @@ Controller::Controller() {
 	numberOfVisionLines = reader->parsedInt.at("numberOfVisionLines");
 	fieldOfView = reader->parsedInt.at("fieldOfView"); // TODO: FoV slider
 
-						   /***** Simulation constants *****/
-	 velocityIterations = reader->parsedInt.at("velocityIterations");   //how strongly to correct velocity
-	 positionIterations = reader->parsedInt.at("positionIterations");   //how strongly to correct position
+	/***** Simulation constants *****/
+	velocityIterations = reader->parsedInt.at("velocityIterations");   //how strongly to correct velocity
+	positionIterations = reader->parsedInt.at("positionIterations");   //how strongly to correct position
 
-									  /***** Network building related constants *****/
-	 nodeInitLow = reader->parsedFloat.at("nodeInitLow");						// Randomized initial node weights are between these
-	 nodeInitHigh = reader->parsedFloat.at("nodeInitHigh");
+	/***** Network building related constants *****/
+	nodeInitLow = reader->parsedFloat.at("nodeInitLow");						// Randomized initial node weights are between these
+	nodeInitHigh = reader->parsedFloat.at("nodeInitHigh");
 
 	/***** Action-space search and learning-related constants *****/
-	 learningMode = reader->parsedInt.at("learningMode");							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).
-	 useSig = reader->parsedBool.at("useSig");							// Whether to use sigmoid functions in network evaluation.
-	 defaultStepSize = reader->parsedFloat.at("defaultStepSize"); 				// Learning rate; multiplies learned outcome's impact on network node weights
-	 actionDepth = reader->parsedFloat.at("actionDepth"); 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~80 should be manageable.
-	 discountFactor = reader->parsedFloat.at("discountFactor"); 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
+	learningMode = reader->parsedInt.at("learningMode");							// Which weight adjustment algorithm to use. Supported modes: 0 (no learning), 1 (racist gradient descent).
+	useSig = reader->parsedBool.at("useSig");							// Whether to use sigmoid functions in network evaluation.
+	defaultStepSize = reader->parsedFloat.at("defaultStepSize"); 				// Learning rate; multiplies learned outcome's impact on network node weights
+	actionDepth = reader->parsedFloat.at("actionDepth"); 						// How many variations of acceleration/turning values to test. Primary performance impact in network eval. Up to ~80 should be manageable.
+	discountFactor = reader->parsedFloat.at("discountFactor"); 					// [0.0f, 1.0f); importance of "later" vs "now", with higher values increasing the impact of "now"
 
-	  minExplorationCoefficient = reader->parsedFloat.at("minExplorationCoefficient");		// Don't touch.
-	  explorationCoefficientDecrease = reader->parsedFloat.at("explorationCoefficientDecrease");
-	  prevWeightCoefficient = reader->parsedFloat.at("prevWeightCoefficient");			// How large impact the previous weight's magnitude has in learning
-	  prevValueCoefficient = reader->parsedFloat.at("prevValueCoefficient");				// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
-	  rewardMultiplier = reader->parsedFloat.at("rewardMultiplier");					// Multiplier on reward values to prevent crashing from overflows.
-	  qvalueMultiplier = reader->parsedFloat.at("qvalueMultiplier");					// Don't adjust unless the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
+	minExplorationCoefficient = reader->parsedFloat.at("minExplorationCoefficient");		// Don't touch.
+	explorationCoefficientDecrease = reader->parsedFloat.at("explorationCoefficientDecrease");
+	prevWeightCoefficient = reader->parsedFloat.at("prevWeightCoefficient");			// How large impact the previous weight's magnitude has in learning
+	prevValueCoefficient = reader->parsedFloat.at("prevValueCoefficient");				// How important the previous value of a node is. Closer to 1 means "keep it the same" and closer to  0 means "discard old value; make radical changes into the targets"
+	rewardMultiplier = reader->parsedFloat.at("rewardMultiplier");					// Multiplier on reward values to prevent crashing from overflows.
+	qvalueMultiplier = reader->parsedFloat.at("qvalueMultiplier");					// Don't adjust unless the program crashes. Might make learning very buggy. Seek guidance from Esa and Simo first. You can not parse HTML with regex.
 
-													/***** Reward function coefficients, see reward in Controller::takeStep() *****/
-	  timeToFitnessMultiplier = reader->parsedFloat.at("timeToFitnessMultiplier");			// Unused. Fitness function balancing multiplier.
-	  wallPenalty = reader->parsedFloat.at("wallPenalty");					// Reward penalty for hitting a wall.
-	  prevVelocityCoefficient = reader->parsedFloat.at("prevVelocityCoefficient");			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
-	  velocityMultiplier = reader->parsedFloat.at("velocityMultiplier");			// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
+	/***** Reward function coefficients, see reward in Controller::takeStep() *****/
+	timeToFitnessMultiplier = reader->parsedFloat.at("timeToFitnessMultiplier");			// Unused. Fitness function balancing multiplier.
+	wallPenalty = reader->parsedFloat.at("wallPenalty");					// Reward penalty for hitting a wall.
+	prevVelocityCoefficient = reader->parsedFloat.at("prevVelocityCoefficient");			// Reward multiplier for increasing speed vs going fast. Higher value means that increasing car speed is good. Only [0.0f, 1.0f] are sensible.
+	velocityMultiplier = reader->parsedFloat.at("velocityMultiplier");			// Multiplier for increasing float accuracy to reduce out of bounds exceptions.
 
-	  stateSize = numberOfVisionLines + 1;
+	stateSize = numberOfVisionLines + 1;
 
-	  std::cout << " Done!" << std::endl;
+	std::cout << "Constants loaded!" << std::endl;
 
 	if (writeActionsToFile) {
 		carActionFile.open("carActionError.txt");
@@ -96,7 +96,7 @@ void Controller::initializeRun() {
 		std::string fileName = std::string("car") + std::to_string(runCounter) + std::string("_actions.txt");
 		carActionFile.open(fileName.c_str(), std::ofstream::out | std::ofstream::trunc); // overwrite existing
 	}
-	std::cout << "Hello World! My name is initializeRun()-chan!" << std::endl;
+	std::cout << "Hello World! My name is initializeRun()-chan!" << std::endl; // TODO: Remove this line.
 	
 	if (fastforward && runCounter < maxFastForwardRuns) {
 		int prevrun = runCounter;
@@ -140,7 +140,7 @@ float Controller::getCarVelocity() const {
 void Controller::stepForward(float timeStep) {
 	stepCounter += 1;
 	
-	// Print network
+	// Print network to console
 	if (networkDebug) {
 		std::cout << std::endl << std::endl << "** FRAME " << stepCounter << " **" << std::endl << "-------------" << std::endl << std::endl;
 		for (auto layer : currentNetwork.nodes) {
@@ -190,7 +190,7 @@ void Controller::stepForward(float timeStep) {
 		if (currentCar->getCollisionStatus() == 1) {
 			initializeRun();
 		}
-	} 
+	}
 	else {
 		currentCar->testDrive();
 	}

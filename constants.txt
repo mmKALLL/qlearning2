@@ -8,7 +8,7 @@
 // Constants don't have to be in any particular order.
 // Line that begins with '/' is comment
 
-bool networkDebug = true;		// print network to console
+bool networkDebug = false;		// print network to console
 bool carDebug = false;		// manual driving
 bool fastforward = false;		// disable GUI
 int maxFastForwardRuns = 1;	// Untested. Half-implemented. How many runs to do before terminating fastforward.
@@ -18,8 +18,8 @@ int numberOfVisionLines = 5;
 int fieldOfView = 90;
 
 //***** Simulation constants *****/
-int velocityIterations = 8;   //how strongly to correct velocity
-int positionIterations = 3;   //how strongly to correct position
+int velocityIterations = 1;   //how strongly to correct velocity (was 8)
+int positionIterations = 1;   //how strongly to correct position (was 3)
 
 //***** Network building related constants *****/
 float nodeInitLow = -0.1;						// Randomized initial node weights are between these

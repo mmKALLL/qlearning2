@@ -1,11 +1,11 @@
 #include "Physics.hpp"
 
-Physics::Physics(b2World* world, Car* car) : world(world), car(car){
-	// Set the world to use our physics class as collision checker
+Physics::Physics(b2World* world, Car* car) : world(world), car(car) {
+	// Use this object as collision checker
 	this->world->SetContactListener(this);
 }
 
-std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees, std::vector<float> rayDistances){
+std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees, std::vector<float> rayDistances) {
 	std::vector<float> distances;
 	
 	for (int i = -(size - 1) / 2; i <= (size - 1) / 2; i++) {
@@ -30,27 +30,29 @@ std::vector<float> Physics::updateRays(b2Body& carBody, int size, int degrees, s
 		else {
 			distances.push_back(1);
 		}
-
-
+		
 	}
 
 	return distances;
 }
 
 void Physics::updateFriction(b2Body* carBody) {
-	//lateral linear velocity
+	b2Vec2 currentForwardNormal = getForwardVelocity(carBody);
+	
+	//cancel lateral velocity
 	b2Vec2 impulse = carBody->GetMass() * -getLateralVelocity(carBody);
-	if (impulse.Length() > maxLateralImpulse){
-		impulse *= maxLateralImpulse / impulse.Length();
-	}
 	carBody->ApplyLinearImpulse(impulse, carBody->GetWorldCenter(), true);
 
-	//angular velocity
-	carBody->ApplyAngularImpulse(1.0f * carBody->GetInertia() * -carBody->GetAngularVelocity(), true);
+	//cancel angular velocity
+	if (currentForwardNormal.Length() < 5.99f) {
+		carBody->ApplyAngularImpulse((0.5f - (currentForwardNormal.Length() / 6.0f) * 0.4f) * carBody->GetInertia() * -carBody->GetAngularVelocity(), true);
+	}
+	else {
+		carBody->ApplyAngularImpulse(0.1f * carBody->GetInertia() * -carBody->GetAngularVelocity(), true);
+	}
 
-	//forward linear velocity
-	b2Vec2 currentForwardNormal = getForwardVelocity(carBody);
-	float dragForceMagnitude = -0.1 * 120;
+	//apply drag force
+	float dragForceMagnitude = -20.0f / (std::min(11.9f, currentForwardNormal.Length()) / 11.9f + 0.1f);
 	carBody->ApplyForce(dragForceMagnitude * currentForwardNormal, carBody->GetWorldCenter(), true);
 }
 
@@ -64,17 +66,15 @@ b2Vec2 Physics::getLateralVelocity(b2Body* carBody) const {
 	return b2Dot(currentRightNormal, carBody->GetLinearVelocity()) * currentRightNormal;
 }
 
-
+// Walls are not sensors, checkpoints are
+// Checking whether or not the contact is sensor will let us know what we hit
 void Physics::BeginContact(b2Contact* contact) {
 
-	// Car has it's userdata set and it's used to check collision status of walls
-	// Checkpoints are sensors and walls are not and approriate action is selected
 	void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
 	void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
 	if (!userDataA) {
 		if (contact->GetFixtureA()->IsSensor() == false) {
 			car->setCollisionStatus(true);
-
 		}
 	}
 
@@ -86,7 +86,7 @@ void Physics::BeginContact(b2Contact* contact) {
 
 }
 
-void Physics::EndContact(b2Contact* contact){
+void Physics::EndContact(b2Contact* contact) {
 	void* userDataA = contact->GetFixtureA()->GetBody()->GetUserData();
 	void* userDataB = contact->GetFixtureB()->GetBody()->GetUserData();
 	if (!userDataA) {
@@ -107,13 +107,15 @@ void Physics::EndContact(b2Contact* contact){
 		}
 	}
 }
-float32 Physics::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction){
+
+// TODO: Olli, comment this
+float32 Physics::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction) {
 	if (!fixture->IsSensor()) {
 		m_hit = true;
 		m_point = point;
 		m_fraction = fraction;
 		m_normal = normal;
-
 	}
+	
 	return fraction;
 }

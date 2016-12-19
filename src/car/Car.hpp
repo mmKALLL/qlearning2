@@ -38,10 +38,11 @@ public:
 		
 private:
 	b2Body* carBody = nullptr;
-	float maxSpeed = 120;
-	float maxDriveForce = 3000;
-	float maxReverseForce = 1500;
-	float MaxTurningForce = 25000;
+	float maxSpeed = 120; // Box2D effectively limits this to 120
+	float driveForce = 2300;
+	float brakeForce = 2300;
+	float reverseForce = 727; // Caps the reverse speed at just under 40
+	float turnRatio = 80000; // 80 000 seems to be the optimal value
 	bool collisionStatus = false;
 	std::vector<float> distances;
 	int checkpoints = 0;

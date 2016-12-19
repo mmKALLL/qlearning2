@@ -16,12 +16,12 @@ Car::Car(b2World* world) : world(world)
 
 	b2FixtureDef carFixtureDef;
 	carFixtureDef.shape = &carShape;
-	carFixtureDef.density = 0.01f;
-	carFixtureDef.restitution = 0.5f;
+	carFixtureDef.density = 0.2f;
+	// carFixtureDef.restitution = 0.5f; // Not needed, since we don't simulate crashing
 
 	carBody = world->CreateBody(&carBodyDef);
 	carBody->CreateFixture(&carFixtureDef);
-	carBody->SetUserData(this);	
+	carBody->SetUserData(this);
 }
 
 Car::~Car()
@@ -30,32 +30,41 @@ Car::~Car()
 	delete physics;
 }
 
-void Car::update(float speed, float angle)
+void Car::update(float speed, float direction)
 {
 	physics->updateFriction(carBody);
 	accelerate(speed);
-	turn(angle);
+	turn(direction);
 }
 
+// Function takes parameter speed, which should be -1, 0 or 1. Positive speed prompts acceleration, while negative speed brakes or reverses, depending on the current velocity.
 void Car::accelerate(float speed)
 {
-	float desiredSpeed = speed*maxSpeed;
-
-	b2Vec2 currentForwardNormal = carBody->GetWorldVector(b2Vec2(1, 0));
-	float currentSpeed = b2Dot(physics->getForwardVelocity(carBody), currentForwardNormal);
-
-	if (desiredSpeed > currentSpeed && speed > 0) {
-		carBody->ApplyForce(maxDriveForce * currentForwardNormal, carBody->GetWorldCenter(), true);
+	if (speed > 0) {
+		carBody->ApplyForce(driveForce * carBody->GetWorldVector(b2Vec2(1, 0)), carBody->GetWorldCenter(), true);
 	}
-	else if (desiredSpeed < currentSpeed && speed < 0) {
-		carBody->ApplyForce(-maxReverseForce * currentForwardNormal, carBody->GetWorldCenter(), true);
+	else if (speed < 0) {
+		if (getVelocity() > 0) {
+			carBody->ApplyForce(-brakeForce * carBody->GetWorldVector(b2Vec2(1, 0)), carBody->GetWorldCenter(), true);
+		}
+		else {
+			carBody->ApplyForce(-reverseForce * carBody->GetWorldVector(b2Vec2(1, 0)), carBody->GetWorldCenter(), true);
+		}
 	}
 }
 
-
-void Car::turn(float angle)
+// Function takes parameter direction, which should be in range [-1, 1]. Positive direction steers the car to the right, while negative direction steers the car to the left. When driving in reverse, it's the opposite.
+void Car::turn(float direction)
 {
-	carBody->ApplyTorque(angle*MaxTurningForce * 45 * getVelocity()/maxSpeed, true);
+	float currentSpeed = getVelocity();
+	if (direction != 0) {
+		if (currentSpeed > 1) {
+			carBody->ApplyTorque(direction * turnRatio, true);
+		}
+		else if (currentSpeed < -1) {
+			carBody->ApplyTorque(-direction * turnRatio, true);
+		}
+	}
 }
 
 void Car::setParams(std::vector<float> position, float angle, float speed)
@@ -76,7 +85,8 @@ void Car::addCheckpoint()
 	checkpoints += 1;
 }
 
-std::vector<float> Car::getDistances(int amount, int degrees, std::vector<float> rayDistances) {
+std::vector<float> Car::getDistances(int amount, int degrees, std::vector<float> rayDistances)
+{
 	distances = physics->updateRays(*carBody, amount, degrees, rayDistances);
 	return distances;
 }
@@ -122,30 +132,36 @@ void Car::setNetwork(NeuralNetwork newNetwork)
 	network = newNetwork;
 }
 
-void Car::testDrive(){
-	physics->updateFriction(carBody);
+void Car::testDrive()
+{
+	float acceleration = 0;
+	float steering = 0;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-    		this->update(1, 0);
+    	acceleration++;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-    		this->update(-1, 0);
+    	acceleration--;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-    		this->update(0, -0.3);
+    	steering--;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-    		this->update(0, 0.3);
+    	steering++;
 	}
+	this->update(acceleration, steering);
 
-	// For debugging
+	// Debug prints for driving
+	/*
 	std::cout << "Velocity: " << this->getVelocity() << std::endl;
+	std::cout << "Angular velocity: " << carBody->GetAngularVelocity() << std::endl;
 	std::cout << "Angle: " << this->getAngle() << std::endl;
 	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
 	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
+	*/
 	std::vector<float> distances = getDistances(3, 180, {0.3f, 0.5f, 1.0f});
 	std::cout << "Distance right: " << distances[0] << std::endl;
 	std::cout << "Distance front: " << distances[1] << std::endl;

@@ -201,11 +201,11 @@ sf::VertexArray Track::drawSector(float length, float heightLengthAngle, float a
 void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShape>& kerbs) {
 	
 	sf::Sprite sprite;
-	sprite.setOrigin(25, 100);
+	sprite.setOrigin(-12.5, 100);
 	
 	// Create the finish line texture
 	sf::Texture sector;
-	unsigned int x = 50;
+	unsigned int x = 25;
 	unsigned int y = 200;
 	sector.create(x, y);
 	sf::Uint8* pixels = new sf::Uint8[x * y * 4];
@@ -219,7 +219,7 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 		pixels[i + 3] = 255;
 		
 		column++;
-		if (column >= 10) {
+		if (column >= 5) {
 			column = 0;
 			row++;
 			if (!(row % 5 != 0) != (row % 50 != 0)) {
@@ -310,6 +310,8 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 	camera.setSize(sf::Vector2f(1000, 1000));
 	
 	sf::Clock timer;
+	sf::Time accumulate = sf::Time::Zero;
+	sf::Time frameTime = sf::seconds(1.0f / 60.0f);
 	
 	while (window.isOpen()) {
 		sf::Event event;
@@ -321,6 +323,24 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 				// Update the camera to the new window size.
 				camera.setSize(sf::Vector2f(event.size.width, event.size.height));
 			}
+		}
+		
+		accumulate += timer.restart() * 5.0f;
+		while (accumulate > frameTime) {
+			accumulate -= frameTime;
+			
+			sf::Event event;
+			while (window.pollEvent(event)) {
+				if (event.type == sf::Event::Closed) {
+					window.close();
+				}
+				if (event.type == sf::Event::Resized) {
+					// Update the camera to the new window size.
+					camera.setSize(sf::Vector2f(event.size.width, event.size.height));
+				}
+			}
+			
+			controller->stepForward(frameTime.asSeconds());
 		}
 		
 		window.clear(sf::Color::Black);
@@ -339,9 +359,5 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 		window.draw(sprite);
 		window.draw(car);
 		window.display();
-		
-		// The program automatically runs at 60 FPS
-		controller->stepForward(timer.restart().asSeconds());
-		
 	}
 }

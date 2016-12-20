@@ -1,5 +1,6 @@
 #ifndef QLEARNING_CONTROLLER_H
 #define QLEARNING_CONTROLLER_H
+#include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 #include <vector>
 #include <tuple>
@@ -26,8 +27,6 @@ public:
 	const Car& getCar() const;
     const Track& getTrack() const;
 
-	//std::vector<double>& getActionForCar(Car& car, NeuralNetwork& nn) const;
-
 	//---Getters for car
 	const std::vector<float> getCarPosition() const;
 	const std::vector<float> getSightVector(int size, int degrees, std::vector<float> rayDistances);
@@ -35,15 +34,16 @@ public:
 	float getCarRotation() const;
 	float getCarVelocity() const;
 
-	//---Controller actions
+	//---Simulation actions
     void stepForward(float timeStep); //Moves simulation; makes a call to NeuralNetwork and asks Physics to parse action
+	void GUI();
+	void GUIEvents(sf::RenderWindow&, sf::View&);
     
 private:
-	
 	/***** General settings *****/
-	bool networkDebug;		// print network to console
-	bool carDebug;		// manual driving
-	int maxFastForwardRuns;	// Untested. Half-implemented. How many runs to do before terminating fastforward.
+	bool networkDebug;			// print network to console
+	bool carDebug;				// manual driving
+	bool fastForward;			// faster learning
 	bool writeActionsToFile;	// car driving history; overwrites existing history files
 	
 	int numberOfVisionLines;

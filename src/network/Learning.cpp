@@ -4,29 +4,16 @@ Learning::Learning(float defStepSize) : stepSize(defStepSize) {
 	
 }
 
-
-//Adjust connections to this node to get its value closer to target
-//Simple dummy algorithm to get somehow going
-void Learning::adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn) {
-
-	auto node = nn.nodes[layer][index];
-	float oldValue = node->calcValue();
-	//float difference = targetValue - currentValue;
-	//float smallestDifference = difference;
-	
-	
-}
-
 float Learning::getStepSize() {
 	return stepSize;
 }
 
-void Learning::adjustNetwork(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget, int mode) {
+void Learning::adjustNetwork(Controller& controller, NeuralNetwork& nn, float qtarget, int mode) {
 	if (mode == 2) {
-		throw "Learning mode 2 is not yet supported. Be back soon!";
-		backPropagationLearning(controller, nn, qvalue, qtarget);
+		throw "Learning mode 2 is not yet supported. The function backPropagationLearning remains unimplemented.";
+		//backPropagationLearning(controller, nn, qvalue, qtarget);
 	} else if (mode == 1) {
-		racistNetworkLearning(controller, nn, qvalue, qtarget);
+		racistNetworkLearning(controller, nn, qtarget);
 	} else if (mode == 0) {
 		// do nothing
 	} else {
@@ -34,19 +21,17 @@ void Learning::adjustNetwork(Controller& controller, NeuralNetwork& nn, float qv
 	}
 }
 
-void Learning::racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget) {
+void Learning::racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qtarget) {
 	int layers = nn.nodes.size();
 	
-	// Debug code
-	Node& n = *nn.nodes[controller.layerCount - 1][0];
-	//std::cout << "inputValueSign for output: " << (n.getValue() > 0) - (n.getValue() < 0) << std::endl;
-	
+	/* Debug code
+	 * Node& n = *nn.nodes[controller.layerCount - 1][0];
+	 * std::cout << "inputValueSign for output: " << (n.getValue() > 0) - (n.getValue() < 0) << std::endl;
+	 */
 	
 	racistNodeAdjustment(controller, *nn.nodes[controller.layerCount - 1][0], nn, qtarget, controller.prevWeightCoefficient, layers - 1);
 	
 }
-
-
 
 // Recursively adjust weights
 void Learning::racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer) {
@@ -75,6 +60,6 @@ void Learning::racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwo
 	}
 }
 
-void Learning::backPropagationLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget) {
+/* void Learning::backPropagationLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget) {
 	// TODO: Implement more typical BP algorithm if there is extra time.
-}
+} */

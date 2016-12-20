@@ -9,8 +9,8 @@
 // Line that begins with '/' is comment
 
 bool networkDebug = false;		// print network to console
-bool carDebug = false;		// manual driving
-int maxFastForwardRuns = 1;	// Untested. Half-implemented. How many runs to do before terminating fastforward.
+bool carDebug = false;         // manual driving
+bool fastForward = false;     // faster learning
 bool writeActionsToFile = true;	// car driving history; overwrites existing history files
 
 int numberOfVisionLines = 5;

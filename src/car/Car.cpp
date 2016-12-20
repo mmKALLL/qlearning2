@@ -1,6 +1,5 @@
 #include "Car.hpp"
 
-
 Car::Car(b2World* world) : world(world)
 {
 	physics = new Physics(world, this);
@@ -154,16 +153,14 @@ void Car::testDrive()
 	this->update(acceleration, steering);
 
 	// Debug prints for driving
-	std::cout << "Velocity: " << this->getVelocity() << std::endl;
-	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
-	/*
-	std::cout << "Angular velocity: " << carBody->GetAngularVelocity() << std::endl;
-	std::cout << "Angle: " << this->getAngle() << std::endl;
-	std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
-	std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
-	*/
-	std::vector<float> distances = getDistances(3, 180, {0.3f, 0.5f, 1.0f});
-	std::cout << "Distance right: " << distances[0] << std::endl;
-	std::cout << "Distance front: " << distances[1] << std::endl;
-	std::cout << "Distance left: " << distances[2] << std::endl;
+	// std::cout << "Velocity: " << this->getVelocity() << std::endl;
+	// std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
+	// std::cout << "Angular velocity: " << carBody->GetAngularVelocity() << std::endl;
+	// std::cout << "Angle: " << this->getAngle() << std::endl;
+	// std::cout << "Checkpoints: " << this->getCheckpoints() << std::endl;
+	// std::cout << "Collision: " << this->getCollisionStatus() << std::endl;
+	// std::vector<float> distances = getDistances(3, 180, {0.3f, 0.5f, 1.0f});
+	// std::cout << "Distance right: " << distances[0] << std::endl;
+	// std::cout << "Distance front: " << distances[1] << std::endl;
+	// std::cout << "Distance left: " << distances[2] << std::endl;
 }

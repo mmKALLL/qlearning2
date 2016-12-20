@@ -23,6 +23,7 @@ public:
 	NeuralNetwork& getNetwork();
 	std::vector<float> getPosition() const;
 	std::vector<float> getDistances(int amount, int degrees, std::vector<float> rayDistances);
+	
 	// Setters
 	void setParams(std::vector<float> position, float angle, float speed);
 	void setCollisionStatus(bool status);
@@ -34,6 +35,7 @@ public:
 	void turn(float angle);
 	void addCheckpoint();
 
+	// Manual control
 	void testDrive();
 		
 private:
@@ -50,5 +52,7 @@ private:
 	b2World* world = nullptr;
 	Physics* physics;
 	NeuralNetwork network;
+	
 };
+
 #endif

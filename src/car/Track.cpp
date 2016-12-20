@@ -16,8 +16,8 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 	};
 
 	// Initialize an empty vector to hold the graphical representation of the circuit.
-	std::vector<sf::VertexArray> sectors;
-	std::vector<sf::ConvexShape> kerbs;
+	//std::vector<sf::VertexArray> sectors;
+	//std::vector<sf::ConvexShape> kerbs;
 	float angle = 0.0f;
 	b2Vec2 midPoint = b2Vec2(0, 0);
 	sf::Vector2f lastLeftCorner;
@@ -127,7 +127,7 @@ Track::Track(b2World* world, Controller* controller) : world(world), controller(
 		}
 	}
 	
-	GUI(sectors, kerbs); // TODO: Does the constructor need to return anything?
+	drawTextures();
 	
 }
 
@@ -198,16 +198,12 @@ sf::VertexArray Track::drawSector(float length, float heightLengthAngle, float a
 	
 }
 
-void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShape>& kerbs) {
-	
-	sf::Sprite sprite;
-	sprite.setOrigin(-12.5, 100);
-	
-	// Create the finish line texture
-	sf::Texture sector;
+void Track::drawTextures() {
+	// Create texture for finish line
+	finishLine.setOrigin(-12.5, 100);
 	unsigned int x = 25;
 	unsigned int y = 200;
-	sector.create(x, y);
+	checkered.create(x, y);
 	sf::Uint8* pixels = new sf::Uint8[x * y * 4];
 	int column = 0;
 	int row = 0;
@@ -231,13 +227,13 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 			}
 		}
 	}
-	sector.update(pixels);
-	sprite.setTexture(sector);
+	checkered.update(pixels);
+	finishLine.setTexture(checkered);
 	
-	sf::Texture kerb;
+	// Create top-right->bottom-left texture for kerb
 	x = 120;
 	y = 120;
-	kerb.create(x, y);
+	kerb1.create(x, y);
 	pixels = new sf::Uint8[x * y * 4];
 	column = 0;
 	row = 0;
@@ -258,9 +254,9 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 			row++;
 		}
 	}
-	kerb.update(pixels);
+	kerb1.update(pixels);
 	
-	sf::Texture kerb2;
+	// Create top-left->bottom-right texture for kerb
 	x = 120;
 	y = 120;
 	kerb2.create(x, y);
@@ -285,92 +281,24 @@ void Track::GUI(std::vector<sf::VertexArray> sectors, std::vector<sf::ConvexShap
 	}
 	kerb2.update(pixels);
 	
-	for (auto & z : kerbs) {
-		sf::Vector2f begin = z.getPoint(0);
-		sf::Vector2f end = z.getPoint(10);
+	// Set the correct texture for each kerb
+	for (auto & kerb : kerbs) {
+		sf::Vector2f begin = kerb.getPoint(0);
+		sf::Vector2f end = kerb.getPoint(10);
 		if ((begin.x < end.x && begin.y < end.y) || (begin.x > end.x && begin.y > end.y)) {
-			z.setTexture(&kerb2);
+			kerb.setTexture(&kerb2);
 		} else {
-			z.setTexture(&kerb);
+			kerb.setTexture(&kerb1);
 		}
 	}
-	
-	sf::RenderWindow window(sf::VideoMode(1000, 1000), "qlearning2");
-	window.setVerticalSyncEnabled(true);
-	
-	// If you edit the car size, remember to edit the origin too!
-	sf::RectangleShape car(sf::Vector2f(40, 30));
-	car.setOrigin(20, 15);
-	
-	car.setFillColor(sf::Color(255, 55, 55));
-	std::vector<float> carPosition;
-	float carRotation;
-	
-	sf::View camera;
-	camera.setSize(sf::Vector2f(1000, 1000));
-	
-	sf::Clock timer;
-	sf::Time accumulate = sf::Time::Zero;
-	sf::Time frameTime = sf::seconds(1.0f / 60.0f);
-	bool fastForward = false;
-	
-	while (window.isOpen()) {
-		sf::Event event;
-		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed) {
-				window.close();
-			}
-			if (event.type == sf::Event::KeyPressed) {
-    			if (event.key.code == sf::Keyboard::Escape) {
-        			window.close();
-    			}
-				if (event.key.code == sf::Keyboard::F) {
-        			fastForward = !fastForward;
-    			}
-			}
-			if (event.type == sf::Event::Resized) {
-				// Update the camera to the new window size.
-				camera.setSize(sf::Vector2f(event.size.width, event.size.height));
-			}
-		}
-		
-		if (!fastForward) {
-			accumulate += timer.restart() * 5.0f; // Normal simulation renders every 5 steps
-		} else {
-			accumulate += timer.restart() * 144.0f; // With more than 140 steps GUI falls behind
-		}
-		while (accumulate > frameTime) {
-			accumulate -= frameTime;
-			/*
-			sf::Event event;
-			while (window.pollEvent(event)) {
-				if (event.type == sf::Event::Closed) {
-					window.close();
-				}
-				if (event.type == sf::Event::Resized) {
-					// Update the camera to the new window size.
-					camera.setSize(sf::Vector2f(event.size.width, event.size.height));
-				}
-			}
-			*/
-			controller->stepForward(frameTime.asSeconds());
-		}
-		
-		window.clear(sf::Color::Black);
-		carPosition = controller->getCarPosition();
-		car.setPosition(carPosition[0], carPosition[1]);
-		carRotation = controller->getCarRotation();
-		car.setRotation(carRotation);
-		camera.setCenter(car.getPosition());
-		window.setView(camera);
-		for (auto x : sectors) {
-			window.draw(x);
-		}
-		for (auto y : kerbs) {
-			window.draw(y);
-		}
-		window.draw(sprite);
-		window.draw(car);
-		window.display();
+}
+
+void Track::render(sf::RenderWindow& window) {
+	for (auto sector : sectors) {
+		window.draw(sector);
 	}
+	for (auto kerb : kerbs) {
+		window.draw(kerb);
+	}
+	window.draw(finishLine);
 }

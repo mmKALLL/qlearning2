@@ -17,20 +17,16 @@ public:
 	Learning(float defStepSize = 0.01);
 
 	float getStepSize();
-	
-	// Dummy function
-	void adjustConnectionSimple(int layer, int index, float targetValue, NeuralNetwork& nn);
 
-	// New and shiny stuff
-	void adjustNetwork(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget, int mode = 1);
+	void adjustNetwork(Controller& controller, NeuralNetwork& nn, float qtarget, int mode = 1);
 
-	void racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget);
+	void racistNetworkLearning(Controller& controller, NeuralNetwork& nn, float qtarget);
 
 	void racistNodeAdjustment(Controller& controller, Node& n, NeuralNetwork& nn, float target, float prevWeightCoefficient, int currentLayer);
 	
-	void backPropagationLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget);
+	//void backPropagationLearning(Controller& controller, NeuralNetwork& nn, float qvalue, float qtarget);
 	
-	/**
+	/*
 		Basically we are going to implement this:
 		https://www.cs.swarthmore.edu/~meeden/cs81/s12/papers/MarkStevePaper.pdf
 		

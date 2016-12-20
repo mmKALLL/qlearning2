@@ -8,8 +8,8 @@ Controller::Controller() {
 
 	/***** General settings *****/
 	networkDebug = reader->parsedBool.at("networkDebug");		// print network to console
-	carDebug = reader->parsedBool.at("carDebug");		// manual driving
-	maxFastForwardRuns = reader->parsedInt.at("maxFastForwardRuns");	// Untested. Half-implemented. How many runs to do before terminating fastforward.
+	carDebug = reader->parsedBool.at("carDebug");				// manual driving
+	fastForward = reader->parsedBool.at("fastForward");			// faster learning
 	writeActionsToFile = reader->parsedBool.at("networkDebug");	// car driving history; overwrites existing history files
 	
 	numberOfVisionLines = reader->parsedInt.at("numberOfVisionLines");
@@ -63,7 +63,7 @@ void Controller::initializeController() {
 	// No need for gravity in top down physics
 	m_world = new b2World(b2Vec2(0,0));
 	currentCar = new Car(m_world);
-	
+	currentTrack = new Track(m_world, this);
 	currentNetwork = NeuralNetwork(layerCount);
 	
 	// Build network
@@ -77,8 +77,7 @@ void Controller::initializeController() {
 	currentNetwork.build(layerSizes, true, nodeInitLow, nodeInitHigh);
 
 	initializeRun();
-	currentTrack = new Track(m_world, this);
-
+	GUI(); // Activate SFML Window
 }
 
 void Controller::initializeRun() {
@@ -96,16 +95,6 @@ void Controller::initializeRun() {
 		std::string fileName = std::string("car") + std::to_string(runCounter) + std::string("_actions.txt");
 		carActionFile.open(fileName.c_str(), std::ofstream::out | std::ofstream::trunc); // overwrite existing
 	}
-	std::cout << "Hello World! My name is initializeRun()-chan!" << std::endl; // TODO: Remove this line.
-	
-	/*
-	if (fastforward && runCounter < maxFastForwardRuns) {
-		int prevrun = runCounter;
-		while (prevrun == runCounter) {
-			stepForward(1.0f / 60.0f);
-		}
-	}
-	*/
 }
 
 const Car& Controller::getCar() const {
@@ -179,16 +168,14 @@ void Controller::stepForward(float timeStep) {
 		//std::cout << "       discountFactor is: " << discountFactor << std::endl;
 		//std::cout << "       qvalueMultiplier is: " << qvalueMultiplier << std::endl;
 		
-		
 		float qtarget = (qvalue + /*TODO: trainer->getStepSize()*/defaultStepSize * (reward + discountFactor * 	action[2] - qvalue)) * qvalueMultiplier;
-		trainer->adjustNetwork(*this, currentNetwork, qvalue, qtarget, learningMode);
+		trainer->adjustNetwork(*this, currentNetwork, qtarget, learningMode);
 		this->qvalue = qtarget;
 		
 		if (writeActionsToFile) {
 			carActionFile << stepCounter << "," << action[0] << "," << action[1] << "," << 	action[2] << std::endl;
 		}
 		
-		//currentCar->testDrive();
 		if (currentCar->getCollisionStatus() == 1) {
 			initializeRun();
 		}
@@ -202,4 +189,74 @@ void Controller::stepForward(float timeStep) {
 	// According to the manual, forces should be cleared after taking a step
 	m_world->ClearForces();
 
+}
+
+void Controller::GUI() {
+	sf::RenderWindow window(sf::VideoMode(1000, 1000), "qlearning2");
+	window.setVerticalSyncEnabled(true);
+	
+	// When changing the car's size, remember to update its origin too!
+	sf::RectangleShape car(sf::Vector2f(40, 30));
+	car.setOrigin(20, 15);
+	car.setFillColor(sf::Color(255, 55, 55));
+	std::vector<float> carPosition;
+	
+	sf::View camera;
+	camera.setSize(sf::Vector2f(1000, 1000));
+	
+	sf::Clock timer;
+	sf::Time accumulate = sf::Time::Zero;
+	sf::Time frameTime = sf::seconds(1.0f / 60.0f);
+	
+	while (window.isOpen()) {
+		GUIEvents(window, camera);
+		
+		if (!this->fastForward) {
+			accumulate += timer.restart() * 5.0f; // Normal simulation renders every 5 steps
+		} else {
+			accumulate += timer.restart() * 100.0f; // With 140+ steps GUI starts to falls behind
+		}
+		
+		while (accumulate > frameTime) {
+			accumulate -= frameTime;
+			GUIEvents(window, camera);
+			stepForward(frameTime.asSeconds());
+		}
+		
+		window.clear(sf::Color::Black);
+		currentTrack->render(window);
+		carPosition = getCarPosition();
+		car.setPosition(carPosition[0], carPosition[1]);
+		car.setRotation(getCarRotation());
+		window.draw(car);
+		camera.setCenter(car.getPosition());
+		window.setView(camera);
+		window.display();
+	}
+}
+
+void Controller::GUIEvents(sf::RenderWindow& window, sf::View& camera) {
+	sf::Event event;
+	while (window.pollEvent(event)) {
+		if (event.type == sf::Event::Closed) {
+			window.close();
+		}
+		
+		if (event.type == sf::Event::KeyPressed) {
+			if (event.key.code == sf::Keyboard::Escape) {
+				window.close();
+			}
+			if (event.key.code == sf::Keyboard::D) {
+				this->carDebug = !this->carDebug;
+			}
+			if (event.key.code == sf::Keyboard::F) {
+				this->fastForward = !this->fastForward;
+			}
+		}
+		
+		if (event.type == sf::Event::Resized) {
+			// Update the camera to the new window size.
+			camera.setSize(sf::Vector2f(event.size.width, event.size.height));
+		}
+	}
 }

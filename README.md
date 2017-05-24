@@ -1,4 +1,4 @@
-### This is an example readme for the project.
+### qlearning2 README
 
 This repository contains three subdirectories:
 
@@ -10,16 +10,16 @@ You can write a short summary of your project into this file.
 
 This file is read by the gitlab and is shown on the repository's front page.
 
-The Box2D library is builded for 64-bit systems, this shouldn't be a problem.
+The Box2D library is built for 64-bit systems, this shouldn't be a problem.
 
-=======
-qlearning2
-Team Skele aihe
+=======<br>
+qlearning2<br>
+Team Skele aihe<br>
 
-Esa Koskinen
-Simo Muraja
-Olli Kauppinen
-Jussi Hirvonen
+Esa Koskinen<br>
+Simo Muraja<br>
+Olli Kauppinen<br>
+Jussi Hirvonen<br>
 
 The Box2D library is built for 64-bit systems, this shouldn't be a problem.
 
